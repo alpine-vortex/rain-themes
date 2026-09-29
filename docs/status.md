@@ -7,12 +7,23 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - The 19-palette desktop work (`desktop-all-palettes`) was merged to `main` on
   2026-09-28.
 
-## Phone (branch `phone-sync`, 2026-09-29)
+## Phone (Pixel 10 Pro XL, Android 17)
 
-- `sync-theme.json` (Sync for Reddit Monet import), a Termius built-in per palette
-  (spec `termius`), and `redeye-theme.json` (redeye v1) are generated for all 21.
-- Not yet: the system accent through adb (the phone isn't paired yet), and
-  importing any of these on the phone.
+- Generated for all 21 palettes:
+  - `sync-theme.json` (Sync for Reddit Monet import)
+  - a Termius built-in per palette (spec `termius`)
+  - `redeye-theme.json` (redeye v1; the raw URLs are live on `main`)
+- `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,
+  which is checked on Android 17. It also copies the wallpaper, Sync and redeye
+  files to `/sdcard/Download/rain-themes/<slug>/`.
+  `rain phone --restore` puts back the original setting. That was
+  wallpaper-derived colours in SPRITZ style, saved in
+  `~/.local/state/rain-themes/phone-snapshot.json`.
+- **Live on the phone since 2026-09-29:** Librekai seed `#F93B7F`, TONAL_SPOT. The
+  Librekai files are in Downloads. The wallpaper isn't set yet and Sync hasn't
+  imported anything yet (both manual).
+- Not yet: a GUI button for the phone. Redeye's importer isn't built yet (the
+  redeye session is using the files as test data).
 
 ## Live state on spacer
 

@@ -141,6 +141,7 @@ colour even where upstream uses a light one with dark selected text.
 | Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
 | Termius (phone) | `README.md` | Manual: pick the built-in named by the spec's `termius` block (`theme`, `match`: `same palette` or `closest`). Termius has no custom-theme import. |
 | redeye (phone) | `redeye-theme.json` | Imported in redeye (file, clipboard, or the raw.githubusercontent.com URL in the palette README; URLs work once on `main`). Format `redeye-theme` v1, agreed with the redeye session 2026-09-29. `state` (NSFW/hidden/saved) comes from the spec's `redeye_state`; `tags` are 8 muted hues from ANSI/syntax, avoiding accent/state/danger, in stable order. |
+| Android system colours (phone) | `brave.json`'s seed, via `rain phone <slug>` | adb (Wireless debugging): writes the accent as the Material You seed into `secure theme_customization_overlay_packages` (`--style`, default TONAL_SPOT), copies wallpaper/Sync/redeye files to `/sdcard/Download/rain-themes/<slug>/`. `rain phone --restore` puts the original back. |
 | Sync for Reddit (phone) | `sync-theme.json` | Manual import in Sync's Monet theme settings. Seed = accent; dark primary/secondary/link text overridden. Sync derives backgrounds from the seed, so they aren't the palette's exact background. |
 | Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
 

@@ -8,6 +8,8 @@
     rain apply <slug> [--only t,t] [--dry-run]
     rain restore [--dry-run]
     rain pending [--dry-run]       finish apps skipped while running (also runs at login)
+    rain phone <slug> [--style S] [--no-files] [--dry-run]   Android system colours + files over adb
+    rain phone --restore [--dry-run]
     rain preview <slug> [--out DIR]
     rain gui                       small GTK window: pick a palette, apply, restore
     rain install                   menu entry, login autostart for `pending`, git pre-commit check
@@ -124,6 +126,16 @@ def cmd_pending(a):
     apply_theme.run_pending(a.dry_run)
 
 
+def cmd_phone(a):
+    import phone_theme
+    if a.restore:
+        phone_theme.restore(a.dry_run)
+    elif a.slug:
+        phone_theme.apply(a.slug, a.style, not a.no_files, a.dry_run)
+    else:
+        sys.exit("rain phone: give a slug or --restore")
+
+
 def cmd_preview(a):
     args = [sys.executable, str(TOOLS / "dev/preview_desktop.py"), a.slug]
     if a.out:
@@ -195,6 +207,13 @@ def main():
         p = sub.add_parser(name)
         p.add_argument("--dry-run", action="store_true")
         p.set_defaults(fn=fn)
+    p = sub.add_parser("phone")
+    p.add_argument("slug", nargs="?")
+    p.add_argument("--style", default="TONAL_SPOT")
+    p.add_argument("--no-files", action="store_true")
+    p.add_argument("--restore", action="store_true")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_phone)
     p = sub.add_parser("preview")
     p.add_argument("slug")
     p.add_argument("--out")
