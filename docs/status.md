@@ -28,6 +28,17 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - Not yet: Redeye's importer isn't built yet (the
   redeye session is using the files as test data).
 
+- **redeye adb interface.** Agreed with the redeye session on 2026-09-29, and not built
+  in redeye yet; it will message when a build has it.
+  - Receiver: `dev.redeye/.theme.ThemeCommandReceiver`, protected by DUMP.
+  - `SET_THEME` takes `--es slug`, `--es url` or `--es json_b64`, plus an optional
+    `--es mode`. `GET_THEME` returns `{slug, mode, version}`.
+  - Result code 0 means ok; 1 means failure, with an error string.
+  - Plan for `rain phone`: if `pm path dev.redeye` finds the app, push
+    `redeye-theme.json` to `/sdcard/Android/data/dev.redeye/files/themes/` (the shell can
+    write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
+    Keep `json_b64` as the fallback.
+
 ## Live state on spacer
 
 - **Librekai applied** to every target: Cinnamon/GTK (`Rain-Librekai-Dark`),
