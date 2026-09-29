@@ -4,8 +4,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 
 - Everything is on `main`: desktop exports, docs, Firefox Color links,
   `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
-- The 19-palette desktop work is on branch `desktop-all-palettes` (pushed, not
-  yet merged to `main`).
+- The 19-palette desktop work (`desktop-all-palettes`) was merged to `main` on
+  2026-09-28.
 
 ## Live state on spacer
 
