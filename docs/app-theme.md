@@ -72,8 +72,28 @@ rules apply the other way round (`mode: "light"` with a nested `dark`).
   picks and `tags` are tuned to the other background, so they would be wrong.
 - Header keys (`name`, `slug`, `source`) are inherited.
 
-rain-themes generates dark palettes only for now (all 21 are `mode: "dark"`,
-without a nested variant).
+rain-themes' files are all `mode: "dark"`. 15 of them carry a nested `light`
+object with the family's **official** light flavour, taken from upstream like
+everything else (spec key `light`: palette, ANSI and role map). The object may
+also carry `flavour`, the light flavour's own name:
+
+| Palettes | `light.flavour` |
+|---|---|
+| Catppuccin Frappé, Macchiato, Mocha | Catppuccin Latte |
+| Rosé Pine, Rosé Pine Moon | Rosé Pine Dawn |
+| Tokyo Night Night, Storm, Moon | Tokyo Night Day |
+| Kanagawa Wave, Dragon | Kanagawa Lotus |
+| Gruvbox | Gruvbox Light |
+| Gruvbox Material Dark | Gruvbox Material Light |
+| Everforest Dark | Everforest Light |
+| Dracula | Alucard |
+| Solarized Osaka | Solarized Osaka Light |
+
+Nord, Tokyodark and the three Librekai/Monokai palettes have no official light
+flavour upstream, so they have no `light` object; an app uses its own light
+scheme for them. Several upstream light flavours have low-contrast muted,
+state or accent colours (e.g. Everforest Light, Rosé Pine Dawn). They are kept
+as published, so apps should warn rather than reject.
 
 ## How rain-themes fills it
 

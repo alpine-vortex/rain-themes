@@ -34,5 +34,37 @@
     "#544A69",
     "#556547",
     "#704A5B"
-  ]
+  ],
+  "light": {
+    "flavour": "Kanagawa Lotus",
+    "background": "#F2ECBC",
+    "text": "#545464",
+    "accent": "#4D699B",
+    "panel": "#D5CEA3",
+    "raised": "#D5CEA3",
+    "selected": "#C9CBD1",
+    "on_selected": "#545464",
+    "line": "#D5CEA3",
+    "border": "#716E61",
+    "text_secondary": "#43436C",
+    "text_muted": "#8A8980",
+    "on_accent": "#F2ECBC",
+    "state": "#CC6D00",
+    "on_state": "#F2ECBC",
+    "danger": "#E82424",
+    "on_danger": "#F2ECBC",
+    "link": "#6693BF",
+    "positive": "#6F894E",
+    "warning": "#DE9800",
+    "tags": [
+      "#96A76F",
+      "#C6868D",
+      "#879D8A",
+      "#8D7C94",
+      "#B7BF8A",
+      "#D6AB9E",
+      "#ADB99C",
+      "#B1A4A2"
+    ]
+  }
 }

@@ -33,5 +33,37 @@
     "#5BA59F",
     "#5B7350",
     "#79654F"
-  ]
+  ],
+  "light": {
+    "flavour": "Tokyo Night Day",
+    "background": "#E1E2E7",
+    "text": "#3760BF",
+    "accent": "#2E7DE9",
+    "panel": "#D0D5E3",
+    "raised": "#D0D5E3",
+    "selected": "#B7C1E3",
+    "on_selected": "#3760BF",
+    "line": "#B4B5B9",
+    "border": "#8990B3",
+    "text_secondary": "#6172B0",
+    "text_muted": "#848CB5",
+    "on_accent": "#E1E2E7",
+    "state": "#B15C00",
+    "on_state": "#E1E2E7",
+    "danger": "#C64343",
+    "on_danger": "#E1E2E7",
+    "link": "#118C74",
+    "positive": "#587539",
+    "warning": "#8C6C3E",
+    "tags": [
+      "#EF618C",
+      "#81966D",
+      "#AE7FEE",
+      "#4493AF",
+      "#EA8FAC",
+      "#A3B199",
+      "#C0A2EC",
+      "#7CAFC3"
+    ]
+  }
 }

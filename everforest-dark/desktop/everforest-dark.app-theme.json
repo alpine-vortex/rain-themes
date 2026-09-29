@@ -34,5 +34,37 @@
     "#547462",
     "#75ABA5",
     "#C28DA7"
-  ]
+  ],
+  "light": {
+    "flavour": "Everforest Light",
+    "background": "#FDF6E3",
+    "text": "#5C6A72",
+    "accent": "#8DA101",
+    "panel": "#EFEBD4",
+    "raised": "#EFEBD4",
+    "selected": "#EAEDC8",
+    "on_selected": "#5C6A72",
+    "line": "#E0DCC7",
+    "border": "#939F91",
+    "text_secondary": "#829181",
+    "text_muted": "#939F91",
+    "on_accent": "#FDF6E3",
+    "state": "#F57D26",
+    "on_state": "#FDF6E3",
+    "danger": "#F85552",
+    "on_danger": "#FDF6E3",
+    "link": "#3A94C5",
+    "positive": "#8DA101",
+    "warning": "#DFA000",
+    "tags": [
+      "#74B1CE",
+      "#E893C6",
+      "#71BF9B",
+      "#A5CAD6",
+      "#F0B7D1",
+      "#A3D2B5",
+      "#51A0C9",
+      "#E37ABF"
+    ]
+  }
 }

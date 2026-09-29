@@ -13,6 +13,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   - `sync-theme.json` (Sync for Reddit Monet import)
   - a Termius built-in per palette (spec `termius`)
   - `<slug>.app-theme.json` (app-theme v1, renamed from redeye-theme 2026-09-29; raw URLs live on `main`)
+  - Nested `light` variants (official upstream light flavours) for 15 of the 21; see
+    `docs/app-theme.md`. The merge is held until redeye accepts the app-theme names.
 - `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,
   which is checked on Android 17. It also copies the wallpaper, Sync and redeye
   files to `/sdcard/Download/rain-themes/<slug>/`.

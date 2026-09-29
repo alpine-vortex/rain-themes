@@ -34,5 +34,37 @@
     "#546750",
     "#9AA55E",
     "#BE7B8D"
-  ]
+  ],
+  "light": {
+    "flavour": "Gruvbox Material Light",
+    "background": "#FBF1C7",
+    "text": "#654735",
+    "accent": "#45707A",
+    "panel": "#F2E5BC",
+    "raised": "#EEE0B7",
+    "selected": "#EEE0B7",
+    "on_selected": "#654735",
+    "line": "#DDCCAB",
+    "border": "#928374",
+    "text_secondary": "#4F3829",
+    "text_muted": "#928374",
+    "on_accent": "#FBF1C7",
+    "state": "#C35E0A",
+    "on_state": "#FBF1C7",
+    "danger": "#C14A4A",
+    "on_danger": "#FBF1C7",
+    "link": "#45707A",
+    "positive": "#6C782E",
+    "warning": "#B47109",
+    "tags": [
+      "#979C5C",
+      "#B38A95",
+      "#809E7D",
+      "#BBBB82",
+      "#CDAFA7",
+      "#ACBB97",
+      "#7D8740",
+      "#A07089"
+    ]
+  }
 }

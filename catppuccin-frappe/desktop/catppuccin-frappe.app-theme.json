@@ -33,5 +33,37 @@
     "#657B64",
     "#817767",
     "#886F8D"
-  ]
+  ],
+  "light": {
+    "flavour": "Catppuccin Latte",
+    "background": "#EFF1F5",
+    "text": "#4C4F69",
+    "accent": "#8839EF",
+    "panel": "#E6E9EF",
+    "raised": "#CCD0DA",
+    "selected": "#BCC0CC",
+    "on_selected": "#4C4F69",
+    "line": "#CCD0DA",
+    "border": "#9CA0B0",
+    "text_secondary": "#5C5F77",
+    "text_muted": "#8C8FA1",
+    "on_accent": "#EFF1F5",
+    "state": "#FE640B",
+    "on_state": "#4C4F69",
+    "danger": "#D20F39",
+    "on_danger": "#EFF1F5",
+    "link": "#1E66F5",
+    "positive": "#40A02B",
+    "warning": "#DF8E1D",
+    "tags": [
+      "#74B868",
+      "#E4AC5E",
+      "#5D90F5",
+      "#EC9BD8",
+      "#58AEB5",
+      "#A0CD9A",
+      "#E8C494",
+      "#91B2F5"
+    ]
+  }
 }

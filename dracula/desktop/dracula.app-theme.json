@@ -33,5 +33,37 @@
     "#3A8855",
     "#894E77",
     "#558090"
-  ]
+  ],
+  "light": {
+    "flavour": "Alucard",
+    "background": "#FFFBEB",
+    "text": "#1F1F1F",
+    "accent": "#644AC9",
+    "panel": "#ECE9DF",
+    "raised": "#EFEDDC",
+    "selected": "#CFCFDE",
+    "on_selected": "#1F1F1F",
+    "line": "#DEDCCF",
+    "border": "#CECCC0",
+    "text_secondary": "#6C664B",
+    "text_muted": "#6C664B",
+    "on_accent": "#FFFBEB",
+    "state": "#A34D14",
+    "on_state": "#FFFBEB",
+    "danger": "#CB3A2A",
+    "on_danger": "#FFFBEB",
+    "link": "#0081D6",
+    "positive": "#14710A",
+    "warning": "#846E15",
+    "tags": [
+      "#5A9A4E",
+      "#BF597C",
+      "#4F96B0",
+      "#95BD86",
+      "#D693A4",
+      "#8EBAC5",
+      "#308225",
+      "#AE3060"
+    ]
+  }
 }

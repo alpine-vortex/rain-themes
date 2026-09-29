@@ -467,21 +467,29 @@ def app_tags(c, avoid):
     Palettes with fewer than 8 usable hues are filled with the same hues blended 55%
     (then 12%, 70%, 0%), so neighbouring slots stay distinguishable. Order is
     stable: redeye picks a slot by hashing the subreddit name."""
-    bg = c.role["main_bg"]
     cands = c.ansi[1:7] + c.ansi[9:15] + [c.syntax[k] for k in SYNTAX_KEYS]
+    return pick_tags(cands, c.role["main_bg"], avoid, (0.35, 0.9))
+
+
+def pick_tags(cands, bg, avoid, light_range, min_sat=0.25):
+    """The shared tag picker; light_range bounds HLS lightness (light themes' hues are darker)."""
+    lo, hi = light_range
     picked = []
     for h in cands:
-        if hls(h)[2] < 0.25 or not 0.35 < hls(h)[1] < 0.9:
+        if hls(h)[2] < min_sat or not lo < hls(h)[1] < hi:
             continue  # greys, near-black diff backgrounds, near-white
         if any(_close(h, x) or _same_hue(h, x, 12) for x in avoid) \
                 or any(_close(h, x) or _same_hue(h, x, 8) for x in picked):
             continue
         picked.append(h)
     tags = [mix(h, bg, 0.3) for h in picked[:8]]
-    for t in (0.55, 0.12, 0.7, 0.0):
+    for t in (0.55, 0.12, 0.7, 0.0, 0.42, 0.2, 0.62):
         for h in picked:
-            if len(tags) < 8:
-                tags.append(mix(h, bg, t))
+            m = mix(h, bg, t)
+            if len(tags) < 8 and m not in tags:
+                tags.append(m)
+    if len(tags) < 8:
+        raise SpecError(f"only {len(tags)} tag colours; the palette needs more usable hues")
     return tags
 
 
@@ -513,6 +521,52 @@ def app_theme(c, spec):
             t["accent_inverse"] = inv
     t.update({"link": r["link"], "positive": r["positive"], "warning": r["warning"],
               "tags": app_tags(c, [r["brand"], state, r["danger"], bg, text])})
+    if "light" in spec:
+        t["light"] = app_light(spec["light"])
+    return t
+
+
+def app_light(L):
+    """Nested light variant from the spec's optional `light` block: the family's official light
+    flavour (own palette, ANSI and role map from upstream). Same derivations as the dark theme;
+    it never inherits the dark colours (docs/app-theme.md, "Light / dark pairs")."""
+    pal = {k: v.upper() for k, v in L["palette"].items()}
+
+    def ref(x):
+        if x.startswith("#"):
+            if not HEX.match(x) or len(x) != 7:
+                raise SpecError(f"light: bad hex {x!r}")
+            return x.upper()
+        if x not in pal:
+            raise SpecError(f"light: unknown palette name {x!r}")
+        return pal[x]
+
+    a = {k: ref(v) for k, v in L["app"].items()}
+    missing = {"background", "text", "accent", "state", "danger"} - set(a)
+    if missing:
+        raise SpecError(f"light: app missing {sorted(missing)}")
+    if a["state"] == a["accent"]:
+        raise SpecError("light: state must differ from the accent")
+    bg, text = a["background"], a["text"]
+    ansi = [ref(x) for x in L["ansi"]]
+    if len(ansi) != 16:
+        raise SpecError("light: ansi must list 16 colours")
+    t = {"flavour": L["flavour"]}
+    for k in ("background", "text", "accent", "panel", "raised", "selected"):
+        if k in a:
+            t[k] = a[k]
+    t["on_selected"] = text
+    for k in ("line", "border", "text_secondary", "text_muted"):
+        if k in a:
+            t[k] = a[k]
+    t["on_accent"] = a.get("on_accent") or _on(a["accent"], bg, text)
+    t.update({"state": a["state"], "on_state": _on(a["state"], bg, text),
+              "danger": a["danger"], "on_danger": _on(a["danger"], bg, text)})
+    for k in ("link", "positive", "warning"):
+        if k in a:
+            t[k] = a[k]
+    t["tags"] = pick_tags(ansi[1:7] + ansi[9:15], bg, [a["accent"], a["state"], a["danger"], bg, text],
+                          (0.15, 0.8), min_sat=0.15)
     return t
 
 

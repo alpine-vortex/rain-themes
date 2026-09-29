@@ -33,5 +33,37 @@
     "#776167",
     "#2E6982",
     "#8CB9C2"
-  ]
+  ],
+  "light": {
+    "flavour": "Ros\u00e9 Pine Dawn",
+    "background": "#FAF4ED",
+    "text": "#464261",
+    "accent": "#907AA9",
+    "panel": "#FFFAF3",
+    "raised": "#F2E9E1",
+    "selected": "#DFDAD9",
+    "on_selected": "#464261",
+    "line": "#DFDAD9",
+    "border": "#CECACD",
+    "text_secondary": "#797593",
+    "text_muted": "#9893A5",
+    "on_accent": "#FAF4ED",
+    "state": "#EA9D34",
+    "on_state": "#464261",
+    "danger": "#B4637A",
+    "on_danger": "#FAF4ED",
+    "link": "#907AA9",
+    "positive": "#286983",
+    "warning": "#EA9D34",
+    "tags": [
+      "#6793A3",
+      "#87B1B6",
+      "#E2A49F",
+      "#9CB5BD",
+      "#B0C9CA",
+      "#EAC1BB",
+      "#417A90",
+      "#6AA0A8"
+    ]
+  }
 }

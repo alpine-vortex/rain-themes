@@ -33,5 +33,37 @@
     "#249189",
     "#3F1E38",
     "#0C3F3F"
-  ]
+  ],
+  "light": {
+    "flavour": "Solarized Osaka Light",
+    "background": "#FDF5E2",
+    "text": "#576D74",
+    "accent": "#268BD3",
+    "panel": "#FFFFFF",
+    "raised": "#FFFFFF",
+    "selected": "#EDE7D3",
+    "on_selected": "#576D74",
+    "line": "#EDE7D3",
+    "border": "#9EABAC",
+    "text_secondary": "#637981",
+    "text_muted": "#ADB7B7",
+    "on_accent": "#FFFFFF",
+    "state": "#C94C16",
+    "on_state": "#FDF5E2",
+    "danger": "#DB302D",
+    "on_danger": "#FDF5E2",
+    "link": "#29A298",
+    "positive": "#849900",
+    "warning": "#B28500",
+    "tags": [
+      "#A8B544",
+      "#DF6F9E",
+      "#69BBAE",
+      "#C7CC7C",
+      "#EA9FB6",
+      "#9ED0C1",
+      "#93A41B",
+      "#D74D8D"
+    ]
+  }
 }
