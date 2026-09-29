@@ -45,6 +45,11 @@
   --button-background-color-primary-active: #F9709F !important;
   --tab-loading-fill: #F93B7F !important;
   --tab-attention-icon-color: #F93B7F !important;
+  --toolbarbutton-icon-fill: #F8F8F2 !important;
+  --toolbarbutton-icon-fill-attention: #F93B7F !important;
+  --icon-color: #F8F8F2 !important;
+  --toolbarbutton-background-color-hover: #373832 !important;
+  --toolbarbutton-background-color-active: #40413B !important;
   --chrome-content-separator-color: #1E1F1C !important;
   --tabs-navbar-separator-color: #1E1F1C !important;
 }

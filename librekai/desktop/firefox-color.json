@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJFtMcQNcxiP8SJVTHbRTVUNghfGGJMt9nQOT6lWeXTmw0MphctN7I6QP8-cWS8GhabtOzYLMXtFR96jn0rsM4UU0Y_KDHbtf7IDfh4tsqRcHoZ5-ZXoD5y86JCguJZWrSZihRYl9IAzE4QTYskndQDb9LQIMNm6obeuYmTYOEaBFs2RevA2_q4Jm1w9jE70YQyuLF40hiLfKxghWSQ2lfeq0xXVlV2rtFy_tkVCHNFXyv8nydgB5Z5n7TwCw2BhSjPT6mcVYHeJ0D8Vj96wtFCwD9cZlr37iRVkc7U399iU1JGNEnFXuvdulK9Ub5CcetAITBzfZaUJtyMZGolzwejsA6jMRToKbftvN3DIWjifx2nr4jCDOz7xsW9OKOLRmkO2KrRjNM-KZ4b5piwiD-fLSIgqQ6vbxr5WJkVGd1mtnN4ibOSdi5u0FgiIWPUXZhQQkMRUdhY7JXJBHT9tlzOHM-RtfNeHS_gsvveNJJ3C80atLt0rzMwPBhFLvRrzIUkLjJuHrXd4JP897RUA",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "toolbar_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "frame": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "tab_background_text": {
+        "r": 204,
+        "g": 204,
+        "b": 199
+      },
+      "toolbar_field": {
+        "r": 39,
+        "g": 40,
+        "b": 34
+      },
+      "toolbar_field_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "tab_line": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "popup": {
+        "r": 62,
+        "g": 61,
+        "b": 50
+      },
+      "popup_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "button_background_active": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      },
+      "button_background_hover": {
+        "r": 62,
+        "g": 61,
+        "b": 50
+      },
+      "frame_inactive": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "icons": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "icons_attention": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "ntp_background": {
+        "r": 39,
+        "g": 40,
+        "b": 34
+      },
+      "ntp_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "popup_border": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      },
+      "popup_highlight": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "popup_highlight_text": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "sidebar": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "sidebar_border": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "sidebar_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "sidebar_highlight": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "sidebar_highlight_text": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "tab_background_separator": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      },
+      "tab_loading": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "tab_selected": {
+        "r": 39,
+        "g": 40,
+        "b": 34
+      },
+      "tab_text": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "toolbar_bottom_separator": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "toolbar_field_border": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      },
+      "toolbar_field_border_focus": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "toolbar_field_focus": {
+        "r": 39,
+        "g": 40,
+        "b": 34
+      },
+      "toolbar_field_highlight": {
+        "r": 249,
+        "g": 59,
+        "b": 127
+      },
+      "toolbar_field_highlight_text": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "toolbar_field_separator": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      },
+      "toolbar_field_text_focus": {
+        "r": 248,
+        "g": 248,
+        "b": 242
+      },
+      "toolbar_top_separator": {
+        "r": 30,
+        "g": 31,
+        "b": 28
+      },
+      "toolbar_vertical_separator": {
+        "r": 70,
+        "g": 71,
+        "b": 65
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Librekai"
+  }
+}

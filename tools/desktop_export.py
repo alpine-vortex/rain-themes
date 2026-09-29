@@ -276,6 +276,8 @@ def firefox(c, name):
         "--button-background-color-primary-hover": r["brand_bright"],
         "--button-background-color-primary-active": r["brand_bright"],
         "--tab-loading-fill": ac, "--tab-attention-icon-color": ac,
+        "--toolbarbutton-icon-fill": tx, "--toolbarbutton-icon-fill-attention": ac, "--icon-color": tx,
+        "--toolbarbutton-background-color-hover": r["hover"], "--toolbarbutton-background-color-active": r["active"],
         "--chrome-content-separator-color": tb, "--tabs-navbar-separator-color": tb,
     }
     body = "\n".join(f"  {k}: {h} !important;" for k, h in v.items())
@@ -314,6 +316,59 @@ def firefox(c, name):
 }}
 """
     return chrome, content
+
+
+# ---------- Firefox Color ----------
+def _msgpack(o):
+    """Minimal msgpack (what json-url packs before LZMA): dict/list/str/small int."""
+    import struct
+    if isinstance(o, bool):
+        return b"\xc3" if o else b"\xc2"
+    if isinstance(o, int):
+        if 0 <= o < 128:
+            return bytes([o])
+        if 0 <= o < 256:
+            return b"\xcc" + bytes([o])
+        return b"\xcd" + struct.pack(">H", o)
+    if isinstance(o, str):
+        b = o.encode()
+        return (bytes([0xA0 | len(b)]) if len(b) < 32 else b"\xd9" + bytes([len(b)])) + b
+    if isinstance(o, list):
+        return bytes([0x90 | len(o)]) + b"".join(_msgpack(x) for x in o)
+    if isinstance(o, dict):
+        head = bytes([0x80 | len(o)]) if len(o) < 16 else b"\xde" + struct.pack(">H", len(o))
+        return head + b"".join(_msgpack(k) + _msgpack(v) for k, v in o.items())
+    raise TypeError(type(o))
+
+
+def firefox_color(c, name):
+    """Firefox Color theme + share URL (color.firefox.com, json-url 'lzma' codec)."""
+    import base64
+    import lzma
+    r = c.role
+    m = {
+        "toolbar": "secondary_bg", "toolbar_text": "text_normal", "frame": "tertiary_bg",
+        "tab_background_text": "text_secondary", "toolbar_field": "main_bg", "toolbar_field_text": "text_normal",
+        "tab_line": "brand", "popup": "floating_bg", "popup_text": "text_normal",
+        "button_background_active": "nested_floating_bg", "button_background_hover": "floating_bg",
+        "frame_inactive": "tertiary_bg", "icons": "text_normal", "icons_attention": "brand",
+        "ntp_background": "main_bg", "ntp_text": "text_normal", "popup_border": "nested_floating_bg",
+        "popup_highlight": "brand", "popup_highlight_text": "text_on_brand",
+        "sidebar": "secondary_bg", "sidebar_border": "tertiary_bg", "sidebar_text": "text_normal",
+        "sidebar_highlight": "brand", "sidebar_highlight_text": "text_on_brand",
+        "tab_background_separator": "nested_floating_bg", "tab_loading": "brand", "tab_selected": "main_bg",
+        "tab_text": "text_strong", "toolbar_bottom_separator": "tertiary_bg",
+        "toolbar_field_border": "nested_floating_bg", "toolbar_field_border_focus": "brand",
+        "toolbar_field_focus": "main_bg", "toolbar_field_highlight": "brand",
+        "toolbar_field_highlight_text": "text_on_brand", "toolbar_field_separator": "nested_floating_bg",
+        "toolbar_field_text_focus": "text_strong", "toolbar_top_separator": "tertiary_bg",
+        "toolbar_vertical_separator": "nested_floating_bg",
+    }
+    colors = {k: dict(zip("rgb", (int(r[v][i:i + 2], 16) for i in (1, 3, 5)))) for k, v in m.items()}
+    theme = {"colors": colors, "images": {"additional_backgrounds": []}, "title": f"Rain {name}"}
+    packed = lzma.compress(_msgpack(theme), format=lzma.FORMAT_ALONE, preset=9)
+    url = "https://color.firefox.com/?theme=" + base64.urlsafe_b64encode(packed).decode().rstrip("=")
+    return theme, url
 
 
 # ---------- Vesktop ----------
@@ -383,6 +438,11 @@ On the site, open the Dark Reader popup → **Theme** → **Colors** (use its si
    Fallback in **Standard**: **{sw}**.
 3. Export the theme (`.nlt`) and commit it here as `{slug}.nlt`.
 
+## Firefox Color (other machines)
+On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
+the Firefox Color extension and open the `url` in `firefox-color.json`.
+Firefox for Android doesn't support themes; use Dark Reader there (values above).
+
 ## Claude Code
 Once: `/theme` → the *ANSI colours only* dark option. It then follows the terminal palette.
 
@@ -425,6 +485,8 @@ def export(theme_dir):
     (out / "brave.json").write_text(json.dumps(
         {"seed": c.role["brand"], "user_color2": argb_int(c.role["brand"])}, indent=2) + "\n")
     (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
+    fc_theme, fc_url = firefox_color(c, spec["name"])
+    (out / "firefox-color.json").write_text(json.dumps({"url": fc_url, "theme": fc_theme}, indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)
     (out / "README.md").write_text(readme(c, spec, slug))

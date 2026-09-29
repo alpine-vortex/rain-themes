@@ -18,6 +18,11 @@ On the site, open the Dark Reader popup → **Theme** → **Colors** (use its si
    Fallback in **Standard**: **red**.
 3. Export the theme (`.nlt`) and commit it here as `librekai.nlt`.
 
+## Firefox Color (other machines)
+On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
+the Firefox Color extension and open the `url` in `firefox-color.json`.
+Firefox for Android doesn't support themes; use Dark Reader there (values above).
+
 ## Claude Code
 Once: `/theme` → the *ANSI colours only* dark option. It then follows the terminal palette.
 

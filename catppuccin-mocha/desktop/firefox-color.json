@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJEgvcajvXXzbLRJ0F_F447xQs-L1kFlGgDKq4IIvWciiy4upusW7OvXISh4E-21Iih3jHOQuMmXssYO9uDsbaC1sUDB0zbthcpg8qdKS7-W579aGVo0mv3Ol8SvryZeSSpWU278Q5aK4RWqB6idJWw1yIqKy80ABBKNfadDg_AlyTgqobHODI4h23KhiTWNCoIhMz0AdiZs5C1tei0SiSc-7Ny3nH70nupoj9d6V8hBNw0xJEfZZXnFGtefkOjp_i7Uuz5KKxDk_k1QyZbazU8QgiXsQB5f3F23UtxrhWUwIajSfV3s1fr2F3vnK4Bzhu7lVObf3l474NutGxMeB6yhwAGEjy6tcwhWrjEoiu0qL2k-dHOItao0lfLFUMgCE0kgo1eqsXZp9kpO8rWAYEMKIQBBiBSZHADSQPdR4pqcQuxl3S2Tc8YELRxnStEddaBULH4ymja4xe7pGQKWacBTh97ihdl6A6IfcWZzrS5naEP-qBOXJ4A4uNo4Ht9BYo4wMLsx842m_WUIEbM0bOwX2DPxJsbB_4Bf8AA",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 24,
+        "g": 24,
+        "b": 37
+      },
+      "toolbar_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "frame": {
+        "r": 17,
+        "g": 17,
+        "b": 27
+      },
+      "tab_background_text": {
+        "r": 186,
+        "g": 194,
+        "b": 222
+      },
+      "toolbar_field": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "toolbar_field_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "tab_line": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "popup": {
+        "r": 49,
+        "g": 50,
+        "b": 68
+      },
+      "popup_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "button_background_active": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      },
+      "button_background_hover": {
+        "r": 49,
+        "g": 50,
+        "b": 68
+      },
+      "frame_inactive": {
+        "r": 17,
+        "g": 17,
+        "b": 27
+      },
+      "icons": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "icons_attention": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "ntp_background": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "ntp_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "popup_border": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      },
+      "popup_highlight": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "popup_highlight_text": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "sidebar": {
+        "r": 24,
+        "g": 24,
+        "b": 37
+      },
+      "sidebar_border": {
+        "r": 17,
+        "g": 17,
+        "b": 27
+      },
+      "sidebar_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "sidebar_highlight": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "sidebar_highlight_text": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "tab_background_separator": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      },
+      "tab_loading": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "tab_selected": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "tab_text": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "toolbar_bottom_separator": {
+        "r": 17,
+        "g": 17,
+        "b": 27
+      },
+      "toolbar_field_border": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      },
+      "toolbar_field_border_focus": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "toolbar_field_focus": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "toolbar_field_highlight": {
+        "r": 203,
+        "g": 166,
+        "b": 247
+      },
+      "toolbar_field_highlight_text": {
+        "r": 30,
+        "g": 30,
+        "b": 46
+      },
+      "toolbar_field_separator": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      },
+      "toolbar_field_text_focus": {
+        "r": 205,
+        "g": 214,
+        "b": 244
+      },
+      "toolbar_top_separator": {
+        "r": 17,
+        "g": 17,
+        "b": 27
+      },
+      "toolbar_vertical_separator": {
+        "r": 69,
+        "g": 71,
+        "b": 90
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Catppuccin Mocha"
+  }
+}

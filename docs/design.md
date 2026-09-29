@@ -139,6 +139,14 @@ rewrites on exit. Hence the running check.
 - On Linux the default "System theme" takes its toolbar colours from GTK (e.g.
   `--toolbox-background-color: ActiveCaption`), so the Colloid theme alone gets
   Firefox most of the way.
+- **Icons need their own colour.** Toolbar icons use `--toolbarbutton-icon-fill`,
+  and an active theme (e.g. the Firefox Color extension's default theme, which
+  is green) sets it separately from text. userChrome sets it explicitly.
+- **Firefox Color link** (`firefox-color.json`): Firefox Color's share URLs are
+  `?theme=` + json-url's `lzma` codec = msgpack → LZMA "alone" (preset 9) →
+  URL-safe base64 without padding. `desktop_export.py` has a tiny msgpack
+  encoder, so no Node is needed. Verified by decoding with `json-url@2.3.4`.
+  Firefox for Android has no theme support at all.
 - The profile is `Default=` in `~/.mozilla/firefox/installs.ini`, not
   `profiles.ini` (spacer has two profiles).
 - Verified by screenshot in a throwaway `--no-remote --profile` instance; see
