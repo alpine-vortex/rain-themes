@@ -32,6 +32,7 @@ P = "android.theme.customization."
 STYLES = ["TONAL_SPOT", "VIBRANT", "EXPRESSIVE", "SPRITZ", "RAINBOW", "FRUIT_SALAD",
           "CONTENT", "MONOCHROMATIC", "FIDELITY"]
 SNAPSHOT = Path.home() / ".local/state/rain-themes/phone-snapshot.json"
+STATE = Path.home() / ".local/state/rain-themes/phone-state.json"  # {"current": slug, "style": ...}
 REMOTE = "/sdcard/Download/rain-themes"
 FILES = ["wallpaper-phone.png", "sync-theme.json", "redeye-theme.json"]
 
@@ -65,6 +66,19 @@ def write_setting(value, dry):
     return value
 
 
+def load_state():
+    try:
+        return json.loads(STATE.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def save_state(st, dry):
+    if not dry:
+        STATE.parent.mkdir(parents=True, exist_ok=True)
+        STATE.write_text(json.dumps(st, indent=2) + "\n")
+
+
 def seed(slug):
     spec = json.loads((ROOT / slug / "theme.spec.json").read_text())
     if "ansi" not in spec:
@@ -87,6 +101,7 @@ def apply(slug, style, files, dry):
     new.setdefault(P + "color_both", "1")
     print(f"system colours: seed #{hexs}, style {style}")
     write_setting(new, dry)
+    save_state({"current": slug, "style": style}, dry)
     if files:
         dest = f"{REMOTE}/{slug}"
         adb("shell", "mkdir", "-p", dest, dry=dry)
@@ -107,6 +122,7 @@ def restore(dry):
     snap = json.loads(SNAPSHOT.read_text())
     print("restore original system colour setting")
     write_setting({k: v for k, v in snap.items() if not k.startswith("_")}, dry)
+    save_state({}, dry)
 
 
 def main():

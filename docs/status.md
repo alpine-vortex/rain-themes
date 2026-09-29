@@ -22,7 +22,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - **Live on the phone since 2026-09-29:** Librekai seed `#F93B7F`, TONAL_SPOT. The
   Librekai files are in Downloads. The owner confirmed the system colours look
   right and that the Sync import (paste JSON) works. The wallpaper is set by hand.
-- Not yet: a GUI button for the phone. Redeye's importer isn't built yet (the
+- GUI: every card has a **Phone** button, and there's a *Phone (adb)* row with a style picker and
+  *Restore phone*. The "phone" badge comes from `phone-state.json`. The Phone button
+  hasn't been clicked yet.
+- Not yet: Redeye's importer isn't built yet (the
   redeye session is using the files as test data).
 
 ## Live state on spacer

@@ -19,6 +19,7 @@ ROOT = TOOLS.parent
 RAIN = str(TOOLS / "rain")
 sys.path.insert(0, str(TOOLS))
 from apply_theme import load_state  # noqa: E402
+from phone_theme import STYLES, load_state as load_phone_state  # noqa: E402
 
 CSS = b"""
 .card { padding: 10px; border-radius: 10px; }
@@ -89,6 +90,25 @@ class App(Gtk.Window):
         scroll.add(top)
         paned.pack1(scroll, True, False)
 
+        # phone row: style for the cards' Phone buttons, and phone restore
+        prow = Gtk.Box(spacing=8)
+        plabel = Gtk.Label(label="Phone (adb):", xalign=0)
+        plabel.get_style_context().add_class("dim")
+        prow.pack_start(plabel, False, False, 0)
+        self.style = Gtk.ComboBoxText()
+        for st in STYLES:
+            self.style.append(st, st.replace("_", " ").title())
+        self.style.set_active_id(load_phone_state().get("style", "TONAL_SPOT"))
+        self.style.set_tooltip_text("Material You style used by the Phone buttons. Vibrant stays closest "
+                                    "to the accent")
+        prow.pack_start(self.style, False, False, 0)
+        self.phone_restore_btn = Gtk.Button(label="Restore phone")
+        self.phone_restore_btn.set_tooltip_text("Put the phone's system colours back as they were")
+        self.phone_restore_btn.connect("clicked", self.on_phone_restore)
+        prow.pack_start(self.phone_restore_btn, False, False, 0)
+        top.pack_start(prow, False, False, 0)
+        self.buttons += [self.style, self.phone_restore_btn]
+
         self.flow = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, column_spacing=12, row_spacing=12,
                                 homogeneous=True, min_children_per_line=2, max_children_per_line=4)
         top.pack_start(self.flow, False, False, 0)
@@ -129,6 +149,9 @@ class App(Gtk.Window):
             badge = Gtk.Label(label="applied")
             badge.get_style_context().add_class("badge")
             row.pack_end(badge, False, False, 0)
+            pbadge = Gtk.Label(label="phone")
+            pbadge.get_style_context().add_class("badge")
+            row.pack_end(pbadge, False, False, 0)
             card.pack_start(row, False, False, 0)
             btns = Gtk.Box(spacing=6)
             ap = Gtk.Button(label="Apply")
@@ -137,11 +160,16 @@ class App(Gtk.Window):
             pv = Gtk.Button(label="Preview")
             pv.set_tooltip_text("Screenshots in throwaway windows; changes nothing")
             pv.connect("clicked", lambda _b, s=slug: self.run(["preview", s]))
+            ph = Gtk.Button(label="Phone")
+            ph.set_tooltip_text("Android over adb: system colours from this accent, plus wallpaper, "
+                                "Sync and redeye files in Download/rain-themes")
+            ph.connect("clicked", lambda _b, s=slug: self.run(["phone", s, "--style", self.style.get_active_id()]))
             btns.pack_start(ap, True, True, 0)
             btns.pack_start(pv, True, True, 0)
+            btns.pack_start(ph, True, True, 0)
             card.pack_start(btns, False, False, 0)
-            self.buttons += [ap, pv]
-            self.cards[slug] = (card, badge, ap)
+            self.buttons += [ap, pv, ph]
+            self.cards[slug] = (card, badge, ap, pbadge)
             self.flow.add(card)
         others = sorted(p.parent.name for p in ROOT.glob("*/theme.spec.json")
                         if not (p.parent / "desktop").exists())
@@ -151,11 +179,13 @@ class App(Gtk.Window):
     def refresh(self):
         st = load_state()
         cur = st.get("current")
-        for slug, (card, badge, ap) in self.cards.items():
+        phone = load_phone_state().get("current")
+        for slug, (card, badge, ap, pbadge) in self.cards.items():
             ap.set_label("Re-apply" if slug == cur else "Apply")
             ctx = card.get_style_context()
             (ctx.add_class if slug == cur else ctx.remove_class)("card-current")
             badge.set_visible(slug == cur)
+            pbadge.set_visible(slug == phone)
         pending = st.get("pending", {})
         self.pending_btn.set_label(f"Finish pending ({len(pending)})" if pending else "Nothing pending")
         self.pending_btn.set_tooltip_text(
@@ -176,6 +206,16 @@ class App(Gtk.Window):
                                 "to how they were before the first apply.")
         if d.run() == Gtk.ResponseType.OK:
             self.run(["restore"])
+        d.destroy()
+
+    def on_phone_restore(self, _b):
+        d = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.QUESTION,
+                              buttons=Gtk.ButtonsType.OK_CANCEL,
+                              text="Restore the phone's system colours?")
+        d.format_secondary_text("The phone goes back to the colour setting it had before the first "
+                                "Phone apply. Wallpaper and app themes are left as they are.")
+        if d.run() == Gtk.ResponseType.OK:
+            self.run(["phone", "--restore"])
         d.destroy()
 
     def set_busy(self, busy):
