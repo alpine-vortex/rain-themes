@@ -30,7 +30,11 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   - Receiver: `dev.redeye/.theme.ThemeCommandReceiver`, protected by DUMP.
   - `SET_THEME` takes `--es slug`, `--es url` or `--es json_b64`, plus an optional
     `--es mode`. `GET_THEME` returns `{slug, mode, version}`.
-  - Result code 0 means ok; 1 means failure, with an error string.
+  - Results (amended 2026-09-29 after a probe against redeye 0.5.0, which has no receiver
+    yet): an explicit broadcast to a missing component still reports `result=0` with no
+    data, so success is `-1` (RESULT_OK) and it always carries data. Failure is `1`, with
+    an error string. Anything else means the receiver is missing or the build is old.
+  - File drop name: `files/themes/<slug>.json`.
   - Plan for `rain phone`: if `pm path dev.redeye` finds the app, push
     `redeye-theme.json` to `/sdcard/Android/data/dev.redeye/files/themes/` (the shell can
     write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
