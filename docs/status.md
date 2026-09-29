@@ -34,8 +34,9 @@ Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
   The panel, Nemo, terminal and Vesktop still need a look.
 - **Brave**: that the seed edit survives a relaunch, and how close the
   generated colours look.
-- **Vesktop**: not installed. Check the settings path, `enabledThemes`, and
-  that the CSS selectors win (DevTools).
+- **Vesktop**: installed and themed on 2026-09-28 (native path
+  `~/.config/vesktop`, `enabledThemes` written). Still to confirm that the CSS
+  selectors win everywhere (DevTools).
 - **`--restore` for real**: only dry-run so far.
 - **Material You / Niagara**: whether the phone wallpaper yields the accent as a
   "Wallpaper and System" swatch.
@@ -58,7 +59,7 @@ Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
    Rebuild all Rain themes afterwards and confirm no diff.
 3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
    offer it as an option.
-4. After installing Vesktop: verify, then fix the path or selectors if needed.
+4. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
 5. Commit `.nlt` exports for the palettes actually used on the phone.
 6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
    optional Stylus user style for chatgpt.com if Dark Reader isn't precise
