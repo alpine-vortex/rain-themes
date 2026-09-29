@@ -11,8 +11,10 @@ See [status.md](status.md).
 ## Quick start
 
 **GUI:** open **Rain Themes** from the Cinnamon menu (or `tools/rain gui`).
-Each palette card has a wallpaper thumbnail, colour swatches, **Apply** and
-**Preview**. The header has **Restore original** and **Finish pending**.
+Each palette card has a wallpaper thumbnail, colour swatches, **Apply**,
+**Preview** and **Phone**. The header has **Restore original** and **Finish
+pending**, and the *Phone (adb)* row has the Material You style picker and
+**Restore phone**. The app has its own icon and can be pinned to the panel.
 
 **Terminal:**
 
@@ -36,10 +38,11 @@ Apply only some parts:
 tools/rain apply catppuccin-mocha --only gtk,terminal
 ```
 
-`tools/rain install` sets up the menu entry, the login autostart and a git
-pre-commit hook that runs `rain check`. Undo: delete
-`~/.local/share/applications/rain-themes.desktop`,
-`~/.config/autostart/rain-themes-pending.desktop` and `.git/hooks/pre-commit`.
+`tools/rain install` sets up the menu entry, the login autostart, the app icon
+(in `~/.local/share/icons/hicolor`) and a git pre-commit hook that runs `rain
+check`. Undo: delete `~/.local/share/applications/rain-themes.desktop`,
+`~/.config/autostart/rain-themes-pending.desktop`, `.git/hooks/pre-commit` and
+`~/.local/share/icons/hicolor/*/apps/rain-themes.png`.
 
 Targets: `gtk`, `wallpaper`, `terminal`, `geany`, `firefox`, `brave`, `vesktop`.
 
@@ -107,6 +110,30 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/<slug>/<slug>.j
 
 A `github.com/.../blob/...` link fails with "Failed to fetch theme", because it
 is GitHub's HTML page, not the JSON. The repo README lists every install URL.
+
+## Phone: system colours and apps
+
+Connect the phone with **Wireless debugging** (Developer options; Shizuku uses
+the same setup), then check that `adb devices` lists it.
+
+```sh
+tools/rain phone librekai                  # Material You seed = the accent, and files copied over
+tools/rain phone librekai --style VIBRANT  # TONAL_SPOT (default), VIBRANT, EXPRESSIVE, SPRITZ, ...
+tools/rain phone --restore                 # the original setting (saved on the first run)
+```
+
+The GUI's **Phone** button does the same, using the style picked in its
+*Phone (adb)* row. The files land in `Download/rain-themes/<slug>/` on the phone:
+
+- `wallpaper-phone.png`: set it in Photos or the wallpaper picker (adb can't).
+- `sync-theme.json`: copy its contents and paste them into Sync's Monet theme
+  import. Sync only imports from the clipboard. The palette's
+  `desktop/README.md` shows the same JSON, ready to copy.
+- `redeye-theme.json`: import it in redeye, or use the raw URL listed in the
+  palette's `desktop/README.md`.
+
+Termius and Niagara have no import. The palette's `desktop/README.md` names the
+Termius built-in and the Niagara swatch to pick.
 
 ## Troubleshooting
 

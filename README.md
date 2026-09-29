@@ -1,8 +1,52 @@
 # rain-themes
 
-Themes for Rain (a Bunny-based Discord mobile client mod), in the Bunny theme format (spec 2).
+<img src="assets/icon/rain-themes-128.png" alt="" width="96" align="right">
 
-See the **[gallery](GALLERY.md)** for previews of every theme side by side.
+One colour palette, themed everywhere. Each of the **21 dark palettes** here
+(Catppuccin, Dracula, Everforest, Gruvbox, Kanagawa, Librekai/Monokai, Nord,
+Rosé Pine, Solarized Osaka, Tokyo Night, Tokyodark) is generated from a single
+spec into matching themes for:
+
+- **Discord on Android**: a [Rain](#discord-on-android-rain) theme (Bunny theme
+  format, spec 2). This is where the repo started.
+- **The Linux Mint desktop**: Cinnamon/GTK, wallpaper, terminal, editor,
+  browsers and Discord, applied and undone with one command or the
+  **Rain Themes** app.
+- **The Android phone**: system colours (Material You), Sync for Reddit,
+  Termius, redeye and Niagara Launcher.
+
+All 21 palettes have every target. Colours come from each palette's official
+upstream files (terminal and editor themes, style guides), never invented;
+each spec records its sources.
+
+See the **[gallery](GALLERY.md)** for previews of every Discord theme side by side.
+
+## What each palette provides
+
+| Where | Target | How it's applied |
+|---|---|---|
+| Phone | Discord (Rain) | Add the install URL below in Rain's Themes settings |
+| Phone | System colours (Material You) | `tools/rain phone <slug>` over adb: the accent becomes the system seed |
+| Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
+| Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
+| Phone | redeye | `redeye-theme.json` ([format](docs/redeye-theme.md)): file, clipboard or raw URL |
+| Phone | Termius | The matching built-in theme, named in the palette's README |
+| Phone | Firefox (web pages) | Dark Reader values in the palette's README |
+| Desktop | Cinnamon, GTK 2/3/4, window borders | A recoloured [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) build |
+| Desktop | Wallpaper | `wallpaper-desktop.png` |
+| Desktop | GNOME Terminal (and Claude Code) | A "Rain <Name>" profile; Claude Code follows it via `/theme` → ANSI colours only |
+| Desktop | Geany | Editor colour scheme |
+| Desktop | Firefox | `userChrome.css` / `userContent.css`, plus a Firefox Color link for other machines |
+| Desktop | Brave | Theme seed colour |
+| Desktop | Vesktop (Discord) | A Vencord theme reusing the Rain mapping |
+| Desktop | ChatGPT and other sites | Dark Reader values in the palette's README |
+
+Per palette, `<slug>/` holds the Rain theme (`<slug>.json`), a colour mockup
+(`<slug>-preview.html`) and notes (`<slug>-notes.md`: mapping and contrast
+checks). `<slug>/desktop/` holds every desktop and phone export plus a
+`README.md` with the manual steps and values.
+
+## Palettes
 
 <!-- themes -->
 | Theme | Install URL |
@@ -30,19 +74,83 @@ See the **[gallery](GALLERY.md)** for previews of every theme side by side.
 | [Tokyo Night Storm](GALLERY.md#tokyonight-storm) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-storm/tokyonight-storm.json` |
 <!-- /themes -->
 
-Install: copy an install URL, then add it by URL in Rain's Themes settings.
+## Discord on Android (Rain)
 
-Each folder also has `<slug>-preview.html` (a static colour mockup) and
-`<slug>-notes.md` (palette, mapping, contrast checks).
+Copy an install URL from the table above, then add it by URL in Rain's Themes
+settings. Rain needs the `raw.githubusercontent.com` URL; `github.com/.../blob/`
+links fail with "Failed to fetch theme".
 
-Themes are generated from `<folder>/theme.spec.json` by `tools/build_theme.py`;
-see [tools/README.md](tools/README.md).
+## Desktop (Linux Mint / Cinnamon)
 
-## Desktop
+**App:** run `tools/rain install` once, then open **Rain Themes** from the menu
+(it can be pinned to the panel). Each palette card has a wallpaper thumbnail,
+swatches, and **Apply**, **Preview** (screenshots in throwaway windows, which
+change nothing) and **Phone** buttons. **Restore original** undoes the desktop; the
+*Phone (adb)* row has the Material You style picker and **Restore phone**.
 
-Themes with a `desktop/` folder also come as a matching Linux Mint desktop:
-Cinnamon/GTK (a recoloured Colloid build), GNOME Terminal, Geany, Firefox,
-Brave, Vesktop and wallpapers. Apply with `tools/apply_theme.py <slug>`;
-see [tools/README.md](tools/README.md#desktop-exports-linux-mint--cinnamon).
+**Terminal:**
 
-Documentation: [docs/](docs/README.md): a user guide, design notes and the current status.
+```sh
+tools/rain list                          # palettes, and which is applied
+tools/rain apply librekai --dry-run      # show what would change
+tools/rain apply librekai                # apply to every desktop target
+tools/rain apply librekai --only gtk,terminal
+tools/rain restore                       # back to the setup before the first apply
+tools/rain pending                       # finish apps that were open (Geany, Brave); also runs at login
+tools/rain preview librekai              # screenshots only
+```
+
+The first apply saves a snapshot of the original setup, and `restore` always
+returns to it. Details, manual steps and troubleshooting are in the
+[desktop guide](docs/desktop-guide.md).
+
+## Phone (Android)
+
+With the phone connected over Wireless debugging (the same setup Shizuku uses):
+
+```sh
+tools/rain phone librekai                  # system colours + files to Download/rain-themes/librekai/
+tools/rain phone librekai --style VIBRANT  # Material You style; VIBRANT stays closest to the accent
+tools/rain phone --restore                 # original system colour setting
+```
+
+This writes the same system setting as Settings → Wallpaper & style, with no
+root; it's checked on a Pixel 10 Pro XL running Android 17. Setting the
+wallpaper and importing into Sync (paste the JSON) are taps on the phone. Each
+palette's `desktop/README.md` names its Termius built-in, Niagara swatch and
+Dark Reader values.
+
+## How it works
+
+```
+<slug>/theme.spec.json ── build_theme.py ──▶ <slug>.json (Rain)
+         │                                        │
+         └────────── desktop_export.py ◀──────────┘
+                            │
+                            ▼
+                    <slug>/desktop/* ── rain apply ──▶ Mint desktop and apps
+                                     ── rain phone ──▶ Android (adb)
+```
+
+- **Spec:** one `theme.spec.json` per palette is the single source of truth:
+  official colours, a role mapping, and terminal/syntax colours with their
+  upstream source.
+- **`tools/rain`** is the one entry point: `build`, `check`, `apply`,
+  `restore`, `pending`, `preview`, `phone`, `gui`, `install`.
+- **Generated files are never hand-edited.** `rain check` (also a pre-commit
+  hook) fails if any output is stale.
+
+Requirements: Python 3 with PyGObject/GTK 3 and Pillow, `sassc` (Colloid
+build), `dconf`/`gsettings` (Cinnamon), and `adb` for the phone. Playwright is
+needed only for `rain build --gallery`.
+
+## Documentation
+
+- [docs/desktop-guide.md](docs/desktop-guide.md): using it, undoing it, and
+  troubleshooting.
+- [docs/design.md](docs/design.md): how each target works and why.
+- [docs/redeye-theme.md](docs/redeye-theme.md): the redeye theme format, which
+  this repo owns.
+- [docs/status.md](docs/status.md): what's verified, known issues and next
+  steps.
+- [tools/README.md](tools/README.md): spec format and script reference.
