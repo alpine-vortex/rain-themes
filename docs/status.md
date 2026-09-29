@@ -1,6 +1,26 @@
 # Status
 
-Last updated 2026-09-28. Desktop work merged to `main` the same day.
+Last updated 2026-09-28 (end of the first session).
+
+- `main`: desktop exports, docs, Firefox Color links.
+- `unified-cli` (pushed, **not merged yet**): `tools/rain`, the pending queue,
+  the GUI. `~/github/rain-themes` has this branch checked out, and the menu
+  entry and login autostart on spacer point into it, so merge it before
+  switching that checkout back to `main`.
+
+## Live state on spacer
+
+- **Librekai applied** to every target: Cinnamon/GTK (`Rain-Librekai-Dark`),
+  wallpaper, GNOME Terminal profile "Rain Librekai" (default), Geany,
+  Firefox userChrome, Brave seed `#F93B7F`, Vesktop.
+- Owner's Firefox also has the **Firefox Color** extension, whose default theme
+  caused the green icons. They were given the Librekai Color link; whether
+  they kept the extension is unknown.
+- **Installed:** "Rain Themes" menu entry, login autostart (`rain pending`),
+  and the repo's pre-commit hook (`rain check`).
+- **Snapshot of the original setup** is in
+  `~/.local/state/rain-themes/snapshot.json`; `rain restore` returns to it.
+- Changes are logged in `~/CLAUDE-work.md` (2026-09-28 entries).
 
 ## Done
 
@@ -39,7 +59,10 @@ Last updated 2026-09-28. Desktop work merged to `main` the same day.
 - **Vesktop**: installed and themed on 2026-09-28 (native path
   `~/.config/vesktop`, `enabledThemes` written). Still to confirm that the CSS
   selectors win everywhere (DevTools).
-- **`--restore` for real**: only dry-run so far.
+- **`rain restore` for real**: only dry-run so far.
+- **Login autostart** (`rain pending`): installed, not yet seen running at a real login.
+- **GUI Apply/Restore buttons**: the window was screenshotted; the buttons run
+  the same `rain` commands that were tested, but haven't been clicked yet.
 - **Material You / Niagara**: whether the phone wallpaper yields the accent as a
   "Wallpaper and System" swatch.
 
@@ -55,15 +78,19 @@ Last updated 2026-09-28. Desktop work merged to `main` the same day.
 
 ## Next steps
 
-1. Review the live Librekai apply (panel, Nemo, terminal, Vesktop) and fix what looks off.
-2. Extend the other 19 specs with `ansi` / `terminal` / `syntax` from each
-   palette's upstream (record `ansi_source`), then `desktop_export.py` them.
-   Rebuild all Rain themes afterwards and confirm no diff.
-3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
+1. Merge `unified-cli` into `main` (if the owner agrees).
+2. Review the live Librekai apply (panel, Nemo, terminal, Vesktop, Brave) with
+   the owner and fix what looks off.
+3. **The other 19 palettes** (the planned next session): add `ansi_source`,
+   `ansi`, `terminal`, `syntax` to each spec from the palette's upstream
+   (families and shortcuts are listed in `CLAUDE.md`), then `tools/rain build`
+   and `tools/rain check`. Existing Rain outputs must not change. Spot-check
+   with `tools/rain preview <slug>`. They then appear in the GUI automatically.
+4. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
    offer it as an option.
-4. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
-5. Commit `.nlt` exports for the palettes actually used on the phone.
-6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
+5. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
+6. Commit `.nlt` exports for the palettes actually used on the phone.
+7. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
    optional Stylus user style for chatgpt.com if Dark Reader isn't precise
    enough.
 
