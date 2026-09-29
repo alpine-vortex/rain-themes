@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
+Last updated 2026-09-28. Desktop work merged to `main` the same day.
 
 ## Done
 
@@ -64,7 +64,6 @@ Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
 6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
    optional Stylus user style for chatgpt.com if Dark Reader isn't precise
    enough.
-7. Merge `desktop-exports` into `main` once a real apply has been checked.
 
 ## Open questions
 
