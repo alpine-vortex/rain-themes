@@ -2,11 +2,8 @@
 
 Last updated 2026-09-28 (end of the first session).
 
-- `main`: desktop exports, docs, Firefox Color links.
-- `unified-cli` (pushed, **not merged yet**): `tools/rain`, the pending queue,
-  the GUI. `~/github/rain-themes` has this branch checked out, and the menu
-  entry and login autostart on spacer point into it, so merge it before
-  switching that checkout back to `main`.
+- Everything is on `main`: desktop exports, docs, Firefox Color links,
+  `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
 
 ## Live state on spacer
 
@@ -78,19 +75,18 @@ Last updated 2026-09-28 (end of the first session).
 
 ## Next steps
 
-1. Merge `unified-cli` into `main` (if the owner agrees).
-2. Review the live Librekai apply (panel, Nemo, terminal, Vesktop, Brave) with
+1. Review the live Librekai apply (panel, Nemo, terminal, Vesktop, Brave) with
    the owner and fix what looks off.
-3. **The other 19 palettes** (the planned next session): add `ansi_source`,
+2. **The other 19 palettes** (the planned next session): add `ansi_source`,
    `ansi`, `terminal`, `syntax` to each spec from the palette's upstream
    (families and shortcuts are listed in `CLAUDE.md`), then `tools/rain build`
    and `tools/rain check`. Existing Rain outputs must not change. Spot-check
    with `tools/rain preview <slug>`. They then appear in the GUI automatically.
-4. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
+3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
    offer it as an option.
-5. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
-6. Commit `.nlt` exports for the palettes actually used on the phone.
-7. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
+4. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
+5. Commit `.nlt` exports for the palettes actually used on the phone.
+6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
    optional Stylus user style for chatgpt.com if Dark Reader isn't precise
    enough.
 
