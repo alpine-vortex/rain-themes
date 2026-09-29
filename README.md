@@ -44,3 +44,5 @@ Themes with a `desktop/` folder also come as a matching Linux Mint desktop:
 Cinnamon/GTK (a recoloured Colloid build), GNOME Terminal, Geany, Firefox,
 Brave, Vesktop and wallpapers. Apply with `tools/apply_theme.py <slug>`;
 see [tools/README.md](tools/README.md#desktop-exports-linux-mint--cinnamon).
+
+Documentation: [docs/](docs/README.md): a user guide, design notes and the current status.

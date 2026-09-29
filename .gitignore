@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+
+# Local agent notes (not shared; docs/ is the committed documentation)
+CLAUDE.md
+AGENTS.md
+.claude/
