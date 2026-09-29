@@ -161,6 +161,7 @@ Exec={rain} gui
 Icon={icon}
 Terminal=false
 Categories=Settings;DesktopSettings;
+StartupWMClass=rain-themes
 """,
         home / ".config/autostart/rain-themes-pending.desktop": f"""[Desktop Entry]
 Type=Application

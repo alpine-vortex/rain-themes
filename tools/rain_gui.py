@@ -11,8 +11,18 @@ from pathlib import Path
 import gi
 
 gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
 gi.require_version("GdkPixbuf", "2.0")
-from gi.repository import GdkPixbuf, Gio, GLib, Gtk  # noqa: E402
+from gi.repository import GLib  # noqa: E402
+
+# WM_CLASS must be rain-themes (= StartupWMClass in rain-themes.desktop) or Cinnamon can't
+# pin the window; GTK fixes the class when it initialises, so set it before importing Gtk.
+GLib.set_prgname("rain-themes")
+GLib.set_application_name("Rain Themes")
+from gi.repository import Gdk  # noqa: E402
+
+Gdk.set_program_class("rain-themes")
+from gi.repository import GdkPixbuf, Gio, Gtk  # noqa: E402
 
 TOOLS = Path(__file__).resolve().parent
 ROOT = TOOLS.parent
