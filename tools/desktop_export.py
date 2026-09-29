@@ -565,8 +565,8 @@ On the site, open the Dark Reader popup → **Theme** → **Colors** (use its si
 3. Export the theme (`.nlt`) and commit it here as `{slug}.nlt`.
 
 ## Sync for Reddit (phone)
-Import `sync-theme.json` in Sync's Monet theme settings, where its theme export
-comes from. It sets the seed `{r['brand']}` and the dark text colours; Sync derives
+Copy the JSON below (or `sync-theme.json`) and paste it into Sync's Monet theme
+import; Sync only imports from the clipboard. It sets the seed `{r['brand']}` and the dark text colours; Sync derives
 backgrounds and cards from the seed, so they are tinted near-black rather than
 `{r['main_bg']}`.
 

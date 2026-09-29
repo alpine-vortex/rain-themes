@@ -20,8 +20,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   wallpaper-derived colours in SPRITZ style, saved in
   `~/.local/state/rain-themes/phone-snapshot.json`.
 - **Live on the phone since 2026-09-29:** Librekai seed `#F93B7F`, TONAL_SPOT. The
-  Librekai files are in Downloads. The wallpaper isn't set yet and Sync hasn't
-  imported anything yet (both manual).
+  Librekai files are in Downloads. The owner confirmed the system colours look
+  right and that the Sync import (paste JSON) works. The wallpaper is set by hand.
 - Not yet: a GUI button for the phone. Redeye's importer isn't built yet (the
   redeye session is using the files as test data).
 
