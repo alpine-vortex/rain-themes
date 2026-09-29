@@ -39,15 +39,27 @@ tools/rain apply catppuccin-mocha --only gtk,terminal
 ```
 
 `tools/rain install` sets up the menu entry, the login autostart, the app icon
-(in `~/.local/share/icons/hicolor`) and a git pre-commit hook. The hook exports
-the staged tree and runs that tree's `rain check`, so it judges what is being
-committed, not unstaged work, and it works from every worktree and branch. Run
+(in `~/.local/share/icons/hicolor`) and three git hooks:
+
+- `pre-commit` exports the staged tree and runs that tree's `rain check`, so it
+  judges what is being committed, not unstaged work, and it works from every
+  worktree and branch.
+- `pre-merge-commit` does the same for a clean merge commit. A refused merge
+  leaves `MERGE_HEAD` and the merge staged: fix it and `git commit` (which runs
+  `pre-commit`), or `git merge --abort`.
+- `pre-push` checks each commit pushed to `main`, from that commit's own tree.
+  This covers rebase + fast-forward, which runs no commit hook. A fast-forward
+  of a local `main` is only checked when it's pushed. Other branches push
+  unchecked, so work in progress stays pushable.
+
+Each check rebuilds every palette (about 15 s); `--no-verify` skips it. Run
 `install` from the main checkout: it refuses in a linked worktree, since the menu
-entry would point at a path that gets deleted. It replaces a pre-commit hook only
-if rain wrote it (`--force` otherwise); after a change to the hook, re-run it from
-the main checkout. Undo: delete `~/.local/share/applications/rain-themes.desktop`,
-`~/.config/autostart/rain-themes-pending.desktop`, the hook (the path it printed,
-normally `.git/hooks/pre-commit`) and
+entry would point at a path that gets deleted. It replaces a hook only if rain
+wrote it, and checks all three before writing anything (`--force` otherwise);
+after a change to the hooks, re-run it from the main checkout. Undo: delete
+`~/.local/share/applications/rain-themes.desktop`,
+`~/.config/autostart/rain-themes-pending.desktop`, the three hooks (the paths it
+printed, normally `.git/hooks/pre-commit`, `pre-merge-commit` and `pre-push`) and
 `~/.local/share/icons/hicolor/*/apps/rain-themes.png`.
 
 Targets: `gtk`, `wallpaper`, `terminal`, `geany`, `firefox`, `brave`, `vesktop`.
@@ -104,7 +116,9 @@ logged. The Rain terminal profiles are dropped from the profile list (others you
 added stay), Vesktop keeps its non-Rain themes enabled, and `user.js` only loses
 Rain's line. Geany and Brave are queued if open, like on apply. Once everything
 is restored the snapshot is retired (renamed `snapshot.<time>.json`, with its
-`files.<time>` copies) and the next apply takes a fresh one.
+`files.<time>` copies) and the next apply takes a fresh one. If you apply a
+palette before a queued restore finishes, the snapshot is kept for the next
+restore.
 
 Things deliberately left behind: the `~/.themes/Rain-*` folders, the Rain
 terminal profiles and the Firefox pref `toolkit.legacyUserProfileCustomizations.stylesheets`.

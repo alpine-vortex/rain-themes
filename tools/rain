@@ -12,8 +12,8 @@
     rain phone --restore [--dry-run]
     rain preview <slug> [--out DIR]
     rain gui                       small GTK window: pick a palette, apply, restore
-    rain install [--force]         menu entry, login autostart for `pending`, git pre-commit check
-                                   (main checkout only; the hook checks the staged tree)
+    rain install [--force]         menu entry, login autostart for `pending`, git hooks that check
+                                   commits, merge commits and pushes to main (main checkout only)
 
 Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
 """
@@ -153,13 +153,33 @@ def cmd_gui(a):
 HOOK_MARK = "# rain-themes:"
 # Shared by every worktree and branch, so it checks whatever the index holds (GIT_INDEX_FILE too,
 # for `commit -a`/`commit <paths>`) with that tree's own tools/rain, and calls no new subcommand.
-HOOK = """#!/bin/sh
+# Installed as pre-commit and pre-merge-commit. A signal trap must exit itself: dash resumes the
+# script after a trap that doesn't, and the EXIT trap then does the cleanup.
+TRAPS = """trap 'rm -rf "$tmp"' EXIT; trap 'exit 130' INT; trap 'exit 143' TERM; trap 'exit 129' HUP"""
+HOOK = f"""#!/bin/sh
 # rain-themes: refuse commits with stale generated files (checks the index, not the working tree)
 tmp=$(mktemp -d) || exit 1
-trap 'rm -rf "$tmp"' EXIT
-git checkout-index -a --prefix="$tmp/" || exit 1
+{TRAPS}
+git checkout-index -a --ignore-skip-worktree-bits --prefix="$tmp/" || exit 1
 [ -x "$tmp/tools/rain" ] || exit 0
 "$tmp/tools/rain" check
+"""
+# Rebase + fast-forward never runs the hooks above, so pushes to main check the pushed commit's own
+# tree. Other branches stay pushable (WIP, crew workers); deletes have an all-zero local sha.
+PUSH_HOOK = f"""#!/bin/sh
+# rain-themes: refuse pushes to main with stale generated files (checks the pushed commit)
+tmp=$(mktemp -d) || exit 1
+{TRAPS}
+while read -r lref lsha rref rsha; do
+    [ "$rref" = refs/heads/main ] || continue
+    case $lsha in *[!0]*) ;; *) continue ;; esac
+    rm -rf "$tmp/index" "$tmp/t"
+    GIT_INDEX_FILE="$tmp/index" git read-tree "$lsha" || exit 1
+    GIT_INDEX_FILE="$tmp/index" git checkout-index -a --ignore-skip-worktree-bits --prefix="$tmp/t/" || exit 1
+    [ -x "$tmp/t/tools/rain" ] || continue
+    "$tmp/t/tools/rain" check </dev/null || exit 1
+done
+exit 0
 """
 
 
@@ -175,9 +195,11 @@ def cmd_install(a):
     if git_path("--show-toplevel") != main:
         sys.exit(f"rain install: {ROOT} is a linked worktree, which gets deleted; "
                  f"run it from the main checkout: {main}/tools/rain install")
-    hook = git_path("--git-path", "hooks/pre-commit")
-    if hook.exists() and HOOK_MARK not in hook.read_text(errors="replace") and not a.force:
-        sys.exit(f"rain install: {hook} is not a rain-themes hook; left alone (--force replaces it)")
+    hooks = {git_path("--git-path", f"hooks/{name}"): text
+             for name, text in (("pre-commit", HOOK), ("pre-merge-commit", HOOK), ("pre-push", PUSH_HOOK))}
+    for hook in hooks:  # all of them before writing anything
+        if hook.exists() and HOOK_MARK not in hook.read_text(errors="replace") and not a.force:
+            sys.exit(f"rain install: {hook} is not a rain-themes hook; left alone (--force replaces it)")
     rain = TOOLS / "rain"
     icon = "rain-themes"  # assets/icon/, installed into the user hicolor theme below
     files = {
@@ -201,16 +223,16 @@ Terminal=false
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
 """,
-        hook: HOOK,
+        **hooks,
     }
     for p, text in files.items():
         if a.dry_run:
-            what = ("replace" if hook.exists() else "write") if p == hook else "write"
+            what = "replace" if p in hooks and p.exists() else "write"
             print(f"[dry-run] {what} {p}")
             continue
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text)
-        if p == hook:
+        if p in hooks:
             p.chmod(0o755)
         print(f"wrote {p}")
     icons = home / ".local/share/icons/hicolor"
@@ -227,7 +249,7 @@ X-GNOME-Autostart-enabled=true
     # usually has no index.theme)
     if not a.dry_run and shutil.which("gtk-update-icon-cache") and (icons / "icon-theme.cache").exists():
         subprocess.run(["gtk-update-icon-cache", "-q", "-t", "-f", str(icons)], check=False)
-    print("\nUndo: delete the three files above and ~/.local/share/icons/hicolor/*/apps/rain-themes.png.")
+    print("\nUndo: delete the five files above and ~/.local/share/icons/hicolor/*/apps/rain-themes.png.")
 
 
 def main():
@@ -264,7 +286,7 @@ def main():
     sub.add_parser("gui").set_defaults(fn=cmd_gui)
     p = sub.add_parser("install")
     p.add_argument("--dry-run", action="store_true")
-    p.add_argument("--force", action="store_true", help="replace a pre-commit hook rain didn't write")
+    p.add_argument("--force", action="store_true", help="replace git hooks rain didn't write")
     p.set_defaults(fn=cmd_install)
     a = ap.parse_args()
     a.fn(a)

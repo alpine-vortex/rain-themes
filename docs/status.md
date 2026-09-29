@@ -89,7 +89,8 @@ What's applied on the owner's machines is kept out of the repo, in the local
   `--restore` returns each part that still holds Rain's value to it, then
   retires the snapshot.
 - The pre-commit hook checks the staged tree and is shared by all worktrees;
-  `rain install` refuses in a linked worktree. Acceptance tests for the hook,
+  the same hook checks merge commits, and a pre-push hook checks commits
+  pushed to `main`. `rain install` refuses in a linked worktree. Acceptance tests for the hook,
   install, restore, snapshot guard, phone and atomic writes:
   `python3 tools/dev/test_tooling.py` (scratch dirs only).
 

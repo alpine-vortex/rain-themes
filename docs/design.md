@@ -203,10 +203,15 @@ rewrites on exit. Hence the running check.
   bytes with the committed files. It also flags files in `desktop/` that
   nothing generates, except hand-exported `.nlt` files. The git pre-commit
   hook runs it on the *staged* tree: it exports the index (`git checkout-index
-  -a`, honouring `GIT_INDEX_FILE` for `commit -a` / `commit <paths>`) to a temp
-  dir and runs that copy's `tools/rain check`. One hook serves every worktree
-  and branch, so it calls no newer subcommand and exits 0 when the tree has no
-  `tools/rain`. Config writes go through `atomic_write` (same-dir temp file,
+  -a --ignore-skip-worktree-bits`, so a sparse checkout still exports every
+  file, honouring `GIT_INDEX_FILE` for `commit -a` / `commit <paths>`) to a temp
+  dir and runs that copy's `tools/rain check`. The same hook is installed as
+  `pre-merge-commit`, so clean merge commits are checked too. One hook serves
+  every worktree and branch, so it calls no newer subcommand and exits 0 when
+  the tree has no `tools/rain`. Rebases and fast-forwards run neither hook, so
+  a `pre-push` hook exports each commit pushed to `main` (`git read-tree` into
+  a temp index) and checks that tree the same way; other branches and deletes
+  pass unchecked. Config writes go through `atomic_write` (same-dir temp file,
   mode kept, symlinks followed, `os.replace`).
 - `~/.local/state/rain-themes/state.json` holds `current` (last palette applied
   with at least gtk+terminal), `applied` (any apply since the last restore) and
@@ -248,7 +253,8 @@ profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
 After a restore with nothing left pending, the snapshot and `files/` are
 renamed `snapshot.<UTC time>.json` / `files.<UTC time>` and kept; the next
 apply takes a fresh one. If Geany or Brave were queued, `rain pending`
-retires it after the last queued restore. `rain restore` without a snapshot
+retires it after the last queued restore, unless a palette was applied in the
+meantime: then the snapshot stays for the next `rain restore`. `rain restore` without a snapshot
 says there is nothing to restore; it doesn't fall back to old ones.
 
 The phone snapshot (`phone-snapshot.<ro.serialno>.json`) and

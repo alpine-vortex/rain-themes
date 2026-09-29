@@ -651,7 +651,10 @@ def run_pending(dry=False):
         else:
             log(f"dropping pending {target}: {what} has no exports")
             clear_pending(target)
-    if restored and "restore" not in load_state().get("pending", {}).values() and not DRY:
+    # keep the snapshot while a later apply is live: the next restore still needs it
+    st = load_state()
+    if restored and "restore" not in st.get("pending", {}).values() and not st.get("current") \
+            and not st.get("applied") and not DRY:
         retire_snapshot()
 
 

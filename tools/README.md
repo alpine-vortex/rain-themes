@@ -12,7 +12,7 @@ tools/rain restore                    # undo what rain still owns; changes made 
 tools/rain pending                    # finish apps that were open during apply (runs at login)
 tools/rain preview <slug>             # screenshots in throwaway windows
 tools/rain gui                        # the "Rain Themes" window
-tools/rain install [--force]          # menu entry + login autostart + git pre-commit hook (main checkout only)
+tools/rain install [--force]          # menu entry + login autostart + git commit/merge/push-to-main hooks (main checkout only)
 ```
 
 | Script | Role |
@@ -23,7 +23,7 @@ tools/rain install [--force]          # menu entry + login autostart + git pre-c
 | `rain_gui.py` | the GTK window (runs `rain` subcommands) |
 | `gallery.py` | Playwright screenshots → GALLERY.md, index.html |
 | `dev/preview_desktop.py` | screenshot a palette without applying it |
-| `dev/test_tooling.py` | acceptance tests for the hook, install, restore, snapshot guard, phone and atomic writes (scratch dirs, fake gsettings/dconf/adb) |
+| `dev/test_tooling.py` | acceptance tests for the hooks, install, restore, snapshot guard, phone and atomic writes (scratch dirs, fake gsettings/dconf/adb) |
 
 # Rain theme builder
 

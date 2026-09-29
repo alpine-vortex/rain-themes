@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Acceptance tests for the tooling: pre-commit hook, install, restore, snapshot guard, phone, atomic writes.
+"""Acceptance tests for the tooling: pre-commit/merge/push hooks, install, restore, snapshot guard, phone, atomic writes.
 
     python3 tools/dev/test_tooling.py [-v] [-k pattern]
 
@@ -13,10 +13,12 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
 import textwrap
+import time
 import unittest
 from pathlib import Path
 
@@ -124,6 +126,19 @@ class GitHookTests(unittest.TestCase):
         self.ok(r)
         return r
 
+    def hook(self, name="pre-commit"):
+        return Path(self.git(self.c, "rev-parse", "--path-format=absolute", "--git-path", f"hooks/{name}").strip())
+
+    def stale_commit(self):
+        """Commit a stale generated file past the hooks, then put the good file back in index + tree."""
+        notes = self.c / "dracula/dracula-notes.md"
+        good = notes.read_text()
+        notes.write_text(good + "junk\n")
+        self.git(self.c, "add", "dracula/dracula-notes.md")
+        self.ok(self.commit("--no-verify"))
+        notes.write_text(good)
+        self.git(self.c, "add", "dracula/dracula-notes.md")
+
     def edit_spec(self, slug="librekai"):
         f = self.c / slug / "theme.spec.json"
         t = f.read_text()
@@ -141,9 +156,13 @@ class GitHookTests(unittest.TestCase):
         r = self.installed()
         for ln in r.stdout.splitlines():
             if ln.startswith("wrote "):
-                self.assertTrue(ln[6:].startswith((str(self.s / "h"), str(hook))), ln)
-        self.assertIn('git checkout-index -a --prefix="$tmp/"', hook.read_text())
+                self.assertTrue(ln[6:].startswith((str(self.s / "h"), str(hook.parent))), ln)
+        self.assertIn('git checkout-index -a --ignore-skip-worktree-bits --prefix="$tmp/"', hook.read_text())
         self.assertTrue(os.access(hook, os.X_OK))
+        merge, push = self.hook("pre-merge-commit"), self.hook("pre-push")
+        self.assertEqual(merge.read_text(), hook.read_text())
+        self.assertIn("refs/heads/main", push.read_text())
+        self.assertTrue(os.access(merge, os.X_OK) and os.access(push, os.X_OK))
         self.assertTrue((self.s / "h/.local/share/applications/rain-themes.desktop").exists())
 
     def test_02_generated_staged_without_spec_fails(self):
@@ -206,8 +225,8 @@ class GitHookTests(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("linked worktree", r.stderr)
         self.assertFalse((self.s / "h2").exists())
-        self.assertFalse(Path(self.git(self.c, "rev-parse", "--path-format=absolute", "--git-path",
-                                       "hooks/pre-commit").strip()).exists())
+        for name in ("pre-commit", "pre-merge-commit", "pre-push"):
+            self.assertFalse(self.hook(name).exists(), name)
 
     def test_09_shared_hook_checks_the_worktree_index(self):
         self.installed()
@@ -234,24 +253,116 @@ class GitHookTests(unittest.TestCase):
         self.ok(self.commit())  # no tools/rain in the index: nothing to check
 
     def test_11_existing_hooks_and_core_hookspath(self):
-        hook = self.c / ".git/hooks/pre-commit"
-        hook.write_text("#!/bin/sh\necho mine\n")
-        r = self.install()
-        self.assertNotEqual(r.returncode, 0)
-        self.assertIn("--force", r.stderr)
-        self.assertEqual(hook.read_text(), "#!/bin/sh\necho mine\n")
-        self.assertFalse((self.s / "h").exists())
+        names = ("pre-commit", "pre-merge-commit", "pre-push")
+        mine = "#!/bin/sh\necho mine\n"
+        for foreign in names:  # any one foreign hook refuses before anything is written
+            for n in names:
+                self.hook(n).unlink(missing_ok=True)
+            self.hook(foreign).write_text(mine)
+            r = self.install()
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("--force", r.stderr)
+            self.assertIn(str(self.hook(foreign)), r.stderr)
+            self.assertEqual(self.hook(foreign).read_text(), mine)
+            self.assertEqual([n for n in names if self.hook(n).exists()], [foreign])
+            self.assertFalse((self.s / "h").exists())
+        for n in names:
+            self.hook(n).write_text(mine)
         self.ok(self.install(None, "--force"))
-        self.assertIn("checkout-index", hook.read_text())
-        hook.write_text('#!/bin/sh\n# rain-themes: refuse commits with stale generated files\nexec "/x/rain" check\n')
+        for n in names:
+            self.assertIn("checkout-index", self.hook(n).read_text(), n)
+        old = '#!/bin/sh\n# rain-themes: refuse commits with stale generated files\nexec "/x/rain" check\n'
+        self.hook().write_text(old)
+        self.hook("pre-merge-commit").unlink()
         dry = self.install(None, "--dry-run")
         self.ok(dry)
-        self.assertIn(f"[dry-run] replace {hook}", dry.stdout)
+        self.assertIn(f"[dry-run] replace {self.hook()}", dry.stdout)
+        self.assertIn(f"[dry-run] write {self.hook('pre-merge-commit')}", dry.stdout)
+        self.assertIn(f"[dry-run] replace {self.hook('pre-push')}", dry.stdout)
+        self.assertEqual(self.hook().read_text(), old)
         self.ok(self.install())
-        self.assertIn("checkout-index", hook.read_text())
+        self.assertIn("checkout-index", self.hook().read_text())
         self.git(self.c, "config", "core.hooksPath", ".githooks")
         self.ok(self.install())
-        self.assertIn("checkout-index", (self.c / ".githooks/pre-commit").read_text())
+        for n in names:
+            self.assertIn("checkout-index", (self.c / ".githooks" / n).read_text(), n)
+
+    def test_11b_merge_commits_are_checked(self):
+        self.installed()
+        base = self.git(self.c, "branch", "--show-current").strip()
+        self.git(self.c, "checkout", "-q", "-b", "stale")
+        self.stale_commit()
+        self.git(self.c, "checkout", "-q", base)
+        r = subprocess.run(["git", "merge", "--no-ff", "--no-edit", "stale"], cwd=self.c, env=self.git_env,
+                           capture_output=True, text=True)
+        self.fails(r, "dracula/dracula-notes.md")
+        self.assertTrue((self.c / ".git/MERGE_HEAD").exists())
+        self.git(self.c, "merge", "--abort")
+        self.git(self.c, "checkout", "-q", "-b", "good")
+        self.edit_spec()
+        self.git(self.c, "add", "librekai")
+        self.ok(self.commit())
+        self.git(self.c, "checkout", "-q", base)
+        self.ok(subprocess.run(["git", "merge", "--no-ff", "--no-edit", "good"], cwd=self.c, env=self.git_env,
+                               capture_output=True, text=True))
+
+    def test_11c_pushes_to_main_check_the_pushed_commit(self):
+        origin = self.s / "origin.git"
+        self.git(None, "clone", "-q", "--bare", str(self.template), str(origin))
+        self.git(self.c, "remote", "set-url", "origin", str(origin))
+        self.installed()
+
+        def push(*args):
+            return subprocess.run(["git", "push", "origin", *args], cwd=self.c, env=self.git_env,
+                                  capture_output=True, text=True)
+        base = self.git(self.c, "rev-parse", "HEAD").strip()
+        self.ok(push("HEAD:refs/heads/main"))
+        self.stale_commit()  # HEAD is stale; the index and working tree are good
+        self.fails(push("HEAD:refs/heads/main"), "dracula/dracula-notes.md")
+        self.ok(push("HEAD:refs/heads/side"))
+        self.ok(push("--delete", "side"))
+        self.git(self.c, "reset", "-q", "--hard", base)
+        self.edit_spec()
+        self.git(self.c, "add", "librekai")
+        self.ok(self.commit())
+        self.ok(push("HEAD:refs/heads/main"))
+        self.assertEqual(self.git(origin, "rev-parse", "main"), self.git(self.c, "rev-parse", "HEAD"))
+
+    def test_11d_hook_signals_exit_nonzero_and_clean_up(self):
+        self.installed()
+        # a check that passes: only the signal can make the hook fail. It goes to the hook shell alone
+        # (as `kill <pid>` would), so the check finishes and dash then runs the trap
+        (self.c / "tools/rain").write_text("#!/bin/sh\nsleep 1\n")
+        self.git(self.c, "add", "tools/rain")
+        tmpdir = self.s / "tmpdir"
+        tmpdir.mkdir()
+        for sig, rc in ((signal.SIGINT, 130), (signal.SIGTERM, 143), (signal.SIGHUP, 129)):
+            p = subprocess.Popen([str(self.hook())], cwd=self.c, env=dict(self.git_env, TMPDIR=str(tmpdir)),
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            deadline = time.time() + 10
+            while not list(tmpdir.glob("tmp.*/tools/rain")) and time.time() < deadline:
+                time.sleep(0.05)
+            self.assertTrue(list(tmpdir.glob("tmp.*/tools/rain")), sig)
+            time.sleep(0.2)  # let the hook reach `rain check`
+            os.kill(p.pid, sig)
+            self.assertEqual(p.wait(10), rc, sig)
+            self.assertEqual(list(tmpdir.iterdir()), [], sig)
+
+    def test_11e_sparse_checkout_still_checks_every_file(self):
+        self.installed()
+        self.git(self.c, "sparse-checkout", "set", "--cone", "librekai")
+        self.assertFalse((self.c / "tools").exists())
+        notes = self.c / "librekai/librekai-notes.md"
+        good = notes.read_text()
+        notes.write_text(good + "junk\n")
+        self.git(self.c, "add", "librekai/librekai-notes.md")
+        self.fails(self.commit(), "librekai/librekai-notes.md")
+        notes.write_text(good)
+        self.git(self.c, "add", "librekai/librekai-notes.md")
+        blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=self.c, env=self.git_env, input="junk\n",
+                              capture_output=True, text=True, check=True).stdout.strip()
+        self.git(self.c, "update-index", "--cacheinfo", f"100644,{blob},dracula/dracula-notes.md")
+        self.fails(self.commit(), "dracula/dracula-notes.md")
 
 
 # ---------- desktop: restore, snapshot guard, atomic writes (items 3, 4) ----------
@@ -459,6 +570,38 @@ class DesktopTests(unittest.TestCase):
             assert len(list(A.STATE.glob("snapshot.*.json"))) == 1 and len(list(A.STATE.glob("files.*"))) == 1
             A.apply("librekai")
             assert A.SNAPSHOT.exists() and (A.STATE / "files/gtk4-assets/a.png").exists()
+        """)
+
+    def test_18b_apply_after_restore_keeps_snapshot(self):
+        self.child("""
+            A.apply("librekai")
+            RUNNING.add("brave")
+            A.restore()
+            assert A.load_state()["pending"] == {"brave": "restore"}
+            A.apply("librekai", ["gtk", "terminal"])
+            assert A.load_state()["pending"] == {"brave": "restore"}  # not dropped
+            RUNNING.clear()
+            A.run_pending()
+            assert rd(BRAVE)["browser"]["theme"] == ORIG_BRAVE  # the queued restore ran
+            assert A.SNAPSHOT.exists() and not list(A.STATE.glob("snapshot.*.json"))
+            A.restore()  # still recoverable
+            assert G["org.cinnamon.desktop.interface gtk-theme"] == "'Mint-Y'"
+            assert not A.SNAPSHOT.exists() and len(list(A.STATE.glob("snapshot.*.json"))) == 1
+        """)
+
+    def test_18c_partial_apply_after_restore_keeps_snapshot(self):
+        self.child("""
+            A.apply("librekai")
+            RUNNING.add("geany")
+            A.restore()
+            assert A.load_state()["pending"] == {"geany": "restore"}
+            A.apply("librekai", ["firefox"])
+            st = A.load_state()
+            assert st.get("applied") and not st.get("current"), st
+            RUNNING.clear()
+            A.run_pending()
+            assert "color_scheme=mine.conf" in A.GEANY_CONF.read_text()
+            assert A.SNAPSHOT.exists() and not list(A.STATE.glob("snapshot.*.json"))
         """)
 
     def test_19_themed_without_snapshot_applies_without_snapshotting(self):

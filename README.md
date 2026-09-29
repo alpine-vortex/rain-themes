@@ -138,8 +138,8 @@ Dark Reader values.
   upstream source.
 - **`tools/rain`** is the one entry point: `build`, `check`, `apply`,
   `restore`, `pending`, `preview`, `phone`, `gui`, `install`.
-- **Generated files are never hand-edited.** `rain check` (also a pre-commit
-  hook) fails if any output is stale.
+- **Generated files are never hand-edited.** `rain check` (also run by the
+  commit, merge and push-to-main hooks) fails if any output is stale.
 
 Requirements: Python 3 with PyGObject/GTK 3 and Pillow, `sassc` (Colloid
 build), `dconf`/`gsettings` (Cinnamon), and `adb` for the phone. Playwright is
