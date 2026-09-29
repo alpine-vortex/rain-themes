@@ -19,6 +19,7 @@ Needs one adb device (e.g. over Wireless debugging).
 """
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -52,9 +53,17 @@ def adb(*args, dry=False, capture=True):
 
 
 def check_device():
-    devs = [ln for ln in adb("devices").splitlines()[1:] if ln.strip().endswith("device")]
-    if len(devs) != 1:
-        sys.exit(f"need exactly one adb device, found {len(devs)} (pair via Wireless debugging)")
+    """Pick the phone: $ANDROID_SERIAL if set, else the only device, else the only non-emulator
+    (an emulator started by another session shouldn't block this). Exported so every adb call uses it."""
+    if os.environ.get("ANDROID_SERIAL"):
+        return
+    devs = [ln.split()[0] for ln in adb("devices").splitlines()[1:] if ln.strip().endswith("device")]
+    phones = [d for d in devs if not d.startswith("emulator-")]
+    pick = devs if len(devs) == 1 else phones
+    if len(pick) != 1:
+        sys.exit(f"can't pick a phone from {devs or 'no devices'}; pair via Wireless debugging, "
+                 "or set ANDROID_SERIAL")
+    os.environ["ANDROID_SERIAL"] = pick[0]
 
 
 def read_setting():
@@ -113,9 +122,10 @@ def apply(slug, style, files, dry):
             src = ROOT / slug / "desktop" / f
             if src.exists():
                 adb("push", str(src), f"{dest}/{f}", dry=dry)
-        # make the wallpaper show up in Photos / the wallpaper picker
-        adb("shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE",
-            "-d", f"file://{dest}/wallpaper-phone.png", dry=dry)
+                # adb-pushed files stay is_pending=1 in MediaStore (hidden from file pickers,
+                # e.g. HeliBoard's Load showed an empty folder) until they're scanned
+                adb("shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE",
+                    "-d", f"file://{dest}/{f}", dry=dry)
         print(f"files in {dest}: set the wallpaper, import sync/redeye themes on the phone")
 
 

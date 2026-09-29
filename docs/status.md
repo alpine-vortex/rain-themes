@@ -16,6 +16,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   - `<slug>.heliboard.json` (+ `-light`): HeliBoard "all colors" (all 44 slots).
     `.heliboard-simple.json` is the 10-colour version. Both are matched to real exports;
     importing one on the phone isn't confirmed yet.
+  - Gotcha (fixed 2026-09-29): files pushed with adb stay `is_pending=1` in MediaStore, so
+    file pickers (HeliBoard's Load) show the folder as empty until they're scanned.
+    `rain phone` now scans every pushed file. It also picks the phone when an emulator is
+    attached (else set `ANDROID_SERIAL`).
   - Nested `light` variants (official upstream light flavours) for 15 of the 21; see
     `docs/app-theme.md`. The merge is held until redeye accepts the app-theme names.
 - `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,
