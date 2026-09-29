@@ -4,6 +4,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 
 - Everything is on `main`: desktop exports, docs, Firefox Color links,
   `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
+- The 19-palette desktop work is on branch `desktop-all-palettes` (pushed, not
+  yet merged to `main`).
 
 ## Live state on spacer
 
@@ -66,7 +68,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 
 Of the other 19, only four were screenshotted: Gruvbox, Rosé Pine, Kanagawa
 Dragon and Solarized Osaka. Each got a Geany shot and a GTK shot, and all
-eight looked right. The rest are covered by `rain check` and a contrast scan.
+eight looked right. The Geany shots only show the shebang and docstring, so
+they confirm that the scheme loads with the right string and comment colours.
+Keyword, function and type colours were not on screen. The rest are covered by
+`rain check` and a contrast scan.
 
 ## Not yet verified
 
@@ -94,6 +99,8 @@ eight looked right. The rest are covered by `rain check` and a contrast scan.
   - Nord comment `#616E88`, 2.4:1.
   - Tokyodark comment, 2.3:1.
   - Tokyo Night Storm comment 2.4:1 and git-delete 2.3:1.
+- Rosé Pine (main and moon) uses upstream's dark block cursor (`highlight_high`,
+  about 2.2:1). That's fine in the terminal, but it makes a faint caret in Geany.
 
 - Firefox: the bookmarks-toolbar notice link stays Firefox-blue. The new-tab
   page's own purple accents (buttons) are page content, not ours.
