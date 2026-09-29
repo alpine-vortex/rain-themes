@@ -28,9 +28,10 @@ Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
 
 ## Not yet verified
 
-- **A real apply on spacer**: never run as of this writing. The Cinnamon panel,
-  window borders under Muffin, GNOME Terminal profile and wallpaper can only be
-  checked that way.
+- **Live look on spacer.** Librekai was applied for real on 2026-09-28, all
+  targets. Only the Firefox toolbar has been reviewed with the owner so far
+  (fixed: icons were green from the Firefox Color extension's default theme).
+  The panel, Nemo, terminal and Vesktop still need a look.
 - **Brave**: that the seed edit survives a relaunch, and how close the
   generated colours look.
 - **Vesktop**: not installed. Check the settings path, `enabledThemes`, and
@@ -51,7 +52,7 @@ Last updated 2026-09-28. Branch `desktop-exports` (not merged to `main`).
 
 ## Next steps
 
-1. **Real apply of one palette**, then fix whatever looks off.
+1. Review the live Librekai apply (panel, Nemo, terminal, Vesktop) and fix what looks off.
 2. Extend the other 19 specs with `ansi` / `terminal` / `syntax` from each
    palette's upstream (record `ansi_source`), then `desktop_export.py` them.
    Rebuild all Rain themes afterwards and confirm no diff.
