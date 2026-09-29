@@ -3,11 +3,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}}</title>
+<title>Librekai Preview</title>
 <style>
 /* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
 :root {
-__ROOT__
+  --BACKGROUND_PRIMARY: #272822;
+  --BG_BASE_PRIMARY: #272822;
+  --BACKGROUND_MOBILE_PRIMARY: #272822;
+  --CHAT_BACKGROUND: #272822;
+  --BACKGROUND_BASE_LOW: #272822;
+  --CHANNEL_BACKGROUND_DEFAULT: #272822;
+  --STANDALONE_CHANNEL_CONTENT_BACKGROUND: #272822;
+  --BACKGROUND_SECONDARY: #1E1F1C;
+  --BG_BASE_SECONDARY: #1E1F1C;
+  --BACKGROUND_MOBILE_SECONDARY: #1E1F1C;
+  --BACKGROUND_BASE_LOWER: #1E1F1C;
+  --CHAT_BANNER_BG: #1E1F1C;
+  --BACKGROUND_SECONDARY_ALT: #1E1F1C;
+  --BACKGROUND_TERTIARY: #1E1F1C;
+  --BG_BASE_TERTIARY: #1E1F1C;
+  --BACKGROUND_BASE_LOWEST: #1E1F1C;
+  --BACKGROUND_FLOATING: #3E3D32;
+  --BACKGROUND_SURFACE_HIGH: #3E3D32;
+  --MODAL_BACKGROUND: #3E3D32;
+  --MODAL_FOOTER_BACKGROUND: #3E3D32;
+  --MOBILE_ACTIONSHEET_BACKGROUND: #3E3D32;
+  --MOBILE_ACTIONSHEET_GRADIENT_BACKGROUND_DEFAULT: #3E3D32;
+  --CARD_PRIMARY_BG: #3E3D32;
+  --CARD_BACKGROUND_DEFAULT: #3E3D32;
+  --MOBILE_EMBED_BACKGROUND_DEFAULT: #3E3D32;
+  --BG_SURFACE_OVERLAY: #3E3D32;
+  --BG_SURFACE_OVERLAY_TMP: #3E3D32;
+  --BACKGROUND_NESTED_FLOATING: #464741;
+  --BACKGROUND_SURFACE_HIGHEST: #464741;
+  --CHAT_INPUT_BACKGROUND: #3E3D32;
+  --REDESIGN_CHAT_INPUT_BACKGROUND: #3E3D32;
+  --CHAT_INPUT_CONTAINER_BACKGROUND: #3E3D32;
+  --INPUT_BACKGROUND: #3E3D32;
+  --INPUT_BACKGROUND_DEFAULT: #3E3D32;
+  --BACKGROUND_MODIFIER_HOVER: #F8F8F214;
+  --BACKGROUND_MESSAGE_HOVER: #F8F8F214;
+  --BACKGROUND_MOD_SUBTLE: #F8F8F214;
+  --BG_MOD_SUBTLE: #F8F8F214;
+  --BACKGROUND_MODIFIER_ACTIVE: #F8F8F21F;
+  --BACKGROUND_MOD_NORMAL: #F8F8F21F;
+  --BACKGROUND_MODIFIER_SELECTED: #F9267233;
+  --BACKGROUND_MOD_STRONG: #F9267233;
+  --BG_MOD_STRONG: #F9267233;
+  --MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED: #F9267233;
+  --BG_MOD_FAINT: #F8F8F20D;
+  --BACKGROUND_MOD_MUTED: #F8F8F20D;
+  --BACKGROUND_MODIFIER_ACCENT: #F8F8F214;
+  --BORDER_SUBTLE: #F8F8F214;
+  --BORDER_FAINT: #F8F8F214;
+  --BORDER_MUTED: #F8F8F214;
+  --TEXT_NORMAL: #F8F8F2;
+  --TEXT_DEFAULT: #F8F8F2;
+  --HEADER_SECONDARY: #F8F8F2;
+  --ICON_DEFAULT: #F8F8F2;
+  --HEADER_PRIMARY: #F8F8F2;
+  --TEXT_PRIMARY: #F8F8F2;
+  --TEXT_STRONG: #F8F8F2;
+  --ICON_STRONG: #F8F8F2;
+  --TEXT_SECONDARY: #CCCCC7;
+  --TEXT_SUBTLE: #CCCCC7;
+  --ICON_SUBTLE: #CCCCC7;
+  --CHANNELS_DEFAULT: #CCCCC7;
+  --CHANNEL_ICON: #CCCCC7;
+  --INTERACTIVE_NORMAL: #CCCCC7;
+  --INTERACTIVE_TEXT_DEFAULT: #CCCCC7;
+  --INTERACTIVE_ICON_DEFAULT: #CCCCC7;
+  --TEXT_MUTED: #90908A;
+  --ICON_MUTED: #90908A;
+  --INPUT_PLACEHOLDER_TEXT: #90908A;
+  --INPUT_PLACEHOLDER_TEXT_DEFAULT: #90908A;
+  --CHANNEL_TEXT_AREA_PLACEHOLDER: #90908A;
+  --INTERACTIVE_MUTED: #88846F;
+  --INTERACTIVE_HOVER: #F8F8F2;
+  --INTERACTIVE_TEXT_HOVER: #F8F8F2;
+  --INTERACTIVE_ICON_HOVER: #F8F8F2;
+  --INTERACTIVE_ACTIVE: #F9709F;
+  --INTERACTIVE_TEXT_ACTIVE: #F9709F;
+  --INTERACTIVE_ICON_ACTIVE: #F9709F;
+  --BG_BRAND: #F93B7F;
+  --BACKGROUND_BRAND: #F93B7F;
+  --REDESIGN_BUTTON_PRIMARY_BACKGROUND: #F93B7F;
+  --CONTROL_PRIMARY_BACKGROUND_DEFAULT: #F93B7F;
+  --CONTROL_BRAND_FOREGROUND: #F93B7F;
+  --CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND: #F93B7F;
+  --BADGE_BACKGROUND_BRAND: #F93B7F;
+  --FOCUS_PRIMARY: #F93B7F;
+  --BORDER_FOCUS: #F93B7F;
+  --INPUT_BORDER_ACTIVE: #F93B7F;
+  --REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND: #F9709F;
+  --CONTROL_PRIMARY_BACKGROUND_ACTIVE: #F9709F;
+  --REDESIGN_BUTTON_PRIMARY_TEXT: #1E1F1C;
+  --CONTROL_PRIMARY_TEXT_DEFAULT: #1E1F1C;
+  --BADGE_TEXT_BRAND: #1E1F1C;
+  --CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT: #1E1F1C;
+  --TEXT_BRAND: #F9709F;
+  --TEXT_LINK: #66D9EF;
+  --TEXT_DANGER: #F44747;
+  --TEXT_FEEDBACK_CRITICAL: #F44747;
+  --ICON_FEEDBACK_CRITICAL: #F44747;
+  --INFO_DANGER_TEXT: #F44747;
+  --STATUS_DANGER: #F44747;
+  --INFO_DANGER_FOREGROUND: #F44747;
+  --STATUS_DANGER_BACKGROUND: #F44747;
+  --REDESIGN_BUTTON_DANGER_BACKGROUND: #F44747;
+  --CONTROL_CRITICAL_PRIMARY_BACKGROUND_DEFAULT: #F44747;
+  --TEXT_POSITIVE: #A6E22E;
+  --TEXT_FEEDBACK_POSITIVE: #A6E22E;
+  --ICON_FEEDBACK_POSITIVE: #A6E22E;
+  --INFO_POSITIVE_TEXT: #A6E22E;
+  --STATUS_POSITIVE: #A6E22E;
+  --INFO_POSITIVE_FOREGROUND: #A6E22E;
+  --STATUS_ONLINE: #A6E22E;
+  --ICON_STATUS_ONLINE: #A6E22E;
+  --TEXT_STATUS_ONLINE: #A6E22E;
+  --TEXT_WARNING: #FD971F;
+  --TEXT_FEEDBACK_WARNING: #FD971F;
+  --ICON_FEEDBACK_WARNING: #FD971F;
+  --INFO_WARNING_TEXT: #FD971F;
+  --STATUS_WARNING: #FD971F;
+  --INFO_WARNING_FOREGROUND: #FD971F;
+  --STATUS_IDLE: #FD971F;
+  --ICON_STATUS_IDLE: #FD971F;
+  --STATUS_DND: #F44747;
+  --ICON_STATUS_DND: #F44747;
+  --BACKGROUND_MENTIONED: #F9267226;
+  --MESSAGE_MENTIONED_BACKGROUND_DEFAULT: #F9267226;
+  --BACKGROUND_MENTIONED_HOVER: #F9267233;
+  --MESSAGE_MENTIONED_BACKGROUND_HOVER: #F9267233;
+  --BG_BACKDROP: #1E1F1CB3;
+  --MOBILE_BACKGROUND_SCRIM_OPAQUE: #1E1F1CB3;
+  --BRAND_500: #F93B7F;
+  --BRAND_530: #F9709F;
+  --BRAND_560: #F92672;
+  --PRIMARY_630: #3E3D32;
+  --PRIMARY_660: #272822;
+  --PRIMARY_700: #1E1F1C;
+  --PRIMARY_800: #1E1F1C;
+  --PREVIEW_ON_DANGER: var(--REDESIGN_BUTTON_PRIMARY_TEXT);
+  --PREVIEW_PHONE_BASE: var(--BACKGROUND_PRIMARY);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -147,27 +285,27 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
 </style>
 </head>
 <body>
-<h1>{{NAME}} for Rain</h1>
-<p class="sub">{{SUBTITLE}} · colour preview only</p>
+<h1>Librekai for Rain</h1>
+<p class="sub">Classic Monokai · accent: pink · colour preview only</p>
 <input type="checkbox" id="t" class="toggle">
 <div class="wrap">
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="cl" style="flex-direction:column">
       <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
       <div class="cl">
         <div class="rail">
           <div class="srv">DM<span class="ping">3</span></div>
           <hr>
-          <div class="srv sel">{{SERVER_INITIAL}}</div>
+          <div class="srv sel">L</div>
           <div class="srv">R</div>
           <div class="srv">V<span class="ping">1</span></div>
           <div class="srv">K</div>
           <div class="srv">+</div>
         </div>
         <div class="panel">
-          <div class="srv-head">{{SERVER_NAME}}<small>1,204 members · 312 online</small></div>
+          <div class="srv-head">Libre Lounge<small>1,204 members · 312 online</small></div>
           <div class="chs">
             <div class="cat">⌄ Information</div>
             <div class="ch"><span class="h">#</span>rules</div>
@@ -183,8 +321,8 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
             <div class="ch muted"><span class="h">◖</span>AFK</div>
           </div>
           <div class="userbar">
-            <div class="av">{{ME_INITIAL}}<span class="dot on"></span></div>
-            <div><div class="name">{{ME}}</div><div class="st">Online</div></div>
+            <div class="av">E<span class="dot on"></span></div>
+            <div><div class="name">emeet</div><div class="st">Online</div></div>
             <div class="icons"><span class="ico"></span><span class="ico"></span></div>
           </div>
         </div>
@@ -195,34 +333,34 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
     <div class="chat-head">
-      <div><div class="t"><span>#</span> general</div><div class="d">{{TAGLINE}}</div></div>
+      <div><div class="t"><span>#</span> general</div><div class="d">Classic colours, free forever</div></div>
       <span class="ico"></span>
     </div>
     <div class="msgs">
       <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
-        <div class="who">{{USER1}}<span class="ts">Today 09:12</span></div>
-        <p>{{MSG1}}</p></div></div>
+        <div class="who">wimer<span class="ts">Today 09:12</span></div>
+        <p>Morning — switched my terminal over.</p></div></div>
       <div class="divider">NEW</div>
       <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
-        <div class="who">{{USER2}}<span class="ts">Today 09:13</span></div>
-        <p><span class="ping-me">@{{ME}}</span> {{MENTION_MSG}}</p>
+        <div class="who">keyword_pink<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@emeet</span> can you post your Rain theme?</p>
         <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
       </div></div>
       <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
-        <div class="who">{{USER3}}<span class="ts">Today 09:14</span></div>
-        <p>Palette reference is here: <a>{{LINK_TEXT}}</a></p>
-        <div class="embed"><div class="site">{{EMBED_SITE}}</div><div class="etitle">{{EMBED_TITLE}}</div>
-          <div class="edesc">{{EMBED_DESC}}</div></div>
+        <div class="who">lime_fn<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>github.com/…/theme-monokai</a></p>
+        <div class="embed"><div class="site">GitHub</div><div class="etitle">VS Code · Monokai</div>
+          <div class="edesc">MIT-licensed built-in Monokai theme</div></div>
       </div></div>
       <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
-        <div class="who">{{USER4}}<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
-        <p>{{MSG4}}</p></div></div>
+        <div class="who">string_bot<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>Build passed ✔ theme validated.</p></div></div>
       <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
-        <div class="who">{{USER5}}<span class="ts">Today 09:25</span></div>
-        <p>{{MSG5}}</p></div></div>
+        <div class="who">purple_num<span class="ts">Today 09:25</span></div>
+        <p>That hot pink never gets old.</p></div></div>
       <div class="scrim"></div>
       <div class="sheet">
         <div class="grab"></div>
@@ -247,8 +385,33 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div class="legend">
-    <h2>Key groups → {{NAME}} palette</h2>
-__LEGEND__
+    <h2>Key groups → Librekai palette</h2>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_PRIMARY)"></i></span><div><b>Main background</b><small>background</small></div><code>#272822</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_SECONDARY)"></i></span><div><b>Secondary background</b><small>sidebar</small></div><code>#1E1F1C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_TERTIARY)"></i></span><div><b>Tertiary background</b><small>sidebar</small></div><code>#1E1F1C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_FLOATING)"></i></span><div><b>Floating surfaces</b><small>line_highlight</small></div><code>#3E3D32</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_NESTED_FLOATING)"></i></span><div><b>Nested floating</b><small>indent_guide</small></div><code>#464741</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--CHAT_INPUT_BACKGROUND)"></i></span><div><b>Inputs</b><small>line_highlight</small></div><code>#3E3D32</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_HOVER)"></i></span><div><b>Hover / subtle / borders</b><small>foreground @ 8%</small></div><code>#F8F8F214</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_ACTIVE)"></i></span><div><b>Active</b><small>foreground @ 12%</small></div><code>#F8F8F21F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_MOD_FAINT)"></i></span><div><b>Faint</b><small>foreground @ 5%</small></div><code>#F8F8F20D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_SELECTED)"></i></span><div><b>Selected</b><small>pink @ 20%</small></div><code>#F9267233</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--HEADER_PRIMARY)"></i></span><div><b>Text strong</b><small>foreground</small></div><code>#F8F8F2</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_NORMAL)"></i></span><div><b>Text normal</b><small>foreground</small></div><code>#F8F8F2</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_SECONDARY)"></i></span><div><b>Text secondary</b><small>inactive_tab_fg</small></div><code>#CCCCC7</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_MUTED)"></i></span><div><b>Text muted</b><small>line_number</small></div><code>#90908A</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--INTERACTIVE_MUTED)"></i></span><div><b>Interactive muted</b><small>comment</small></div><code>#88846F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BRAND)"></i></span><div><b>Brand / accent</b><small>DERIVED: 90% pink + 10% foreground</small></div><code>#F93B7F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND)"></i></span><div><b>Brand bright (pressed, active, TEXT_BRAND)</b><small>DERIVED: 65% pink + 35% foreground</small></div><code>#F9709F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_TEXT)"></i></span><div><b>Text on accent</b><small>sidebar</small></div><code>#1E1F1C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_LINK)"></i></span><div><b>Links</b><small>cyan</small></div><code>#66D9EF</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_DANGER)"></i></span><div><b>Danger / DND</b><small>error_red</small></div><code>#F44747</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_POSITIVE)"></i></span><div><b>Positive / online</b><small>green</small></div><code>#A6E22E</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_WARNING)"></i></span><div><b>Warning / idle</b><small>orange</small></div><code>#FD971F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED)"></i></span><div><b>Mentions</b><small>pink @ 15%</small></div><code>#F9267226</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED_HOVER)"></i></span><div><b>Mentions hover</b><small>pink @ 20%</small></div><code>#F9267233</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BACKDROP)"></i></span><div><b>Backdrops</b><small>sidebar @ 70%</small></div><code>#1E1F1CB3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BRAND_560)"></i></span><div><b>BRAND_560 (raw)</b><small>pink</small></div><code>#F92672</code></div>
     <div class="cmp">Accent vs status:
       <span class="badge">accent</span><span class="dot dnd"></span>DND
       <span class="dot idle"></span>idle <span class="dot on"></span>online</div>

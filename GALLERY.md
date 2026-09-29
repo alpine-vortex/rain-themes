@@ -13,6 +13,9 @@ Regenerate with `python3 tools/gallery.py`.
 - [Gruvbox Material Dark](#gruvbox-material-dark)
 - [Kanagawa Dragon](#kanagawa-dragon)
 - [Kanagawa Wave](#kanagawa-wave)
+- [Librekai](#librekai)
+- [Librekai Dimmed](#librekai-dimmed)
+- [Librekai Refined](#librekai-refined)
 - [Nord Frost](#nord-frost)
 - [Nord Polar Night](#nord-polar-night)
 - [Rosé Pine](#rose-pine)
@@ -130,6 +133,42 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/kanagawa-wave.json
 ```
 [Notes](kanagawa-wave/kanagawa-wave-notes.md) · [Spec](kanagawa-wave/theme.spec.json)
+
+<a id="librekai"></a>
+## Librekai
+
+*Classic Monokai · accent: pink*
+
+![Librekai preview](librekai/librekai-preview.png)
+
+```
+https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai/librekai.json
+```
+[Notes](librekai/librekai-notes.md) · [Spec](librekai/theme.spec.json)
+
+<a id="librekai-dimmed"></a>
+## Librekai Dimmed
+
+*Monokai Dimmed · accent: amber*
+
+![Librekai Dimmed preview](librekai-dimmed/librekai-dimmed-preview.png)
+
+```
+https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-dimmed/librekai-dimmed.json
+```
+[Notes](librekai-dimmed/librekai-dimmed-notes.md) · [Spec](librekai-dimmed/theme.spec.json)
+
+<a id="librekai-refined"></a>
+## Librekai Refined
+
+*Refined Monokai · accent: aqua*
+
+![Librekai Refined preview](librekai-refined/librekai-refined-preview.png)
+
+```
+https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-refined/librekai-refined.json
+```
+[Notes](librekai-refined/librekai-refined-notes.md) · [Spec](librekai-refined/theme.spec.json)
 
 <a id="nord-frost"></a>
 ## Nord Frost

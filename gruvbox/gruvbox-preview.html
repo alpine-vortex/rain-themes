@@ -221,12 +221,12 @@ h1 { color: var(--HEADER_PRIMARY); font-size: 22px; text-align: center; }
 .msg { display: flex; gap: 12px; padding: 7px 16px; }
 .msg .who { font-weight: 600; color: var(--HEADER_PRIMARY); }
 .msg .ts { font-size: 11px; color: var(--TEXT_MUTED); margin-left: 6px; font-weight: 400; }
-.msg p { color: var(--TEXT_NORMAL); }
+.msg p { color: var(--TEXT_NORMAL); overflow-wrap: anywhere; }
 .msg.mention { background: var(--MESSAGE_MENTIONED_BACKGROUND_DEFAULT); box-shadow: inset 3px 0 0 var(--BG_BRAND); }
 .msg.hovered { background: var(--BACKGROUND_MESSAGE_HOVER); }
 .ping-me { color: var(--TEXT_BRAND); background: var(--BACKGROUND_MODIFIER_SELECTED); border-radius: 4px; padding: 0 3px; font-weight: 600; }
 a { color: var(--TEXT_LINK); text-decoration: underline; }
-.embed { margin-top: 6px; background: var(--MOBILE_EMBED_BACKGROUND_DEFAULT); border-left: 4px solid var(--BG_BRAND); border-radius: 6px; padding: 10px 12px; }
+.embed { overflow-wrap: anywhere; margin-top: 6px; background: var(--MOBILE_EMBED_BACKGROUND_DEFAULT); border-left: 4px solid var(--BG_BRAND); border-radius: 6px; padding: 10px 12px; }
 .embed .site { font-size: 11px; color: var(--TEXT_MUTED); }
 .embed .etitle { color: var(--TEXT_LINK); font-weight: 600; }
 .embed .edesc { color: var(--TEXT_SECONDARY); font-size: 13px; }

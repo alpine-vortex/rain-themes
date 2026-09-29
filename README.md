@@ -16,6 +16,9 @@ See the **[gallery](GALLERY.md)** for previews of every theme side by side.
 | [Gruvbox Material Dark](GALLERY.md#gruvbox-material-dark) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox-material-dark/gruvbox-material-dark.json` |
 | [Kanagawa Dragon](GALLERY.md#kanagawa-dragon) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/kanagawa-dragon.json` |
 | [Kanagawa Wave](GALLERY.md#kanagawa-wave) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/kanagawa-wave.json` |
+| [Librekai](GALLERY.md#librekai) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai/librekai.json` |
+| [Librekai Dimmed](GALLERY.md#librekai-dimmed) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-dimmed/librekai-dimmed.json` |
+| [Librekai Refined](GALLERY.md#librekai-refined) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-refined/librekai-refined.json` |
 | [Nord Frost](GALLERY.md#nord-frost) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/nord-frost.json` |
 | [Nord Polar Night](GALLERY.md#nord-polar-night) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-polar-night/nord-polar-night.json` |
 | [Rosé Pine](GALLERY.md#rose-pine) | `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine/rose-pine.json` |

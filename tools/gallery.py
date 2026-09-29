@@ -9,7 +9,6 @@ Then writes, at the repo root:
     GALLERY.md   renders on GitHub (images + install URLs)
     index.html   same gallery as a standalone page (open locally or via GitHub Pages)
 and refreshes the theme table in README.md between the <!-- themes --> markers.
-Folders under held/ are not picked up.
 """
 import html
 import json
@@ -50,7 +49,14 @@ def screenshot(ts):
                 return {x: r1.left, y: Math.min(r1.top, r2.top),
                         width: r2.right - r1.left, height: Math.max(r1.bottom, r2.bottom) - Math.min(r1.top, r2.top)};
             }""")
-            page.screenshot(path=str(ROOT / t["dir"] / f"{t['slug']}-preview.png"), clip=box)
+            for attempt in range(3):  # Chromium occasionally fails a capture; retry
+                try:
+                    page.screenshot(path=str(ROOT / t["dir"] / f"{t['slug']}-preview.png"), clip=box)
+                    break
+                except Exception:
+                    if attempt == 2:
+                        raise
+                    page.wait_for_timeout(500)
             print("shot", t["slug"])
         browser.close()
 

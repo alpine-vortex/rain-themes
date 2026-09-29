@@ -73,5 +73,4 @@ python3 tools/gallery.py
 
 Screenshots every theme's preview to `<slug>/<slug>-preview.png`, then writes
 `GALLERY.md` and `index.html` at the repo root and refreshes the theme table in
-`README.md`. Run it after adding or changing a theme. Folders under `held/`
-(gitignored) are skipped.
+`README.md`. Run it after adding or changing a theme.
