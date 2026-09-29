@@ -460,17 +460,19 @@ Terminal: {' '.join(f'`{h}`' for h in c.ansi)}
 """
 
 
-def export(theme_dir):
+def export(theme_dir, out=None, quiet=False, rain_dir=None):
+    """Write <theme_dir>/desktop/ (or `out`). Returns False when the spec has no desktop blocks."""
     theme_dir = Path(theme_dir)
     spec = json.loads((theme_dir / "theme.spec.json").read_text())
     slug = spec["slug"]
     if not all(k in spec for k in ("ansi", "terminal", "syntax")):
-        print(f"skip {slug}: spec has no ansi/terminal/syntax blocks")
+        if not quiet:
+            print(f"skip {slug}: spec has no ansi/terminal/syntax blocks")
         return False
-    theme_json = json.loads((theme_dir / f"{slug}.json").read_text())
+    theme_json = json.loads((Path(rain_dir or theme_dir) / f"{slug}.json").read_text())
     c = Colours(spec)
-    out = theme_dir / "desktop"
-    out.mkdir(exist_ok=True)
+    out = Path(out) if out else theme_dir / "desktop"
+    out.mkdir(parents=True, exist_ok=True)
     scss, meta = colloid(c)
     (out / "colloid-palette.scss").write_text(scss)
     meta["name"] = spec["name"]
@@ -490,7 +492,8 @@ def export(theme_dir):
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)
     (out / "README.md").write_text(readme(c, spec, slug))
-    print(f"exported {slug} -> {out}")
+    if not quiet:
+        print(f"exported {slug} -> {out}")
     return True
 
 

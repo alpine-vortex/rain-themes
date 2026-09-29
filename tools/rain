@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+"""rain: one entry point for rain-themes.
+
+    rain list                      palettes, which have desktop exports, which is applied
+    rain build [slug ...]          Rain JSON + preview + notes + desktop exports (all by default)
+    rain build --gallery           ...and refresh GALLERY.md / index.html / README table (Playwright)
+    rain check                     rebuild into a temp dir; fail if any committed output is stale
+    rain apply <slug> [--only t,t] [--dry-run]
+    rain restore [--dry-run]
+    rain pending [--dry-run]       finish apps skipped while running (also runs at login)
+    rain preview <slug> [--out DIR]
+    rain gui                       small GTK window: pick a palette, apply, restore
+    rain install                   menu entry, login autostart for `pending`, git pre-commit check
+
+Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
+"""
+import argparse
+import contextlib
+import filecmp
+import io
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+TOOLS = Path(__file__).resolve().parent
+ROOT = TOOLS.parent
+sys.path.insert(0, str(TOOLS))
+
+
+def specs(slugs=None):
+    dirs = sorted(p.parent for p in ROOT.glob("*/theme.spec.json"))
+    if slugs:
+        known = {d.name: d for d in dirs}
+        missing = [s for s in slugs if s not in known]
+        if missing:
+            sys.exit(f"unknown palette(s): {', '.join(missing)}")
+        dirs = [known[s] for s in slugs]
+    return dirs
+
+
+def cmd_list(a):
+    import json
+    from apply_theme import load_state
+    cur = load_state().get("current")
+    for d in specs():
+        spec = json.loads((d / "theme.spec.json").read_text())
+        has = (d / "desktop/colloid.json").exists()
+        mark = "*" if d.name == cur else " "
+        print(f"{mark} {d.name:24} {'desktop' if has else '-      '}  {spec['name']}")
+    print("\n* = applied now; desktop = has desktop exports (others: Rain only)")
+
+
+def cmd_build(a):
+    from build_theme import SpecError, build
+    from desktop_export import export
+    rc = 0
+    for d in specs(a.slugs):
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                build(d)
+            fails = [ln for ln in buf.getvalue().splitlines() if "FAIL" in ln or "WARN" in ln]
+            desk = export(d, quiet=True)
+            print(f"{d.name:24} rain{' + desktop' if desk else ''}"
+                  + (f"  ({len(fails)} contrast FAIL/WARN, see {d.name}-notes.md)" if fails else ""))
+            if a.verbose:
+                print(buf.getvalue())
+        except (SpecError, KeyError) as e:
+            print(f"{d.name}: ERROR {e}", file=sys.stderr)
+            rc = 1
+    if a.gallery:
+        subprocess.run([sys.executable, str(TOOLS / "gallery.py")], check=True)
+    sys.exit(rc)
+
+
+def cmd_check(a):
+    """Everything generated must match what a fresh build produces."""
+    from build_theme import build
+    from desktop_export import export
+    stale, extra = [], []
+    with tempfile.TemporaryDirectory() as tmp:
+        for d in specs():
+            out = Path(tmp) / d.name
+            out.mkdir()
+            with contextlib.redirect_stdout(io.StringIO()):
+                build(d, out)
+                has = export(d, out / "desktop", quiet=True, rain_dir=out)
+            for f in sorted(out.rglob("*")):
+                if f.is_file():
+                    rel = f.relative_to(out)
+                    mine = d / rel
+                    if not mine.exists() or not filecmp.cmp(f, mine, shallow=False):
+                        stale.append(mine.relative_to(ROOT))
+            if (d / "desktop").exists():
+                made = {p.name for p in (out / "desktop").glob("*")} if has else set()
+                for p in (d / "desktop").iterdir():
+                    # .nlt files are exported by hand from Niagara and committed on purpose
+                    if p.name not in made and p.suffix != ".nlt":
+                        extra.append(p.relative_to(ROOT))
+    for p in stale:
+        print(f"stale: {p}")
+    for p in extra:
+        print(f"not generated (delete or regenerate?): {p}")
+    if stale or extra:
+        print("\nrun `tools/rain build` and commit the result")
+        sys.exit(1)
+    print(f"ok: {len(specs())} palettes, all generated files up to date")
+
+
+def cmd_apply(a):
+    import apply_theme
+    apply_theme.apply(a.slug, a.only.split(",") if a.only else None, a.dry_run)
+
+
+def cmd_restore(a):
+    import apply_theme
+    apply_theme.DRY = a.dry_run
+    apply_theme.restore()
+
+
+def cmd_pending(a):
+    import apply_theme
+    apply_theme.run_pending(a.dry_run)
+
+
+def cmd_preview(a):
+    args = [sys.executable, str(TOOLS / "dev/preview_desktop.py"), a.slug]
+    if a.out:
+        args += ["--out", a.out]
+    sys.exit(subprocess.run(args).returncode)
+
+
+def cmd_gui(a):
+    import rain_gui
+    rain_gui.main()
+
+
+def cmd_install(a):
+    home = Path.home()
+    rain = TOOLS / "rain"
+    icon = "preferences-desktop-theme"
+    files = {
+        home / ".local/share/applications/rain-themes.desktop": f"""[Desktop Entry]
+Type=Application
+Name=Rain Themes
+Comment=Apply a rain-themes palette to the desktop and apps
+Exec={rain} gui
+Icon={icon}
+Terminal=false
+Categories=Settings;DesktopSettings;
+""",
+        home / ".config/autostart/rain-themes-pending.desktop": f"""[Desktop Entry]
+Type=Application
+Name=Rain Themes (finish pending)
+Comment=Apply theme changes that were skipped while an app was running
+Exec={rain} pending
+Icon={icon}
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+""",
+    }
+    hook = ROOT / ".git/hooks/pre-commit"
+    files[hook] = f"#!/bin/sh\n# rain-themes: refuse commits with stale generated files\nexec \"{rain}\" check\n"
+    for p, text in files.items():
+        if a.dry_run:
+            print(f"[dry-run] write {p}")
+            continue
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(text)
+        if p == hook:
+            p.chmod(0o755)
+        print(f"wrote {p}")
+    print("\nUndo: delete those three files.")
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="rain", description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("list").set_defaults(fn=cmd_list)
+    p = sub.add_parser("build")
+    p.add_argument("slugs", nargs="*")
+    p.add_argument("--gallery", action="store_true")
+    p.add_argument("-v", "--verbose", action="store_true")
+    p.set_defaults(fn=cmd_build)
+    sub.add_parser("check").set_defaults(fn=cmd_check)
+    p = sub.add_parser("apply")
+    p.add_argument("slug")
+    p.add_argument("--only")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_apply)
+    for name, fn in (("restore", cmd_restore), ("pending", cmd_pending)):
+        p = sub.add_parser(name)
+        p.add_argument("--dry-run", action="store_true")
+        p.set_defaults(fn=fn)
+    p = sub.add_parser("preview")
+    p.add_argument("slug")
+    p.add_argument("--out")
+    p.set_defaults(fn=cmd_preview)
+    sub.add_parser("gui").set_defaults(fn=cmd_gui)
+    p = sub.add_parser("install")
+    p.add_argument("--dry-run", action="store_true")
+    p.set_defaults(fn=cmd_install)
+    a = ap.parse_args()
+    a.fn(a)
+
+
+if __name__ == "__main__":
+    main()

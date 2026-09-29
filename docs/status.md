@@ -10,6 +10,8 @@ Last updated 2026-09-28. Desktop work merged to `main` the same day.
   gave byte-identical output.
 - `tools/desktop_export.py`, `tools/apply_theme.py`,
   `tools/dev/preview_desktop.py`.
+- `tools/rain` (single CLI incl. `check`), pending queue + login autostart, the
+  "Rain Themes" GUI (`tools/rain_gui.py`); `rain install` was run on spacer.
 - Exports committed for both palettes.
 - A snapshot of spacer's pre-theme setup was taken on 2026-09-28 (Orchis-Dark
   desktop/apps, Mint-Y borders, wallpaper `~/Downloads/13514189.png`, implicit

@@ -1,3 +1,29 @@
+# Tools
+
+**Start here: `tools/rain`** is the single entry point; the other scripts are its parts.
+
+```sh
+tools/rain list                       # palettes; * = applied, "desktop" = has desktop exports
+tools/rain build [slug ...]           # regenerate Rain + desktop outputs (all palettes by default)
+tools/rain build --gallery            # ...plus GALLERY.md / index.html / README table
+tools/rain check                      # fail if any committed generated file is stale (pre-commit hook)
+tools/rain apply <slug> [--only gtk,terminal] [--dry-run]
+tools/rain restore                    # back to the pre-first-apply desktop
+tools/rain pending                    # finish apps that were open during apply (runs at login)
+tools/rain preview <slug>             # screenshots in throwaway windows
+tools/rain gui                        # the "Rain Themes" window
+tools/rain install                    # menu entry + login autostart + git pre-commit hook
+```
+
+| Script | Role |
+|---|---|
+| `build_theme.py` | spec → Rain JSON, preview, notes |
+| `desktop_export.py` | spec → `<slug>/desktop/*` |
+| `apply_theme.py` | apply / restore / pending on this machine |
+| `rain_gui.py` | the GTK window (runs `rain` subcommands) |
+| `gallery.py` | Playwright screenshots → GALLERY.md, index.html |
+| `dev/preview_desktop.py` | screenshot a palette without applying it |
+
 # Rain theme builder
 
 Turns a palette spec into a Rain / Bunny (spec 2) theme, a static preview

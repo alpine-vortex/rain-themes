@@ -132,6 +132,34 @@ def build_gtk(slug, dest):
 
 
 # ---------- snapshot / restore ----------
+# ---------- state: current palette + targets skipped while their app ran ----------
+STATE_FILE = STATE / "state.json"
+
+
+def load_state():
+    try:
+        return json.loads(STATE_FILE.read_text())
+    except (FileNotFoundError, ValueError):
+        return {"current": None, "pending": {}}
+
+
+def save_state(st):
+    if not DRY:
+        write(STATE_FILE, json.dumps(st, indent=2))
+
+
+def mark_pending(target, what):
+    st = load_state()
+    st.setdefault("pending", {})[target] = what
+    save_state(st)
+
+
+def clear_pending(target):
+    st = load_state()
+    if st.get("pending", {}).pop(target, None) is not None:
+        save_state(st)
+
+
 def firefox_profile():
     ini = HOME / ".mozilla/firefox/installs.ini"
     if not ini.exists():
@@ -216,19 +244,37 @@ def restore():
             if key == "firefox-user.js" and "backup" not in f and p.exists():
                 p.unlink()
         act(f"restore {p}", put)
-    if "geany_color_scheme" in snap:
-        if running("geany"):
-            log("skip Geany: running (close it and re-run --restore)")
-        else:
-            act("geany color_scheme restore", set_geany, snap["geany_color_scheme"])
-    if snap.get("brave_theme") is not None:
-        if running("brave"):
-            log("skip Brave: running")
-        else:
-            act("brave theme restore", set_brave_theme, snap["brave_theme"])
+    restore_geany(snap)
+    restore_brave(snap)
     if "vesktop_enabled" in snap:
         act("vesktop enabledThemes restore", set_vesktop_enabled, snap["vesktop_enabled"])
+    st = load_state()
+    st["current"] = None
+    st["pending"] = {k: v for k, v in st.get("pending", {}).items() if v == "restore"}
+    save_state(st)
     log("restored. (Rain profiles/themes stay installed but unused; Firefox keeps the userChrome pref on.)")
+
+
+def restore_geany(snap):
+    if "geany_color_scheme" not in snap:
+        return
+    if running("geany"):
+        log("Geany is running: queued, it will be restored by `rain pending` (runs at login)")
+        mark_pending("geany", "restore")
+        return
+    act("geany color_scheme restore", set_geany, snap["geany_color_scheme"])
+    clear_pending("geany")
+
+
+def restore_brave(snap):
+    if snap.get("brave_theme") is None:
+        return
+    if running("brave"):
+        log("Brave is running: queued, it will be restored by `rain pending` (runs at login)")
+        mark_pending("brave", "restore")
+        return
+    act("brave theme restore", set_brave_theme, snap["brave_theme"])
+    clear_pending("brave")
 
 
 # ---------- targets ----------
@@ -308,12 +354,14 @@ def apply_terminal(slug, exp):
 
 def apply_geany(slug, exp):
     if running("geany"):
-        log("skip Geany: running — close it and re-run with --only geany")
+        log("Geany is running: queued, it will be applied by `rain pending` (runs at login)")
+        mark_pending("geany", slug)
         return
     src = exp / f"geany-{slug}.conf"
     dst = HOME / ".config/geany/colorschemes" / src.name
     act(f"geany scheme -> {dst}", lambda: (dst.parent.mkdir(parents=True, exist_ok=True), shutil.copy2(src, dst)))
     act(f"geany color_scheme={src.name}", set_geany, src.name)
+    clear_pending("geany")
 
 
 def apply_firefox(slug, exp):
@@ -340,7 +388,8 @@ def apply_brave(slug, exp):
         log("skip Brave: no Preferences file")
         return
     if running("brave"):
-        log("skip Brave: running — close it and re-run with --only brave")
+        log("Brave is running: queued, it will be applied by `rain pending` (runs at login)")
+        mark_pending("brave", slug)
         return
     seed = json.loads((exp / "brave.json").read_text())
 
@@ -351,6 +400,7 @@ def apply_brave(slug, exp):
         p.setdefault("extensions", {}).setdefault("theme", {})["id"] = "user_color_theme_id"
         BRAVE_PREFS.write_text(json.dumps(p, separators=(",", ":")))
     act(f"brave seed colour {seed['seed']} (dark)", go)
+    clear_pending("brave")
 
 
 def apply_vesktop(slug, exp):
@@ -379,39 +429,77 @@ def apply_vesktop(slug, exp):
     act(f"vesktop theme -> {dst} (enabled)", go)
 
 
-def main():
+FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "geany": apply_geany,
+       "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop}
+
+
+def exportable():
+    """Slugs that have desktop exports, sorted."""
+    return sorted(p.parent.parent.name for p in ROOT.glob("*/desktop/colloid.json"))
+
+
+def apply(slug, only=None, dry=False):
     global DRY
+    DRY = dry
+    exp = ROOT / slug / "desktop"
+    if not exp.exists():
+        sys.exit(f"{slug}: no desktop exports (add ansi/terminal/syntax to its spec, then `rain build`)")
+    only = only or TARGETS
+    bad = set(only) - set(TARGETS)
+    if bad:
+        sys.exit(f"unknown targets {sorted(bad)}; valid: {','.join(TARGETS)}")
+    take_snapshot()
+    for t in TARGETS:
+        if t in only:
+            FNS[t](slug, exp)
+    if not dry and set(only) >= {"gtk", "terminal"}:
+        st = load_state()
+        st["current"] = slug
+        save_state(st)
+    print("\nManual steps (Dark Reader, Niagara, Claude Code): " + str(exp / "README.md"))
+
+
+def run_pending(dry=False):
+    """Finish targets that were skipped because their app was running."""
+    global DRY
+    DRY = dry
+    pending = dict(load_state().get("pending", {}))
+    if not pending:
+        log("nothing pending")
+        return
+    snap = json.loads(SNAPSHOT.read_text()) if SNAPSHOT.exists() else {}
+    for target, what in pending.items():
+        if what == "restore":
+            {"geany": restore_geany, "brave": restore_brave}[target](snap)
+        elif (ROOT / what / "desktop").exists():
+            FNS[target](what, ROOT / what / "desktop")
+        else:
+            log(f"dropping pending {target}: {what} has no exports")
+            clear_pending(target)
+
+
+def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--only", help="comma list of " + ",".join(TARGETS))
     ap.add_argument("--restore", action="store_true")
+    ap.add_argument("--pending", action="store_true", help="finish targets queued while their app was running")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--build-gtk", metavar="SLUG")
     ap.add_argument("--dest")
     a = ap.parse_args()
+    global DRY
     DRY = a.dry_run
     if a.build_gtk:
         print(build_gtk(a.build_gtk, a.dest or THEMES_DIR))
-        return
-    if a.restore:
+    elif a.restore:
         restore()
-        return
-    if not a.slug:
-        ap.error("slug required")
-    exp = ROOT / a.slug / "desktop"
-    if not exp.exists():
-        sys.exit(f"{exp} missing — run tools/desktop_export.py {a.slug}")
-    only = a.only.split(",") if a.only else TARGETS
-    bad = set(only) - set(TARGETS)
-    if bad:
-        ap.error(f"unknown targets {sorted(bad)}")
-    take_snapshot()
-    fns = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "geany": apply_geany,
-           "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop}
-    for t in TARGETS:
-        if t in only:
-            fns[t](a.slug, exp)
-    print("\nManual steps (Dark Reader, Niagara, Claude Code): " + str(exp / "README.md"))
+    elif a.pending:
+        run_pending(a.dry_run)
+    elif a.slug:
+        apply(a.slug, a.only.split(",") if a.only else None, a.dry_run)
+    else:
+        ap.error("slug, --restore or --pending required")
 
 
 if __name__ == "__main__":

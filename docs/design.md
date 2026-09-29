@@ -195,6 +195,21 @@ rewrites on exit. Hence the running check.
   approach instead: wallpaper + swatch by hand, then commit the exported `.nlt`.
 - Rain (phone Discord) needs **raw** GitHub URLs. `blob/` URLs return HTML.
 
+## One entry point, pending queue, GUI
+
+- `tools/rain` wraps everything. `rain check` builds every palette into a temp
+  dir (Rain + desktop, desktop reading the *fresh* Rain JSON) and compares
+  bytes with the committed files. It also flags files in `desktop/` that
+  nothing generates, except hand-exported `.nlt` files. It's the git
+  pre-commit hook.
+- `~/.local/state/rain-themes/state.json` holds `current` (last palette applied
+  with at least gtk+terminal) and `pending` (`{target: slug | "restore"}`).
+  Geany and Brave go to `pending` when running; `rain pending` finishes them
+  and runs from `~/.config/autostart/` at login, before those apps start.
+- `rain_gui.py` has no logic of its own: every button runs a `rain` subcommand
+  via `Gio.Subprocess` and streams its output into the log pane. Keep new
+  behaviour in `apply_theme.py` / `rain` so the CLI and GUI stay the same.
+
 ## Snapshot / restore
 
 The snapshot is taken on the first apply only, at

@@ -10,23 +10,36 @@ See [status.md](status.md).
 
 ## Quick start
 
+**GUI:** open **Rain Themes** from the Cinnamon menu (or `tools/rain gui`).
+Each palette card has a wallpaper thumbnail, colour swatches, **Apply** and
+**Preview**. The header has **Restore original** and **Finish pending**.
+
+**Terminal:**
+
 ```sh
 cd ~/github/rain-themes
-python3 tools/apply_theme.py librekai --dry-run   # show what would change
-python3 tools/apply_theme.py librekai             # do it
-python3 tools/apply_theme.py --restore            # undo everything
+tools/rain apply librekai --dry-run   # show what would change
+tools/rain apply librekai             # do it
+tools/rain restore                    # undo everything
+tools/rain list                       # what's available / applied
 ```
 
-Before applying, **close Geany and Brave**. They rewrite their config files on
-exit and would undo the change, so the script skips them while they run. It
-tells you, and you re-run with `--only geany` or `--only brave` after closing
-them. Firefox can stay open; restart it afterwards.
+Geany and Brave rewrite their config files on exit, so while they're open
+their part is **queued** instead of applied. It's finished by **Finish pending**
+in the GUI, by `tools/rain pending`, or automatically at the next login (an
+autostart entry runs `rain pending`). Firefox can stay open; restart it
+afterwards.
 
 Apply only some parts:
 
 ```sh
-python3 tools/apply_theme.py catppuccin-mocha --only gtk,terminal
+tools/rain apply catppuccin-mocha --only gtk,terminal
 ```
+
+`tools/rain install` sets up the menu entry, the login autostart and a git
+pre-commit hook that runs `rain check`. Undo: delete
+`~/.local/share/applications/rain-themes.desktop`,
+`~/.config/autostart/rain-themes-pending.desktop` and `.git/hooks/pre-commit`.
 
 Targets: `gtk`, `wallpaper`, `terminal`, `geany`, `firefox`, `brave`, `vesktop`.
 
@@ -68,13 +81,13 @@ Each palette's `desktop/README.md` has the exact values.
 ## Undo
 
 ```sh
-python3 tools/apply_theme.py --restore
+tools/rain restore
 ```
 
 This restores the three Cinnamon theme settings, the wallpaper, the terminal
 profile list and default, `~/.config/gtk-4.0`, the Firefox files, Geany's scheme
 and Brave's colour, from `~/.local/state/rain-themes/snapshot.json`. Geany and
-Brave again need to be closed.
+Brave are queued if open, like on apply.
 
 Things deliberately left behind: the `~/.themes/Rain-*` folders, the Rain
 terminal profiles and the Firefox pref `toolkit.legacyUserProfileCustomizations.stylesheets`.
@@ -99,7 +112,7 @@ is GitHub's HTML page, not the JSON. The repo README lists every install URL.
 
 | Symptom | Cause / fix |
 |---|---|
-| Geany or Brave unchanged | It was running and got skipped, or it overwrote the change on exit. Close it, `--only geany` / `--only brave`. |
+| Geany or Brave unchanged | It was running and got skipped, or it overwrote the change on exit. Close it, `tools/rain pending`. |
 | Firefox unchanged | Needs a full restart. Check `about:config` → `toolkit.legacyUserProfileCustomizations.stylesheets` is `true`. The profile used is the one in `~/.mozilla/firefox/installs.ini`. |
 | Some Firefox parts wrong after a Firefox update | Firefox renames its theme variables now and then. Re-derive them (see [design.md](design.md#firefox)) and re-export. |
 | GTK4/libadwaita apps still old colours | Check the links in `~/.config/gtk-4.0/`; the app must be restarted. |
@@ -109,7 +122,7 @@ is GitHub's HTML page, not the JSON. The repo README lists every install URL.
 ## Previewing without applying
 
 ```sh
-python3 tools/dev/preview_desktop.py librekai --out /tmp/rain-preview
+tools/rain preview librekai --out /tmp/rain-preview
 ```
 
 This opens a GTK test window, a throwaway Firefox profile and a separate Geany
