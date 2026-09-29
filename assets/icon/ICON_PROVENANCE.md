@@ -1,6 +1,6 @@
 # Rain Themes icon provenance
 
-- Source model: `gpt-5.6-luna` (source inherited from s222)
+- Source model: `gpt-5.6-luna` (source inherited from s222; its original generation prompt is in commit `5e6f954`)
 - Cleanup date: 2026-09-29
 - Selected candidate: the cleaned source (`rain-themes-source.png`). It replaces the s222 version because the prior source had blurry white/dark smudges in the top-left and top-right tile corners.
 - Cleanup method: deterministic Pillow edit. Rebuilt the rounded tile as a clean solid `#1E1E2E` RGBA silhouette, retained the largest connected colored raindrop component, removed all stray marks, then resized directly from the cleaned source.

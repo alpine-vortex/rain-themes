@@ -260,7 +260,22 @@ class App(Gtk.Window):
         stream.read_line_async(GLib.PRIORITY_DEFAULT, None, on_line)
 
 
+def set_app_icon():
+    """Window/Alt-Tab icon straight from assets/icon, so it works before `rain install`."""
+    pbs = []
+    for png in sorted((ROOT / "assets/icon").glob("rain-themes-[0-9]*.png")):
+        try:
+            pbs.append(GdkPixbuf.Pixbuf.new_from_file(str(png)))
+        except GLib.Error:
+            pass
+    if pbs:
+        Gtk.Window.set_default_icon_list(pbs)
+    else:
+        Gtk.Window.set_default_icon_name("rain-themes")
+
+
 def main():
+    set_app_icon()
     win = App()
     win.connect("destroy", Gtk.main_quit)
     win.show_all()

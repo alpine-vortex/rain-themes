@@ -19,6 +19,7 @@ Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
 import argparse
 import contextlib
 import filecmp
+import shutil
 import io
 import subprocess
 import sys
@@ -151,7 +152,7 @@ def cmd_gui(a):
 def cmd_install(a):
     home = Path.home()
     rain = TOOLS / "rain"
-    icon = "preferences-desktop-theme"
+    icon = "rain-themes"  # assets/icon/, installed into the user hicolor theme below
     files = {
         home / ".local/share/applications/rain-themes.desktop": f"""[Desktop Entry]
 Type=Application
@@ -185,7 +186,21 @@ X-GNOME-Autostart-enabled=true
         if p == hook:
             p.chmod(0o755)
         print(f"wrote {p}")
-    print("\nUndo: delete those three files.")
+    icons = home / ".local/share/icons/hicolor"
+    for png in sorted((ROOT / "assets/icon").glob("rain-themes-[0-9]*.png")):
+        size = png.stem.rsplit("-", 1)[1]
+        dest = icons / f"{size}x{size}/apps/rain-themes.png"
+        if a.dry_run:
+            print(f"[dry-run] copy {png.name} -> {dest}")
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(png, dest)
+        print(f"wrote {dest}")
+    # a stale icon-theme.cache hides new icons from GTK; refresh it if one exists (-t: this dir
+    # usually has no index.theme)
+    if not a.dry_run and shutil.which("gtk-update-icon-cache") and (icons / "icon-theme.cache").exists():
+        subprocess.run(["gtk-update-icon-cache", "-q", "-t", "-f", str(icons)], check=False)
+    print("\nUndo: delete those three files and ~/.local/share/icons/hicolor/*/apps/rain-themes.png.")
 
 
 def main():
