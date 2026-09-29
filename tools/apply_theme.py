@@ -159,6 +159,12 @@ def backup_file(p, key, snap):
 
 def take_snapshot():
     if SNAPSHOT.exists():
+        # Apps installed after the first snapshot: record their original state now.
+        snap = json.loads(SNAPSHOT.read_text())
+        vs = VESKTOP / "settings/settings.json"
+        if "vesktop_enabled" not in snap and vs.exists():
+            snap["vesktop_enabled"] = json.loads(vs.read_text()).get("enabledThemes", [])
+            act("add Vesktop to snapshot", write, SNAPSHOT, json.dumps(snap, indent=2))
         return
     snap = {"gsettings": {}, "dconf": {}, "files": {}}
     for schema, key in GSETTINGS:
