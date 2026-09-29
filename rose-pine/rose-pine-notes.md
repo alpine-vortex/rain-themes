@@ -15,7 +15,6 @@
 - Placeholder text uses muted (the build groups placeholders with muted text); the docs suggest subtle for placeholders.
 - Derived: brand_bright = 60% iris + 40% text; BRAND_560 = 70% iris + 30% base.
 - Pine (online/positive) is only 3.38:1 on base in Main — fine for status dots, dim for status text.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

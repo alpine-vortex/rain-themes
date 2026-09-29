@@ -13,7 +13,6 @@
 - Text: the palette has one foreground (ui.fg = fujiWhite), so strong and normal text are both fujiWhite; secondary = oldWhite (ui.fg_dim), muted = fujiGray (syn.comment), muted channels = sumiInk6 (ui.nontext).
 - Status: diag.error samuraiRed, diag.ok springGreen, diag.warning roninYellow.
 - Palette: lua/kanagawa/colors.lua; roles per variant from lua/kanagawa/themes.lua (palette_roles lists every themes.lua role a colour fills in this variant).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

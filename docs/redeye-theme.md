@@ -1,6 +1,6 @@
 # redeye-theme v1
 
-The theme format for redeye (the owner's Android Reddit app). rain-themes owns
+The theme format for redeye (an Android Reddit client). rain-themes owns
 this format, and redeye's parser follows it. It was agreed with the redeye
 session on 2026-09-29. `tools/desktop_export.py` (`redeye_theme()`) writes one
 file per palette to `<slug>/desktop/redeye-theme.json`, which is served at

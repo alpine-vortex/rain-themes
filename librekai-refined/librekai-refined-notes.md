@@ -12,7 +12,6 @@
 - Danger: the scheme's true red #E73C50 (ErrorMsg), distinct from the keyword pink.
 - Chat is Normal bg (black), panels/rail darkblack (Pmenu/VertSplit bg), sheets CursorLine, nested the Error bg grey, inputs the LineNr/SignColumn bg.
 - Derived: BRAND_560 is 70% aqua + 30% black (the palette has no darker aqua).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

@@ -11,7 +11,6 @@
 - Strong text uses bg_blue: the palette has a single foreground (fg), and bg_blue is its only lighter cool tone.
 - Derived: text_secondary / text_muted / interactive_muted are mixes of fg and bg4. bg4 (Comment) is ~2.3:1 on bg0, too dim for text.
 - Tertiary uses the palette's 'black' (#06080A), darker than bg0.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

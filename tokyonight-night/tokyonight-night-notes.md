@@ -12,7 +12,6 @@
 - Text: the palette has one bright foreground, so strong and normal text are both fg; secondary uses fg_dark (the sidebar foreground).
 - Substitution: muted text uses dark5 instead of comment (comment is below 3:1 on bg); comment kept for INTERACTIVE_MUTED.
 - Button/badge text is 'black', matching TabLineSel (black on blue).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

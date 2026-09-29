@@ -13,7 +13,6 @@
 - Button/badge text is dark0: light text fails on orange.
 - Danger text (bright_red) is ~4.3:1 on main — no lighter red in the palette; status text, not body text.
 - Red and orange are separated by hue only (luminance ratio ~1.36).
-- Author 'emeet' taken from git config (placeholder was left blank).
 
 ## Derived shades
 

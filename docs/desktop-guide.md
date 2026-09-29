@@ -1,7 +1,7 @@
 # Desktop guide
 
 How to put one palette on the whole Linux Mint (Cinnamon) desktop and the apps
-around it, and how to get back. Written for spacer (Mint 22.3, Cinnamon, GNOME
+around it, and how to get back. Written for Linux Mint with Cinnamon (GNOME
 Terminal, Firefox, Brave Origin, Geany); paths assume that setup.
 
 Palettes with desktop exports so far: **Librekai**, **Catppuccin Mocha**
@@ -97,7 +97,7 @@ terminal profiles and the Firefox pref `toolkit.legacyUserProfileCustomizations.
 They do nothing unless selected.
 
 Manual undo if the script isn't available: System Settings → Themes → set
-Orchis-Dark / Orchis-Dark / Mint-Y. Delete the three links in
+your previous themes back. Delete the three links in
 `~/.config/gtk-4.0/`. Terminal → Preferences → pick the old profile.
 
 ## Phone: installing Rain themes
@@ -113,8 +113,7 @@ is GitHub's HTML page, not the JSON. The repo README lists every install URL.
 
 ## Phone: system colours and apps
 
-Connect the phone with **Wireless debugging** (Developer options; Shizuku uses
-the same setup), then check that `adb devices` lists it.
+Connect the phone with **Wireless debugging** (Developer options), then check that `adb devices` lists it.
 
 ```sh
 tools/rain phone librekai                  # Material You seed = the accent, and files copied over

@@ -3,7 +3,7 @@
   "name": "Nord Frost",
   "description": "Nord (nordtheme/nord): Polar Night surfaces with the bright nord8 Frost accent — Nord's documented primary accent.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/nordtheme/nord",
   "variant": "Polar Night · bright nord8 Frost accent",
@@ -168,7 +168,7 @@
       "aurora_bot",
       "nordic"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Such calm colours for late-night chats.",
     "embed_desc": "An arctic, north-bluish color palette"
   },
@@ -178,7 +178,6 @@
     "Polar Night's darkest colour is nord0, so tertiary = main (nord0); PRIMARY_700/800 both nord0.",
     "Floating surfaces use nord2 (documented UI highlight colour) so sheets stand out from nord1 panels.",
     "Derived: text_secondary / text_muted / interactive_muted are mixes of nord4 and nord3. nord3 (documented comment/disabled colour) is ~1.6:1 on nord0, unusable as text.",
-    "Derived: danger is nord11 lightened 25% toward nord6 — nord11 itself is ~2.9:1 on nord0, too low even for status text.",
-    "Author 'emeet' taken from git config."
+    "Derived: danger is nord11 lightened 25% toward nord6 — nord11 itself is ~2.9:1 on nord0, too low even for status text."
   ]
 }

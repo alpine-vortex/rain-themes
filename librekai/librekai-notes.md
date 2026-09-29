@@ -12,7 +12,6 @@
 - Accent: Monokai pink. Pure #F92672 gives 4.45:1 with the darkest palette colour as button text (just under 4.5), so the brand is pink lightened 10% toward the foreground (derived); pure #F92672 is kept as BRAND_560 and in the mention/selected tints.
 - Danger uses #F44747 (the theme's error-token colour) so it isn't the accent pink; warning uses orange so idle doesn't blend with lime online.
 - Only one foreground colour: strong and normal text are both #F8F8F2; secondary uses tab.inactiveForeground, muted uses the line-number colour, muted channels the comment colour.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

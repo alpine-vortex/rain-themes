@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Theme an Android phone (Pixel / near-stock, Android 12+) over adb. No root needed.
+"""Theme an Android phone (stock Android 12+) over adb. No root needed.
 
     python3 tools/phone_theme.py <slug> [--style TONAL_SPOT] [--no-files] [--dry-run]
     python3 tools/phone_theme.py --restore [--dry-run]
@@ -7,14 +7,14 @@
 - System colours: writes the palette's accent as the Material You seed into
   `secure theme_customization_overlay_packages` (what Settings -> Wallpaper & style
   writes). SystemUI re-derives the system/app palettes from it. Checked on a
-  Pixel 10 Pro XL, Android 17 (2026-09-29).
+  stock Android 17 (2026-09-29).
 - Files: copies wallpaper-phone.png, sync-theme.json and redeye-theme.json to
   /sdcard/Download/rain-themes/<slug>/ so they can be picked on the phone. adb
   can't set the wallpaper or import into apps; those taps stay manual.
 
 The first run saves the phone's original setting to
 ~/.local/state/rain-themes/phone-snapshot.json; --restore writes it back.
-Needs one adb device (e.g. Wireless debugging, which Shizuku already uses).
+Needs one adb device (e.g. over Wireless debugging).
 """
 import argparse
 import json

@@ -13,7 +13,6 @@
 - Text: one foreground (ui.fg = dragonWhite) for strong and normal; secondary = dragonGray, muted = dragonAsh (syn.comment), muted channels = dragonBlack6 (ui.nontext).
 - Status: themes.lua's Dragon diag colours are the Wave ones — samuraiRed, springGreen, roninYellow — so they're used as-is.
 - Palette: lua/kanagawa/colors.lua; roles per variant from lua/kanagawa/themes.lua (palette_roles lists every themes.lua role a colour fills in this variant).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

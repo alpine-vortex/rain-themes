@@ -7,7 +7,7 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - The 19-palette desktop work (`desktop-all-palettes`) was merged to `main` on
   2026-09-28.
 
-## Phone (Pixel 10 Pro XL, Android 17)
+## Phone
 
 - Generated for all 21 palettes:
   - `sync-theme.json` (Sync for Reddit Monet import)
@@ -16,12 +16,9 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,
   which is checked on Android 17. It also copies the wallpaper, Sync and redeye
   files to `/sdcard/Download/rain-themes/<slug>/`.
-  `rain phone --restore` puts back the original setting. That was
-  wallpaper-derived colours in SPRITZ style, saved in
-  `~/.local/state/rain-themes/phone-snapshot.json`.
-- **Live on the phone since 2026-09-29:** Librekai seed `#F93B7F`, TONAL_SPOT. The
-  Librekai files are in Downloads. The owner confirmed the system colours look
-  right and that the Sync import (paste JSON) works. The wallpaper is set by hand.
+  `rain phone --restore` puts back the original setting, saved on the first run
+  in `~/.local/state/rain-themes/phone-snapshot.json`. Checked end to end on
+  2026-09-29: the system colours applied and the Sync import (paste JSON) worked.
 - GUI: every card has a **Phone** button, and there's a *Phone (adb)* row with a style picker and
   *Restore phone*. The "phone" badge comes from `phone-state.json`. The Phone button
   hasn't been clicked yet.
@@ -39,19 +36,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
     write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
     Keep `json_b64` as the fallback.
 
-## Live state on spacer
+## Live state
 
-- **Librekai applied** to every target: Cinnamon/GTK (`Rain-Librekai-Dark`),
-  wallpaper, GNOME Terminal profile "Rain Librekai" (default), Geany,
-  Firefox userChrome, Brave seed `#F93B7F`, Vesktop.
-- Owner's Firefox also has the **Firefox Color** extension, whose default theme
-  caused the green icons. They were given the Librekai Color link; whether
-  they kept the extension is unknown.
-- **Installed:** "Rain Themes" menu entry, login autostart (`rain pending`),
-  and the repo's pre-commit hook (`rain check`).
-- **Snapshot of the original setup** is in
-  `~/.local/state/rain-themes/snapshot.json`; `rain restore` returns to it.
-- Changes are logged in `~/CLAUDE-work.md` (2026-09-28 entries).
+What's applied on the owner's machines is kept out of the repo, in the local
+(gitignored) `CLAUDE.md`.
 
 ## Done
 
@@ -81,12 +69,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - `tools/desktop_export.py`, `tools/apply_theme.py`,
   `tools/dev/preview_desktop.py`.
 - `tools/rain` (single CLI incl. `check`), pending queue + login autostart, the
-  "Rain Themes" GUI (`tools/rain_gui.py`); `rain install` was run on spacer.
+  "Rain Themes" GUI (`tools/rain_gui.py`); `rain install` was run on the dev machine.
 - Exports committed for both palettes.
-- A snapshot of spacer's pre-theme setup was taken on 2026-09-28 (Orchis-Dark
-  desktop/apps, Mint-Y borders, wallpaper `~/Downloads/13514189.png`, implicit
-  terminal profile, Brave seed `-14244198`, no Firefox userChrome, Geany
-  default scheme). `--restore` returns to this.
+- The first apply saves a snapshot of the original setup (themes, wallpaper,
+  terminal profile, Brave seed, Firefox/Geany state); `--restore` returns to it.
 
 ## Verified (by screenshot, without touching the live desktop)
 
@@ -107,9 +93,9 @@ Keyword, function and type colours were not on screen. The rest are covered by
 
 ## Not yet verified
 
-- **Live look on spacer.** Librekai was applied for real on 2026-09-28, all
-  targets. Only the Firefox toolbar has been reviewed with the owner so far
-  (fixed: icons were green from the Firefox Color extension's default theme).
+- **Live look.** A palette was applied for real on 2026-09-28, all targets.
+  Only the Firefox toolbar has been reviewed so far (fixed: icons were green
+  from the Firefox Color extension's default theme).
   The panel, Nemo, terminal and Vesktop still need a look.
 - **Brave**: that the seed edit survives a relaunch, and how close the
   generated colours look.
@@ -144,8 +130,8 @@ Keyword, function and type colours were not on screen. The rest are covered by
 
 ## Next steps
 
-1. Review the live Librekai apply (panel, Nemo, terminal, Vesktop, Brave) with
-   the owner and fix what looks off.
+1. Review the live apply (panel, Nemo, terminal, Vesktop, Brave) with the owner
+   and fix what looks off.
 2. ~~The other 19 palettes~~: done on 2026-09-28. Next is Firefox previews
    (`tools/rain preview <slug>`) for the palettes the owner actually picks.
 3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and

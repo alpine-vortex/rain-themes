@@ -18,7 +18,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
-    redeye-theme.json        redeye (the owner's Reddit app) theme, format redeye-theme v1
+    redeye-theme.json        redeye (an Android Reddit client) theme, format redeye-theme v1
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
 See tools/README.md ("Desktop exports").
@@ -575,7 +575,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 ```
 
 {termius_section(spec)}{redeye_section(spec)}## Firefox Color (other machines)
-On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
+With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
 

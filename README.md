@@ -106,7 +106,7 @@ returns to it. Details, manual steps and troubleshooting are in the
 
 ## Phone (Android)
 
-With the phone connected over Wireless debugging (the same setup Shizuku uses):
+With the phone connected over Wireless debugging (Developer options):
 
 ```sh
 tools/rain phone librekai                  # system colours + files to Download/rain-themes/librekai/
@@ -115,7 +115,7 @@ tools/rain phone --restore                 # original system colour setting
 ```
 
 This writes the same system setting as Settings → Wallpaper & style, with no
-root; it's checked on a Pixel 10 Pro XL running Android 17. Setting the
+root; tested on stock Android 17 (vendor skins such as Samsung One UI may ignore it). Setting the
 wallpaper and importing into Sync (paste the JSON) are taps on the phone. Each
 palette's `desktop/README.md` names its Termius built-in, Niagara swatch and
 Dark Reader values.

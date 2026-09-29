@@ -13,7 +13,6 @@
 - Substitution: the spec's Functional state colours (red #DE5735, green #089108, orange #A39514, cyan #0081D6 for links) are 3.4–3.7:1 on the dark background — they fail as text. Used the classic Red / Green / Orange and Cyan for links instead.
 - Derived: text_secondary = 60% Foreground + 40% Comment (only one foreground in the palette). Strong text = ANSI bright white.
 - Muted text keeps Comment (spec role) at ~3.0:1 — dim by design, not body text.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

@@ -15,7 +15,6 @@
 - Placeholder text uses muted (the build groups placeholders with muted text); the docs suggest subtle for placeholders.
 - Derived: brand_bright = 60% iris + 40% text; BRAND_560 = 70% iris + 30% base.
 - Substitution: subtle is 4.46:1 on Moon's surface (channel list), just under 4.5; secondary text is subtle nudged 10% toward text (derived).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

@@ -12,7 +12,6 @@
 - Accent: mauve (default; the guide doesn't mandate one).
 - Strong and normal text are both Text — the guide uses Text for both body copy and headlines. Channels use Subtext 1, so unread (Text) still stands out.
 - Derived: brand_bright = 70% mauve + 30% text; BRAND_560 = 70% mauve + 30% crust (the palette has one mauve).
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

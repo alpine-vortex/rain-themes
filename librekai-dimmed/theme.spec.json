@@ -3,7 +3,7 @@
   "name": "Librekai Dimmed",
   "description": "Librekai Dimmed: VS Code's MIT-licensed Monokai Dimmed — neutral grey chat, muted accents, amber highlight accent.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/microsoft/vscode/tree/main/extensions/theme-monokai-dimmed",
   "variant": "Monokai Dimmed · accent: amber",
@@ -238,7 +238,7 @@
       "amber_bot",
       "mauve"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Easy on the eyes at 2am.",
     "embed_desc": "MIT-licensed built-in Monokai Dimmed theme",
     "embed_title": "VS Code · Monokai Dimmed"
@@ -249,7 +249,6 @@
     "Links use #6796E6 (info-token blue); the syntax blue #6089B4 is 4.4:1 on the chat, just under 4.5.",
     "Danger uses #F44747 (error-token red); the syntax red #C7444A is under 3:1 on the chat.",
     "The theme's sidebar and activity bar are lighter than the editor; the rail uses the editor background (darkest) instead so layers read in Discord's order.",
-    "Warning yellow is ~16° from the amber accent in hue but much lighter.",
-    "Author 'emeet' taken from git config."
+    "Warning yellow is ~16° from the amber accent in hue but much lighter."
   ]
 }

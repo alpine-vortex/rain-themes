@@ -49,7 +49,7 @@ Import `redeye-theme.json` (file, clipboard, or this URL):
 `https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyodark/desktop/redeye-theme.json`
 
 ## Firefox Color (other machines)
-On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
+With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
 

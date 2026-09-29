@@ -3,7 +3,7 @@
   "name": "Dracula",
   "description": "Dracula Classic (draculatheme.com spec): official UI background ramp, purple accent, cyan links, pink-free status colours.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://draculatheme.com/spec",
   "variant": "Dracula Classic (dark) · accent: purple",
@@ -191,7 +191,7 @@
       "renfield_bot",
       "lucy"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Purple accents forever.",
     "embed_desc": "Dark theme for 400+ apps"
   },
@@ -202,7 +202,6 @@
     "Accent: purple (most characteristic Dracula accent); brighter = ANSI bright blue #D6ACFF, darker (BRAND_560) = Functional Purple (focus colour).",
     "Substitution: the spec's Functional state colours (red #DE5735, green #089108, orange #A39514, cyan #0081D6 for links) are 3.4–3.7:1 on the dark background — they fail as text. Used the classic Red / Green / Orange and Cyan for links instead.",
     "Derived: text_secondary = 60% Foreground + 40% Comment (only one foreground in the palette). Strong text = ANSI bright white.",
-    "Muted text keeps Comment (spec role) at ~3.0:1 — dim by design, not body text.",
-    "Author 'emeet' taken from git config."
+    "Muted text keeps Comment (spec role) at ~3.0:1 — dim by design, not body text."
   ]
 }

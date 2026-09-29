@@ -14,7 +14,6 @@
 - Substitution: nested floating surfaces were bg5 (#5A524C), but fg0 on it is 4.23:1; switched to bg_statusline3 (#504945).
 - BRAND_560 = bg_diff_blue (the palette's only dark teal).
 - Strong text is fg1: the palette's lightest foreground; only slightly brighter than fg0 by design.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

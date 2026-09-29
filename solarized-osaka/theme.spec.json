@@ -3,7 +3,7 @@
   "name": "Solarized Osaka",
   "description": "Dark Solarized Osaka (craftzdog/solarized-osaka.nvim): deep teal-black base04 chat, base03 panels, Solarized blue accent, cyan links.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/craftzdog/solarized-osaka.nvim",
   "variant": "Default dark style · accent: Solarized blue",
@@ -244,7 +244,7 @@
       "blue_bot",
       "violet_tui"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Love how deep that teal-black background is.",
     "embed_desc": "Solarized Osaka colorscheme for Neovim"
   },
@@ -256,7 +256,6 @@
     "Floating surfaces use base03 rather than the plugin's 'dark' floats (base04) so sheets are visible over the base04 chat.",
     "Substitution: danger red500 (error) was 4.01:1 on main / 3.16:1 on secondary; switched to red300.",
     "Substitution: muted text base01 (Comment) was 2.71:1 on inputs; switched to base00. base01 kept for INTERACTIVE_MUTED.",
-    "Button/badge text is base04: light text is ~2.97:1 on blue.",
-    "Author 'emeet' taken from git config (placeholder was left blank)."
+    "Button/badge text is base04: light text is ~2.97:1 on blue."
   ]
 }

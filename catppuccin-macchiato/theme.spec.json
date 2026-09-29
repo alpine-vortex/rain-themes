@@ -3,7 +3,7 @@
   "name": "Catppuccin Macchiato",
   "description": "Catppuccin Macchiato: soothing pastel dark theme with a mauve accent and blue links, following the official style guide.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/catppuccin/catppuccin",
   "variant": "Macchiato · accent: mauve",
@@ -170,7 +170,7 @@
       "mauve_bot",
       "sapphire"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Pastels that don't burn my eyes.",
     "embed_desc": "Soothing pastel theme for the high-spirited!"
   },
@@ -180,7 +180,6 @@
     "Hover = Text at 10% (the guide's cursor-line value); active = Overlay 2 at 25% (the guide's selection range).",
     "Accent: mauve (default; the guide doesn't mandate one).",
     "Strong and normal text are both Text — the guide uses Text for both body copy and headlines. Channels use Subtext 1, so unread (Text) still stands out.",
-    "Derived: brand_bright = 70% mauve + 30% text; BRAND_560 = 70% mauve + 30% crust (the palette has one mauve).",
-    "Author 'emeet' taken from git config."
+    "Derived: brand_bright = 70% mauve + 30% text; BRAND_560 = 70% mauve + 30% crust (the palette has one mauve)."
   ]
 }

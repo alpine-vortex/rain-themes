@@ -12,7 +12,6 @@
 - Floating surfaces use nord2 (documented UI highlight colour) so sheets stand out from nord1 panels.
 - Derived: text_secondary / text_muted / interactive_muted are mixes of nord4 and nord3. nord3 (documented comment/disabled colour) is ~1.6:1 on nord0, unusable as text.
 - Derived: danger is nord11 lightened 25% toward nord6 — nord11 itself is ~2.9:1 on nord0, too low even for status text.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

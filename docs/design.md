@@ -37,7 +37,7 @@ unchanged.
 
 ## Colloid (Cinnamon + GTK)
 
-**Why Colloid:** it's by the same author as Orchis (the user's previous theme),
+**Why Colloid:** it's by the same author as Orchis (a common Mint theme),
 supports Cinnamon, GTK 2/3/4, libadwaita and window borders, and already swaps
 palettes through Sass variables. Its installer ships Nord/Dracula/Gruvbox/
 Everforest/Catppuccin variants. Recolouring compiled CSS instead was rejected:
@@ -96,7 +96,7 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
   Valid key names come from `gsettings list-recursively
   org.gnome.Terminal.Legacy.Profile:<path>`.
 - A profile only appears in the UI if its uuid is in `profiles:/list`. On
-  spacer, `list` and `default` were **unset**, meaning the implicit profile
+  the development machine, `list` and `default` were **unset**, meaning the implicit profile
   `b1dcc9dd-…` from the schema default. So apply writes the list explicitly,
   keeping existing ids, and `--restore` *resets* the keys rather than writing
   empty values.
@@ -148,7 +148,7 @@ rewrites on exit. Hence the running check.
   encoder, so no Node is needed. Verified by decoding with `json-url@2.3.4`.
   Firefox for Android has no theme support at all.
 - The profile is `Default=` in `~/.mozilla/firefox/installs.ini`, not
-  `profiles.ini` (spacer has two profiles).
+  `profiles.ini` (a machine can have several profiles).
 - Verified by screenshot in a throwaway `--no-remote --profile` instance; see
   `tools/dev/preview_desktop.py`.
 
@@ -226,6 +226,6 @@ The snapshot is taken on the first apply only, at
 To make a new baseline (e.g. after deliberately changing the "normal"
 desktop), delete the snapshot; the next apply takes a fresh one.
 
-The icon theme (`Yaru-blue-dark` on spacer) is never changed, so it isn't
+The icon theme is never changed, so it isn't
 recorded. `~/.config/gtk-3.0/gtk.css` is never written; if one exists it
 overrides every GTK3 theme, which is worth checking when colours look wrong.

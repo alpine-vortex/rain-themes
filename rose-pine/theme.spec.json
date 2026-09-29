@@ -3,7 +3,7 @@
   "name": "Rosé Pine",
   "description": "Rosé Pine (rose-pine/rose-pine-palette): base chat, surface panels, overlay sheets, iris accent, foam links.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://rosepinetheme.com/palette/",
   "variant": "Main (default dark) · accent: iris",
@@ -149,7 +149,7 @@
       "rose_bot",
       "dawnwalker"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Low-contrast, calm and cosy.",
     "embed_desc": "All natural pine, faux fur and a bit of soho vibes"
   },
@@ -162,7 +162,6 @@
     "Positive/online uses pine, the documented affirmative colour (Rosé Pine has no green).",
     "Placeholder text uses muted (the build groups placeholders with muted text); the docs suggest subtle for placeholders.",
     "Derived: brand_bright = 60% iris + 40% text; BRAND_560 = 70% iris + 30% base.",
-    "Pine (online/positive) is only 3.38:1 on base in Main — fine for status dots, dim for status text.",
-    "Author 'emeet' taken from git config."
+    "Pine (online/positive) is only 3.38:1 on base in Main — fine for status dots, dim for status text."
   ]
 }

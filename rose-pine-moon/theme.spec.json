@@ -3,7 +3,7 @@
   "name": "Rosé Pine Moon",
   "description": "Rosé Pine Moon (rose-pine/rose-pine-palette): base chat, surface panels, overlay sheets, iris accent, foam links.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://rosepinetheme.com/palette/",
   "variant": "Moon · accent: iris",
@@ -155,7 +155,7 @@
       "rose_bot",
       "dawnwalker"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "Low-contrast, calm and cosy.",
     "embed_desc": "All natural pine, faux fur and a bit of soho vibes"
   },
@@ -168,7 +168,6 @@
     "Positive/online uses pine, the documented affirmative colour (Rosé Pine has no green).",
     "Placeholder text uses muted (the build groups placeholders with muted text); the docs suggest subtle for placeholders.",
     "Derived: brand_bright = 60% iris + 40% text; BRAND_560 = 70% iris + 30% base.",
-    "Substitution: subtle is 4.46:1 on Moon's surface (channel list), just under 4.5; secondary text is subtle nudged 10% toward text (derived).",
-    "Author 'emeet' taken from git config."
+    "Substitution: subtle is 4.46:1 on Moon's surface (channel list), just under 4.5; secondary text is subtle nudged 10% toward text (derived)."
   ]
 }

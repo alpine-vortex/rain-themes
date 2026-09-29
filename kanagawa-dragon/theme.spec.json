@@ -3,7 +3,7 @@
   "name": "Kanagawa Dragon",
   "description": "Kanagawa Dragon (rebelot/kanagawa.nvim): warm dragonBlack surfaces, dragonWhite text, muted dragonBlue2 accent, dragonTeal links.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/rebelot/kanagawa.nvim",
   "variant": "Dragon (dark, muted) · accent: dragonBlue2",
@@ -254,7 +254,7 @@
       "fuji_bot",
       "sakura"
     ],
-    "me": "emeet",
+    "me": "you",
     "embed_desc": "NeoVim dark colorscheme inspired by Katsushika Hokusai"
   },
   "notes": [
@@ -264,7 +264,6 @@
     "Derived: brand_bright = 60% dragonBlue2 + 40% dragonWhite (no lighter blue in the Dragon set). BRAND_560 = waveBlue2 (ui.bg_search).",
     "Text: one foreground (ui.fg = dragonWhite) for strong and normal; secondary = dragonGray, muted = dragonAsh (syn.comment), muted channels = dragonBlack6 (ui.nontext).",
     "Status: themes.lua's Dragon diag colours are the Wave ones — samuraiRed, springGreen, roninYellow — so they're used as-is.",
-    "Palette: lua/kanagawa/colors.lua; roles per variant from lua/kanagawa/themes.lua (palette_roles lists every themes.lua role a colour fills in this variant).",
-    "Author 'emeet' taken from git config."
+    "Palette: lua/kanagawa/colors.lua; roles per variant from lua/kanagawa/themes.lua (palette_roles lists every themes.lua role a colour fills in this variant)."
   ]
 }

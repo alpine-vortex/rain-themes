@@ -13,7 +13,6 @@
 - Substitution: muted text uses dark5 instead of comment (comment is below 3:1 on bg); comment kept for INTERACTIVE_MUTED.
 - Button/badge text is 'black', matching TabLineSel (black on blue).
 - Substitution (moon only): danger uses red instead of error — Moon's error (#C53B53) is just 3.00:1 on bg.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

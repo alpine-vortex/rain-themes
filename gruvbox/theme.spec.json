@@ -3,7 +3,7 @@
   "name": "Gruvbox",
   "description": "Retro groove dark (medium contrast) from morhetz/gruvbox: warm bg0 chat, soft/hard layered panels, bright orange accent, blue links.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/morhetz/gruvbox",
   "variant": "Dark · medium contrast (default) · accent: bright orange",
@@ -190,7 +190,7 @@
       "orange_juice",
       "faded_blue"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "The muted text colour is the Comment gray, nice touch.",
     "embed_desc": "Retro groove color scheme for Vim"
   },
@@ -201,7 +201,6 @@
     "Secondary background (dark0_soft) is slightly lighter than main (dark0) so every layer stays a palette colour.",
     "Button/badge text is dark0: light text fails on orange.",
     "Danger text (bright_red) is ~4.3:1 on main — no lighter red in the palette; status text, not body text.",
-    "Red and orange are separated by hue only (luminance ratio ~1.36).",
-    "Author 'emeet' taken from git config (placeholder was left blank)."
+    "Red and orange are separated by hue only (luminance ratio ~1.36)."
   ]
 }

@@ -3,7 +3,7 @@
   "name": "Librekai Refined",
   "description": "Librekai Refined: crusoexia's MIT-licensed refined Monokai — lifted greys, aqua accent, a true red for errors.",
   "authors": [
-    "emeet"
+    "rain-themes"
   ],
   "source": "https://github.com/crusoexia/vim-monokai",
   "variant": "Refined Monokai · accent: aqua",
@@ -165,7 +165,7 @@
       "todo_bot",
       "purple_paren"
     ],
-    "me": "emeet",
+    "me": "you",
     "msg5": "The softer white is much nicer to read.",
     "embed_desc": "Refined Monokai color scheme for vim"
   },
@@ -175,7 +175,6 @@
     "Links: green, the scheme's Underlined colour. Online/positive uses br_green so it isn't identical to links.",
     "Danger: the scheme's true red #E73C50 (ErrorMsg), distinct from the keyword pink.",
     "Chat is Normal bg (black), panels/rail darkblack (Pmenu/VertSplit bg), sheets CursorLine, nested the Error bg grey, inputs the LineNr/SignColumn bg.",
-    "Derived: BRAND_560 is 70% aqua + 30% black (the palette has no darker aqua).",
-    "Author 'emeet' taken from git config."
+    "Derived: BRAND_560 is 70% aqua + 30% black (the palette has no darker aqua)."
   ]
 }

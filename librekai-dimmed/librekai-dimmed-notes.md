@@ -12,7 +12,6 @@
 - Danger uses #F44747 (error-token red); the syntax red #C7444A is under 3:1 on the chat.
 - The theme's sidebar and activity bar are lighter than the editor; the rail uses the editor background (darkest) instead so layers read in Discord's order.
 - Warning yellow is ~16° from the amber accent in hue but much lighter.
-- Author 'emeet' taken from git config.
 
 ## Derived shades
 

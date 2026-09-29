@@ -10,7 +10,6 @@
 - Accent: green — the scheme's statusline1 / PmenuSel / TabLineSel colour. Online/positive uses aqua so it stays distinct from the green accent.
 - Links: blue, the scheme's URL colour (TSURI).
 - Everforest has a single foreground (fg), so text_strong and text_normal are both fg; unread channels still stand out against grey2 secondary text.
-- Author 'emeet' taken from git config.
 - Tertiary uses bg_dim, the darkest dark-mode background.
 - BRAND_560 uses bg_green (the palette's dark green tint).
 - Substitution: grey2 as secondary text was 4.44:1 on the bg1 channel list; replaced by a derived 75% grey2 + 25% fg.

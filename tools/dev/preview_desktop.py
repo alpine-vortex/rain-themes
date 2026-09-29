@@ -12,7 +12,7 @@ Builds the Colloid theme into a scratch XDG dir and screenshots:
              running Geany and ~/.config/geany are not affected
 
 Windows open briefly on the current display (needs an X session; there is no
-Xvfb on spacer) and close themselves. PNGs go to --out (default: a temp dir,
+Xvfb is assumed) and close themselves. PNGs go to --out (default: a temp dir,
 printed at the end).
 """
 import argparse

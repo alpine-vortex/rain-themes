@@ -14,7 +14,6 @@
 - Substitution: danger red500 (error) was 4.01:1 on main / 3.16:1 on secondary; switched to red300.
 - Substitution: muted text base01 (Comment) was 2.71:1 on inputs; switched to base00. base01 kept for INTERACTIVE_MUTED.
 - Button/badge text is base04: light text is ~2.97:1 on blue.
-- Author 'emeet' taken from git config (placeholder was left blank).
 
 ## Derived shades
 

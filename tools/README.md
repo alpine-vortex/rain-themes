@@ -64,7 +64,7 @@ FAIL/WARN lines and adjust roles.
   "slug": "gruvbox",                 // output file prefix
   "name": "Gruvbox",
   "description": "...",
-  "authors": ["emeet"],
+  "authors": ["rain-themes"],
   "source": "https://github.com/morhetz/gruvbox",
   "variant": "Dark · medium · accent: bright orange",   // preview subtitle
   "palette": { "dark0": "#282828", ... },               // the FULL official palette
