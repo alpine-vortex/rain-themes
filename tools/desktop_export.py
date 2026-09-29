@@ -18,6 +18,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
+    <slug>.heliboard.json    HeliBoard keyboard colours (+ <slug>-light.heliboard.json)
     <slug>.app-theme.json    Android app theme, format app-theme v1 (docs/app-theme.md; e.g. redeye)
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
@@ -570,6 +571,46 @@ def app_light(L):
     return t
 
 
+# ---------- HeliBoard ----------
+def _argb(h):
+    """#RRGGBB -> the signed 32-bit ARGB int HeliBoard (kotlinx Json) stores."""
+    v = 0xFF000000 | int(h[1:], 16)
+    return v - (1 << 32)
+
+
+def heliboard(name, bg, keys, fn_keys, text, hint, secondary, accent):
+    """HeliBoard's own colour-theme JSON (SaveThoseColors, as its Colors > Save writes;
+    checked against a real export 2026-09-29): 10 simple colours, moreColors 1."""
+    c = {"background": bg, "keys": keys, "functional_keys": fn_keys, "spacebar": keys,
+         "text": text, "hint_text": hint, "suggestion_text": text, "spacebar_text": secondary,
+         "accent": accent, "gesture": accent}
+    return {"name": name, "moreColors": 1,
+            "colors": {k: {"first": _argb(v), "second": False} for k, v in c.items()}}
+
+
+def heliboard_themes(t):
+    """From the app-theme dict: dark, plus light when the palette has an official light flavour."""
+    out = {"": heliboard(t["name"], t["panel"], t["raised"], t["selected"], t["text"],
+                         t["text_muted"], t["text_secondary"], t["accent"])}
+    l = t.get("light")
+    if l:
+        out["-light"] = heliboard(l["flavour"], l.get("panel", l["background"]), l.get("raised", l["background"]),
+                                  l.get("selected", l.get("raised", l["background"])), l["text"],
+                                  l.get("text_muted", l["text"]), l.get("text_secondary", l["text"]), l["accent"])
+    return out
+
+
+def heliboard_section(spec, has_light):
+    light = (f" and `{spec['slug']}-light.heliboard.json` ({spec['light']['flavour']}, for day mode)"
+             if has_light else "")
+    return f"""## HeliBoard (phone)
+HeliBoard → Settings → Appearance → Colors → **Load**, then pick
+`{spec['slug']}.heliboard.json`{light}. It can also be pasted from the clipboard.
+Choose the theme for night (and day) in the same screen.
+
+"""
+
+
 def app_section(spec):
     return f"""## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
@@ -629,7 +670,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 {json.dumps(sync_theme(c), indent=2)}
 ```
 
-{termius_section(spec)}{app_section(spec)}## Firefox Color (other machines)
+{termius_section(spec)}{heliboard_section(spec, 'light' in spec)}{app_section(spec)}## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
@@ -680,7 +721,10 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
     fc_theme, fc_url = firefox_color(c, spec["name"])
     (out / "firefox-color.json").write_text(json.dumps({"url": fc_url, "theme": fc_theme}, indent=2) + "\n")
-    (out / f"{slug}.app-theme.json").write_text(json.dumps(app_theme(c, spec), indent=2) + "\n")
+    at = app_theme(c, spec)
+    (out / f"{slug}.app-theme.json").write_text(json.dumps(at, indent=2) + "\n")
+    for suffix, hb in heliboard_themes(at).items():
+        (out / f"{slug}{suffix}.heliboard.json").write_text(json.dumps(hb, ensure_ascii=False) + "\n")
     (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)

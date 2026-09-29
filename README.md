@@ -30,6 +30,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
 | Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
 | Phone | Android apps (e.g. redeye) | `<slug>.app-theme.json` ([format](docs/app-theme.md)): file, clipboard, raw URL or adb |
+| Phone | HeliBoard keyboard | `<slug>.heliboard.json` (+ `-light`): Colors → Load, from a file or the clipboard |
 | Phone | Termius | The matching built-in theme, named in the palette's README |
 | Phone | Firefox (web pages) | Dark Reader values in the palette's README |
 | Desktop | Cinnamon, GTK 2/3/4, window borders | A recoloured [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) build |

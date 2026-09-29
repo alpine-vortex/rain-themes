@@ -44,6 +44,11 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 Settings → Terminal theme & font → Pick **Gruvbox Dark**; it's the same upstream palette. Claude Code over SSH then follows it
 (`/theme` → *ANSI colours only*).
 
+## HeliBoard (phone)
+HeliBoard → Settings → Appearance → Colors → **Load**, then pick
+`gruvbox.heliboard.json` and `gruvbox-light.heliboard.json` (Gruvbox Light, for day mode). It can also be pasted from the clipboard.
+Choose the theme for night (and day) in the same screen.
+
 ## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
 `gruvbox.app-theme.json` by file, clipboard, or this URL:

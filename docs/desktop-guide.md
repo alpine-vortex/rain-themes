@@ -128,6 +128,8 @@ The GUI's **Phone** button does the same, using the style picked in its
 - `sync-theme.json`: copy its contents and paste them into Sync's Monet theme
   import. Sync only imports from the clipboard. The palette's
   `desktop/README.md` shows the same JSON, ready to copy.
+- `<slug>.heliboard.json` (and `<slug>-light.heliboard.json` for day mode): in
+  HeliBoard, go to Settings → Appearance → Colors → **Load**.
 - `<slug>.app-theme.json`: import it in an app that reads the app-theme format (such as redeye), or use the raw URL listed in the
   palette's `desktop/README.md`.
 

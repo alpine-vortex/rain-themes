@@ -44,6 +44,11 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 Settings → Terminal theme & font → Pick **Tokyo Night**, the closest built-in; Termius has no Tokyo Night Storm theme, so colours differ somewhat from the terminal palette below. Claude Code over SSH then follows it
 (`/theme` → *ANSI colours only*).
 
+## HeliBoard (phone)
+HeliBoard → Settings → Appearance → Colors → **Load**, then pick
+`tokyonight-storm.heliboard.json` and `tokyonight-storm-light.heliboard.json` (Tokyo Night Day, for day mode). It can also be pasted from the clipboard.
+Choose the theme for night (and day) in the same screen.
+
 ## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
 `tokyonight-storm.app-theme.json` by file, clipboard, or this URL:
