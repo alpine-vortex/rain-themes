@@ -150,6 +150,10 @@
     "removed": "delfg",
     "changed": "changefg"
   },
+  "termius": {
+    "theme": "Monokai",
+    "match": "closest"
+  },
   "preview": {
     "server_name": "Refinery",
     "tagline": "Monokai, refined",

@@ -175,6 +175,10 @@
     "removed": "bright_red",
     "changed": "bright_aqua"
   },
+  "termius": {
+    "theme": "Gruvbox Dark",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Groovy Retro Club",
     "tagline": "Retro groove talk",

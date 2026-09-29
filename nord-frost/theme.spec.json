@@ -153,6 +153,10 @@
     "removed": "nord11",
     "changed": "nord13"
   },
+  "termius": {
+    "theme": "Nord Dark",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Arctic Studio",
     "tagline": "Clean, minimal, north-bluish",

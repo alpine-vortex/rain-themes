@@ -152,6 +152,10 @@
     "removed": "red",
     "changed": "blue"
   },
+  "termius": {
+    "theme": "Tokyo Night",
+    "match": "closest"
+  },
   "preview": {
     "server_name": "Neon Alley",
     "tagline": "Late-night Neovim",

@@ -189,6 +189,10 @@
     "removed": "git_delete",
     "changed": "git_change"
   },
+  "termius": {
+    "theme": "Tokyo Night",
+    "match": "closest"
+  },
   "preview": {
     "server_name": "Tokyo Lights",
     "tagline": "Neovim after dark",

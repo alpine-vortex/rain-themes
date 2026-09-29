@@ -439,6 +439,23 @@ def sync_theme(c):
     }
 
 
+def termius_section(spec):
+    """Termius (phone SSH) has no custom-theme import; point at the nearest built-in."""
+    t = spec.get("termius")
+    if not t:
+        return ""
+    if t["match"] == "closest":
+        how = (f"Pick **{t['theme']}**, the closest built-in; Termius has no {spec['name']} theme, "
+               "so colours differ somewhat from the terminal palette below.")
+    else:
+        how = f"Pick **{t['theme']}**; it's the same upstream palette."
+    return f"""## Termius (phone)
+Settings → Terminal theme & font → {how} Claude Code over SSH then follows it
+(`/theme` → *ANSI colours only*).
+
+"""
+
+
 def readme(c, spec, slug):
     r = c.role
     sw = nearest_swatch(r["brand"])
@@ -472,7 +489,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 {json.dumps(sync_theme(c), indent=2)}
 ```
 
-## Firefox Color (other machines)
+{termius_section(spec)}## Firefox Color (other machines)
 On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).

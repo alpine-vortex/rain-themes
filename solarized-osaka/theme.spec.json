@@ -229,6 +229,10 @@
     "removed": "red",
     "changed": "yellow"
   },
+  "termius": {
+    "theme": "Solarized Dark",
+    "match": "closest"
+  },
   "preview": {
     "server_name": "Osaka Dev Lounge",
     "tagline": "Editor setups & dotfiles",

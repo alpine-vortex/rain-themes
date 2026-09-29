@@ -176,6 +176,10 @@
     "removed": "red",
     "changed": "orange"
   },
+  "termius": {
+    "theme": "Dracula",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Transylvania",
     "tagline": "Dark theme for everything",

@@ -239,6 +239,10 @@
     "removed": "autumnRed",
     "changed": "autumnYellow"
   },
+  "termius": {
+    "theme": "Kanagawa Dragon",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Great Wave Dojo",
     "tagline": "Ink, paper and neovim",

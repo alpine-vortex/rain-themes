@@ -223,6 +223,10 @@
     "removed": "token_diff_deleted",
     "changed": "token_diff_changed"
   },
+  "termius": {
+    "theme": "Monokai",
+    "match": "closest"
+  },
   "preview": {
     "server_name": "Dim Room",
     "tagline": "Low light, soft colours",

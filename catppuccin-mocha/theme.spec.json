@@ -155,6 +155,10 @@
     "removed": "red",
     "changed": "yellow"
   },
+  "termius": {
+    "theme": "Catppuccin Mocha",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Cozy Café",
     "tagline": "Soothing pastels",

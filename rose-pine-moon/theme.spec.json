@@ -140,6 +140,10 @@
     "removed": "love",
     "changed": "rose"
   },
+  "termius": {
+    "theme": "Rosé Pine Moon",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Soho Vibes",
     "tagline": "All natural pine, faux fur and a bit of soho vibes",

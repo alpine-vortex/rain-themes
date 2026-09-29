@@ -189,6 +189,10 @@
     "removed": "pink",
     "changed": "yellow"
   },
+  "termius": {
+    "theme": "Monokai",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Libre Lounge",
     "tagline": "Classic colours, free forever",

@@ -157,6 +157,10 @@
     "removed": "red",
     "changed": "blue"
   },
+  "termius": {
+    "theme": "Everforest Dark",
+    "match": "same palette"
+  },
   "preview": {
     "server_name": "Forest Cabin",
     "tagline": "Comfy green hangout",

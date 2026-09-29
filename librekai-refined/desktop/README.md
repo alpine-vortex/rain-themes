@@ -40,6 +40,10 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 }
 ```
 
+## Termius (phone)
+Settings → Terminal theme & font → Pick **Monokai**, the closest built-in; Termius has no Librekai Refined theme, so colours differ somewhat from the terminal palette below. Claude Code over SSH then follows it
+(`/theme` → *ANSI colours only*).
+
 ## Firefox Color (other machines)
 On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
