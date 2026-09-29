@@ -233,6 +233,7 @@
     "theme": "Solarized Dark",
     "match": "closest"
   },
+  "redeye_state": "orange",
   "preview": {
     "server_name": "Osaka Dev Lounge",
     "tagline": "Editor setups & dotfiles",

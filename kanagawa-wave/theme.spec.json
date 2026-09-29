@@ -236,6 +236,7 @@
     "theme": "Kanagawa Wave",
     "match": "same palette"
   },
+  "redeye_state": "surimiOrange",
   "preview": {
     "server_name": "Great Wave Dojo",
     "tagline": "Ink, paper and neovim",

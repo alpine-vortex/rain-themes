@@ -161,6 +161,7 @@
     "theme": "Everforest Dark",
     "match": "same palette"
   },
+  "redeye_state": "orange",
   "preview": {
     "server_name": "Forest Cabin",
     "tagline": "Comfy green hangout",

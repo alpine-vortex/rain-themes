@@ -193,6 +193,7 @@
     "theme": "Tokyo Night",
     "match": "closest"
   },
+  "redeye_state": "orange",
   "preview": {
     "server_name": "Tokyo Lights",
     "tagline": "Neovim after dark",

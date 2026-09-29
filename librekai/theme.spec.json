@@ -193,6 +193,7 @@
     "theme": "Monokai",
     "match": "same palette"
   },
+  "redeye_state": "orange",
   "preview": {
     "server_name": "Libre Lounge",
     "tagline": "Classic colours, free forever",

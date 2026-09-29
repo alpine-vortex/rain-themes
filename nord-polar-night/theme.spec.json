@@ -157,6 +157,7 @@
     "theme": "Nord Dark",
     "match": "same palette"
   },
+  "redeye_state": "nord12",
   "preview": {
     "server_name": "Arctic Studio",
     "tagline": "Clean, minimal, north-bluish",

@@ -243,6 +243,7 @@
     "theme": "Kanagawa Dragon",
     "match": "same palette"
   },
+  "redeye_state": "dragonOrange",
   "preview": {
     "server_name": "Great Wave Dojo",
     "tagline": "Ink, paper and neovim",

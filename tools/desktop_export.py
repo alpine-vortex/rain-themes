@@ -18,6 +18,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
+    redeye-theme.json        redeye (the owner's Reddit app) theme, format redeye-theme v1
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
 See tools/README.md ("Desktop exports").
@@ -439,6 +440,90 @@ def sync_theme(c):
     }
 
 
+# ---------- redeye ----------
+RAW_BASE = "https://raw.githubusercontent.com/alpine-vortex/rain-themes/main"
+
+
+def _close(a, b, tol=0.12):
+    return sum((x - y) ** 2 for x, y in zip(rgb(a), rgb(b))) ** 0.5 < tol
+
+
+def _same_hue(a, b, degrees):
+    """Both saturated and within `degrees` of hue (so a grey never matches anything)."""
+    (ha, _, sa), (hb, _, sb) = hls(a), hls(b)
+    d = abs(ha - hb) * 360
+    return sa > 0.25 and sb > 0.25 and min(d, 360 - d) < degrees
+
+
+def _on(colour, dark, light):
+    """Text colour for a filled `colour`: whichever of dark/light contrasts more."""
+    return dark if contrast(colour, dark) >= contrast(colour, light) else light
+
+
+def redeye_tags(c, avoid):
+    """8 muted hues for subreddit dots / comment depth bars. Candidates in a fixed order
+    (ANSI 1-6, ANSI 9-14, syntax colours), skipping greys, repeats and anything within
+    12 degrees of hue of accent/state/danger; each blended 30% toward the background.
+    Palettes with fewer than 8 usable hues are filled with the same hues blended 55%
+    (then 12%, 70%, 0%), so neighbouring slots stay distinguishable. Order is
+    stable: redeye picks a slot by hashing the subreddit name."""
+    bg = c.role["main_bg"]
+    cands = c.ansi[1:7] + c.ansi[9:15] + [c.syntax[k] for k in SYNTAX_KEYS]
+    picked = []
+    for h in cands:
+        if hls(h)[2] < 0.25 or not 0.35 < hls(h)[1] < 0.9:
+            continue  # greys, near-black diff backgrounds, near-white
+        if any(_close(h, x) or _same_hue(h, x, 12) for x in avoid) \
+                or any(_close(h, x) or _same_hue(h, x, 8) for x in picked):
+            continue
+        picked.append(h)
+    tags = [mix(h, bg, 0.3) for h in picked[:8]]
+    for t in (0.55, 0.12, 0.7, 0.0):
+        for h in picked:
+            if len(tags) < 8:
+                tags.append(mix(h, bg, t))
+    return tags
+
+
+def redeye_theme(c, spec):
+    """redeye-theme v1 (agreed with the redeye session 2026-09-29): flat JSON, #RRGGBB."""
+    r, R = c.role, c.R
+    bg, text = r["main_bg"], r["text_normal"]
+    state = c.ref(spec["redeye_state"])
+    if state == r["brand"]:
+        raise SpecError("redeye_state must differ from the accent")
+    t = {
+        "format": "redeye-theme", "version": 1,
+        "name": spec["name"], "slug": spec["slug"], "source": spec.get("source", ""),
+        "mode": "dark",
+        "background": bg, "text": text, "accent": r["brand"],
+        "panel": r["secondary_bg"], "raised": r["floating_bg"],
+        "selected": r["nested_floating_bg"], "on_selected": text,
+        "line": r["floating_bg"], "border": r["interactive_muted"],
+        "text_secondary": r["text_secondary"], "text_muted": r["text_muted"],
+        "on_accent": r["text_on_brand"],
+        "state": state, "on_state": _on(state, bg, text),
+        "danger": r["danger"], "on_danger": _on(r["danger"], bg, text),
+    }
+    # snackbar action on a `text`-coloured container: only a palette value that reaches 4.5:1
+    b560 = spec.get("raw", {}).get("BRAND_560")
+    if b560 is not None:
+        inv = c._opaque(R(b560)[0], bg)
+        if contrast(inv, text) >= 4.5:
+            t["accent_inverse"] = inv
+    t.update({"link": r["link"], "positive": r["positive"], "warning": r["warning"],
+              "tags": redeye_tags(c, [r["brand"], state, r["danger"], bg, text])})
+    return t
+
+
+def redeye_section(spec):
+    return f"""## redeye (phone)
+Import `redeye-theme.json` (file, clipboard, or this URL):
+`{RAW_BASE}/{spec['slug']}/desktop/redeye-theme.json`
+
+"""
+
+
 def termius_section(spec):
     """Termius (phone SSH) has no custom-theme import; point at the nearest built-in."""
     t = spec.get("termius")
@@ -489,7 +574,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 {json.dumps(sync_theme(c), indent=2)}
 ```
 
-{termius_section(spec)}## Firefox Color (other machines)
+{termius_section(spec)}{redeye_section(spec)}## Firefox Color (other machines)
 On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
@@ -540,6 +625,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
     fc_theme, fc_url = firefox_color(c, spec["name"])
     (out / "firefox-color.json").write_text(json.dumps({"url": fc_url, "theme": fc_theme}, indent=2) + "\n")
+    (out / "redeye-theme.json").write_text(json.dumps(redeye_theme(c, spec), indent=2) + "\n")
     (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)

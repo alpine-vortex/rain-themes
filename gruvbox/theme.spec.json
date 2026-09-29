@@ -179,6 +179,7 @@
     "theme": "Gruvbox Dark",
     "match": "same palette"
   },
+  "redeye_state": "bright_yellow",
   "preview": {
     "server_name": "Groovy Retro Club",
     "tagline": "Retro groove talk",

@@ -7,6 +7,13 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - The 19-palette desktop work (`desktop-all-palettes`) was merged to `main` on
   2026-09-28.
 
+## Phone (branch `phone-sync`, 2026-09-29)
+
+- `sync-theme.json` (Sync for Reddit Monet import), a Termius built-in per palette
+  (spec `termius`), and `redeye-theme.json` (redeye v1) are generated for all 21.
+- Not yet: the system accent through adb (the phone isn't paired yet), and
+  importing any of these on the phone.
+
 ## Live state on spacer
 
 - **Librekai applied** to every target: Cinnamon/GTK (`Rain-Librekai-Dark`),

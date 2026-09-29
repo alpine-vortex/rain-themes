@@ -169,6 +169,7 @@
     "theme": "Gruvbox Dark",
     "match": "closest"
   },
+  "redeye_state": "orange",
   "preview": {
     "server_name": "Material Grove",
     "tagline": "Soft contrast, warm tones",

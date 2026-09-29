@@ -140,6 +140,7 @@ colour even where upstream uses a light one with dark selected text.
 | Brave | `brave.json` | Sets the "Customize → colour" seed (`browser.theme.user_color2`), dark mode. Brave must be closed. |
 | Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
 | Termius (phone) | `README.md` | Manual: pick the built-in named by the spec's `termius` block (`theme`, `match`: `same palette` or `closest`). Termius has no custom-theme import. |
+| redeye (phone) | `redeye-theme.json` | Imported in redeye (file, clipboard, or the raw.githubusercontent.com URL in the palette README; URLs work once on `main`). Format `redeye-theme` v1, agreed with the redeye session 2026-09-29. `state` (NSFW/hidden/saved) comes from the spec's `redeye_state`; `tags` are 8 muted hues from ANSI/syntax, avoiding accent/state/danger, in stable order. |
 | Sync for Reddit (phone) | `sync-theme.json` | Manual import in Sync's Monet theme settings. Seed = accent; dark primary/secondary/link text overridden. Sync derives backgrounds from the seed, so they aren't the palette's exact background. |
 | Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
 
