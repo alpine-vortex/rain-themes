@@ -18,6 +18,28 @@ On the site, open the Dark Reader popup → **Theme** → **Colors** (use its si
    Fallback in **Standard**: **indigo**.
 3. Export the theme (`.nlt`) and commit it here as `kanagawa-wave.nlt`.
 
+## Sync for Reddit (phone)
+Import `sync-theme.json` in Sync's Monet theme settings, where its theme export
+comes from. It sets the seed `#7E9CD8` and the dark text colours; Sync derives
+backgrounds and cards from the seed, so they are tinted near-black rather than
+`#1F1F28`.
+
+```json
+{
+  "monet_override_light_secondary_text_color": 0,
+  "monet_override_light_primary_text_color": 0,
+  "monet_override_light_link_color": 0,
+  "monet_boost_light_color": false,
+  "monet_override_dark_secondary_text_color": "#C8C093",
+  "monet_override_dark_primary_text_color": "#DCD7BA",
+  "monet_override_dark_link_color": "#7FB4CA",
+  "monet_boost_dark_color": true,
+  "monet_color_intensity": 1,
+  "monet_manual_theme_color": "#7E9CD8",
+  "monet_system": false
+}
+```
+
 ## Firefox Color (other machines)
 On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.

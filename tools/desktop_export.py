@@ -17,6 +17,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     <slug>.theme.css         Vesktop / Vencord theme
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
+    sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
 See tools/README.md ("Desktop exports").
@@ -417,6 +418,27 @@ def wallpaper(c, size, path, accent_share):
 
 
 # ---------- README ----------
+# ---------- Sync for Reddit ----------
+def sync_theme(c):
+    """Sync's Monet theme JSON (the format its theme export produces). Sync derives
+    every surface from the seed, so only the accent and the dark text colours are
+    exact; 0 means "no override". Light overrides stay 0: the themes are dark-only."""
+    r = c.role
+    return {
+        "monet_override_light_secondary_text_color": 0,
+        "monet_override_light_primary_text_color": 0,
+        "monet_override_light_link_color": 0,
+        "monet_boost_light_color": False,
+        "monet_override_dark_secondary_text_color": r["text_secondary"],
+        "monet_override_dark_primary_text_color": r["text_normal"],
+        "monet_override_dark_link_color": r["link"],
+        "monet_boost_dark_color": True,
+        "monet_color_intensity": 1,
+        "monet_manual_theme_color": r["brand"],
+        "monet_system": False,
+    }
+
+
 def readme(c, spec, slug):
     r = c.role
     sw = nearest_swatch(r["brand"])
@@ -439,6 +461,16 @@ On the site, open the Dark Reader popup → **Theme** → **Colors** (use its si
 2. Niagara → Theme colour → pick the **Wallpaper and System** swatch closest to `{r['brand']}`.
    Fallback in **Standard**: **{sw}**.
 3. Export the theme (`.nlt`) and commit it here as `{slug}.nlt`.
+
+## Sync for Reddit (phone)
+Import `sync-theme.json` in Sync's Monet theme settings, where its theme export
+comes from. It sets the seed `{r['brand']}` and the dark text colours; Sync derives
+backgrounds and cards from the seed, so they are tinted near-black rather than
+`{r['main_bg']}`.
+
+```json
+{json.dumps(sync_theme(c), indent=2)}
+```
 
 ## Firefox Color (other machines)
 On spacer, `apply_theme.py` uses userChrome.css (exact colours). Elsewhere, install
@@ -491,6 +523,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
     fc_theme, fc_url = firefox_color(c, spec["name"])
     (out / "firefox-color.json").write_text(json.dumps({"url": fc_url, "theme": fc_theme}, indent=2) + "\n")
+    (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)
     (out / "README.md").write_text(readme(c, spec, slug))

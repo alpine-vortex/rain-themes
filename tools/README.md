@@ -139,6 +139,7 @@ colour even where upstream uses a light one with dark selected text.
 | Firefox | `userChrome.css`, `userContent.css` | Into the default profile's `chrome/`, plus the `toolkit.legacyUserProfileCustomizations.stylesheets` pref in `user.js`. Takes effect on the next Firefox start. Firefox's default theme also follows the GTK theme on Linux, so it matches even without these files. |
 | Brave | `brave.json` | Sets the "Customize → colour" seed (`browser.theme.user_color2`), dark mode. Brave must be closed. |
 | Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
+| Sync for Reddit (phone) | `sync-theme.json` | Manual import in Sync's Monet theme settings. Seed = accent; dark primary/secondary/link text overridden. Sync derives backgrounds from the seed, so they aren't the palette's exact background. |
 | Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
 
 The first apply saves the current state to
