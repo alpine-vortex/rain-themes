@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#F93B7F",
+    "#3c84f7": "#CF376C",
+    "#2c2c2c": "#272822",
+    "#3c3c3c": "#3E3D32",
+    "#242424": "#1E1F1C",
+    "#464646": "#464741",
+    "#212121": "#1E1F1C",
+    "#fd5f51": "#F44747",
+    "#38c76a": "#A6E22E",
+    "#fdbe04": "#FD971F"
+  },
+  "accent": "#F93B7F",
+  "name": "Librekai",
+  "slug": "librekai",
+  "gtk_theme": "Rain-Librekai"
+}

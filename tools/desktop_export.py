@@ -1,0 +1,419 @@
+#!/usr/bin/env python3
+"""Export a palette spec to desktop app configs (Linux Mint / Cinnamon).
+
+    python3 tools/desktop_export.py <theme-dir> [<theme-dir> ...]
+
+Needs the Rain theme built first (reads <slug>.json for the Discord colours).
+Only themes whose spec has "ansi", "terminal" and "syntax" blocks are
+exported; others are skipped with a note. Writes <theme-dir>/desktop/:
+
+    colloid-palette.scss     Colloid palette (GTK/Cinnamon theme is built by apply_theme.py)
+    colloid.json             colours the Colloid build swaps into stock assets
+    gnome-terminal.json      GNOME Terminal profile keys
+    geany-<slug>.conf        Geany colour scheme
+    userChrome.css           Firefox toolbar/tabs/menus
+    userContent.css          Firefox new-tab page
+    brave.json               Brave seed colour
+    <slug>.theme.css         Vesktop / Vencord theme
+    wallpaper-desktop.png    2560x1600
+    wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
+    README.md                manual steps: Dark Reader, Niagara, Claude Code
+
+See tools/README.md ("Desktop exports").
+"""
+import colorsys
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_theme import GROUPS, RAW, HEX, Resolver, SpecError, contrast, mix, over, rgb  # noqa: E402
+
+ANSI_NAMES = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
+SYNTAX_KEYS = ["comment", "string", "number", "constant", "keyword", "storage", "type", "class", "function",
+               "parameter", "operator", "builtin", "tag", "attribute", "preprocessor", "error",
+               "added", "removed", "changed"]
+# Niagara's fixed "Standard" swatches, sampled from the app's Theme colour screen.
+NIAGARA_SWATCHES = {"grey": "#C8C8C8", "red": "#E86A5C", "orange": "#E8A25C", "yellow": "#E6D85E",
+                    "green": "#A2E65C", "teal": "#62E6D0", "blue": "#5CB0E6", "indigo": "#6272E6",
+                    "magenta": "#D05CE6"}
+DESKTOP_SIZE = (2560, 1600)
+PHONE_SIZE = (1440, 3200)
+
+
+class Colours:
+    """Resolved, opaque colours for one spec."""
+
+    def __init__(self, spec):
+        R = Resolver(spec["palette"], spec.get("palette_roles"))
+        self.R = R
+        roles = spec["roles"]
+        self.main_bg = self._opaque(R(roles["main_bg"])[0], None)
+        base = self.main_bg
+        self.role = {}
+        for rid, _, _ in GROUPS:
+            self.role[rid] = self._opaque(R(roles[rid])[0], base)
+        self.ansi = [self.ref(x) for x in spec["ansi"]]
+        if len(self.ansi) != 16:
+            raise SpecError("ansi must list 16 colours")
+        t = spec["terminal"]
+        self.term = {k: self.ref(t[k]) for k in ("background", "foreground", "cursor", "selection")}
+        missing = set(SYNTAX_KEYS) - set(spec["syntax"])
+        if missing:
+            raise SpecError(f"syntax missing {sorted(missing)}")
+        self.syntax = {k: self.ref(spec["syntax"][k]) for k in SYNTAX_KEYS}
+
+    def ref(self, x):
+        if isinstance(x, str) and x.startswith("#"):
+            if not HEX.match(x) or len(x) != 7:
+                raise SpecError(f"bad hex {x!r}")
+            return x.upper()
+        return self._opaque(self.R(x)[0], self.main_bg)
+
+    @staticmethod
+    def _opaque(c, base):
+        return c if len(c) == 7 else over(c, base or "#000000")
+
+
+# ---------- helpers ----------
+def hls(h):
+    return colorsys.rgb_to_hls(*rgb(h))
+
+
+def argb_int(h):
+    """Chromium stores SkColor as a signed 32-bit int."""
+    v = 0xFF000000 | int(h[1:], 16)
+    return v - (1 << 32)
+
+
+def nearest_swatch(h):
+    hh, ll, ss = hls(h)
+    if ss < 0.2:
+        return "grey"
+    best, bd = None, 9
+    for name, sw in NIAGARA_SWATCHES.items():
+        if name == "grey":
+            continue
+        d = abs(hh - hls(sw)[0])
+        d = min(d, 1 - d)
+        if d < bd:
+            best, bd = name, d
+    return best
+
+
+# ---------- Colloid ----------
+def colloid(c):
+    """Palette for Colloid's _color-palette-default.scss (dark variant only)."""
+    r, a = c.role, c.ansi
+    red, green, yellow, blue, purple, teal = a[9], a[10], a[11], a[12], a[13], a[14]
+    red_d, green_d, yellow_d, blue_d, purple_d, teal_d = a[1], a[2], a[3], a[4], a[5], a[6]
+    pal = c.R.p
+    orange = next((pal[k] for k in ("orange", "peach", "bright_orange") if k in pal), mix(red, yellow, 0.5))
+    pink = mix(red, purple, 0.5)
+    brand = r["brand"]
+    brand_dark = mix(brand, r["main_bg"], 0.2)
+    # Surfaces Colloid reads in dark mode: 650 surface, 700 window, 750 sidebar/titlebar, 800 panel/OSD.
+    greys = {650: r["floating_bg"], 700: r["main_bg"], 750: r["secondary_bg"], 800: r["tertiary_bg"],
+             850: mix(r["tertiary_bg"], "#000000", 0.25), 900: mix(r["tertiary_bg"], "#000000", 0.45),
+             950: mix(r["tertiary_bg"], "#000000", 0.65)}
+    ramp = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600]
+    for i, g in enumerate(ramp):
+        greys[g] = mix(r["text_strong"], r["nested_floating_bg"], i / (len(ramp) - 1))
+    black = mix(r["tertiary_bg"], "#000000", 0.6)
+    L = ["// Generated by tools/desktop_export.py — do not edit.", ""]
+    for name, lt, dk in [("red", red, red_d), ("pink", pink, mix(pink, "#000000", 0.15)),
+                         ("purple", purple, purple_d), ("blue", blue, blue_d), ("teal", teal, teal_d),
+                         ("green", green, green_d), ("yellow", yellow, yellow_d),
+                         ("orange", orange, mix(orange, "#000000", 0.15))]:
+        L += [f"${name}-light: {lt};", f"${name}-dark: {dk};"]
+    L += [""] + [f"$grey-{g:03d}: {greys[g]};" for g in sorted(greys)] + [""]
+    L += [f"$white: {r['text_strong']};", f"$black: {black};", "",
+          f"$button-close: {r['danger']};", f"$button-max: {r['positive']};", f"$button-min: {r['warning']};", "",
+          f"$links: {r['link']};", "", f"$default-light: {brand};", f"$default-dark: {brand_dark};", ""]
+    # Stock Colloid hex -> ours, for pre-drawn assets (svg/gtkrc/xml) the Sass build doesn't touch.
+    swap = {"#5b9bf8": brand, "#3c84f7": brand_dark, "#2c2c2c": r["main_bg"], "#3c3c3c": r["floating_bg"],
+            "#242424": r["secondary_bg"], "#464646": r["nested_floating_bg"], "#212121": r["tertiary_bg"],
+            "#fd5f51": r["danger"], "#38c76a": r["positive"], "#fdbe04": r["warning"]}
+    return "\n".join(L), {"swap": swap, "accent": brand}
+
+
+# ---------- terminal ----------
+def terminal(c, name):
+    t = c.term
+    return {
+        "visible-name": f"Rain {name}",
+        "use-theme-colors": False,
+        "background-color": t["background"],
+        "foreground-color": t["foreground"],
+        "palette": c.ansi,
+        "bold-is-bright": False,
+        "bold-color-same-as-fg": True,
+        "cursor-colors-set": True,
+        "cursor-background-color": t["cursor"],
+        "cursor-foreground-color": t["background"],
+        "highlight-colors-set": True,
+        "highlight-background-color": t["selection"],
+        "highlight-foreground-color": t["foreground"],
+    }
+
+
+# ---------- Geany ----------
+def geany(c, spec):
+    r, s, t = c.role, c.syntax, c.term
+    x = lambda h: "0x" + h[1:].lower()  # noqa: E731
+    bg, fg = t["background"], t["foreground"]
+    lines = f"""[theme_info]
+name=Rain {spec['name']}
+description={spec['name']} colours, generated from rain-themes theme.spec.json.
+version=1
+author={', '.join(spec['authors'])}
+url={spec.get('source', '')}
+
+[named_styles]
+default={x(fg)};{x(bg)};false;false
+error={x(s['error'])};{x(bg)};true;false
+
+selection={x(fg)};{x(t['selection'])};false;true
+current_line={x(fg)};{x(r['floating_bg'] if r['floating_bg'] != bg else r['secondary_bg'])};true
+brace_good={x(r['brand'])};{x(bg)};true;false
+brace_bad={x(s['error'])};{x(bg)};true;false
+margin_line_number={x(r['text_muted'])};{x(r['secondary_bg'])}
+margin_folding={x(r['text_muted'])};{x(r['secondary_bg'])}
+fold_symbol_highlight={x(r['text_secondary'])}
+indent_guide={x(r['nested_floating_bg'])}
+caret={x(t['cursor'])};{x(t['cursor'])};false
+marker_line={x(fg)};{x(mix(s['changed'], bg, 0.7))}
+marker_search={x(bg)};{x(r['brand'])}
+marker_mark={x(fg)};{x(r['floating_bg'])}
+call_tips={x(r['text_secondary'])};{x(r['floating_bg'])};false;false
+white_space={x(r['nested_floating_bg'])};{x(bg)};true;false
+
+comment={x(s['comment'])}
+comment_doc={x(s['comment'])}
+comment_line=comment
+comment_line_doc=comment_doc
+comment_doc_keyword=comment_doc,bold
+comment_doc_keyword_error=comment_doc,italic
+
+number={x(s['number'])}
+number_1=number
+number_2=number_1
+
+type={x(s['type'])}
+class={x(s['class'])}
+function={x(s['function'])}
+parameter={x(s['parameter'])}
+
+keyword={x(s['keyword'])}
+keyword_1=keyword
+keyword_2={x(s['builtin'])}
+keyword_3={x(s['storage'])}
+keyword_4=keyword_1
+
+identifier=default
+identifier_1=identifier
+identifier_2=identifier_1
+identifier_3=identifier_1
+identifier_4=identifier_1
+
+string={x(s['string'])}
+string_1=string
+string_2=string_1
+string_3=default
+string_4=default
+string_eol={x(s['error'])};{x(bg)}
+character=string_1
+backticks=string_2
+here_doc=string_2
+
+label=default,bold
+preprocessor={x(s['preprocessor'])}
+regex=number_1
+operator={x(s['operator'])}
+decorator={x(s['preprocessor'])},bold
+other={x(s['constant'])}
+
+tag={x(s['tag'])}
+tag_unknown=tag,bold
+tag_end=tag,bold
+attribute={x(s['attribute'])}
+attribute_unknown=attribute,bold
+value=string_1
+entity={x(s['constant'])}
+
+line_added={x(s['added'])}
+line_removed={x(s['removed'])}
+line_changed={x(s['changed'])}
+"""
+    return lines
+
+
+# ---------- Firefox ----------
+def firefox(c, name):
+    r = c.role
+    v = {
+        "--lwt-accent-color": r["tertiary_bg"], "--lwt-text-color": r["text_normal"],
+        "--toolbar-bgcolor": r["secondary_bg"], "--toolbar-color": r["text_normal"],
+        "--tab-selected-bgcolor": r["main_bg"], "--tab-selected-textcolor": r["text_strong"],
+        "--toolbar-field-background-color": r["main_bg"], "--toolbar-field-color": r["text_normal"],
+        "--toolbar-field-focus-background-color": r["main_bg"], "--toolbar-field-focus-color": r["text_strong"],
+        "--toolbar-field-focus-border-color": r["brand"], "--focus-outline-color": r["brand"],
+        "--arrowpanel-background": r["floating_bg"], "--arrowpanel-color": r["text_normal"],
+        "--arrowpanel-border-color": r["nested_floating_bg"],
+        "--urlbarView-highlight-background": r["brand"], "--urlbarView-highlight-color": r["text_on_brand"],
+        "--sidebar-background-color": r["secondary_bg"], "--sidebar-text-color": r["text_normal"],
+        "--sidebar-border-color": r["tertiary_bg"],
+        "--chrome-content-separator-color": r["tertiary_bg"], "--tabs-navbar-separator-color": r["tertiary_bg"],
+        "--tab-loading-fill": r["brand"], "--tab-attention-icon-color": r["brand"],
+        "--button-primary-bgcolor": r["brand"], "--button-primary-color": r["text_on_brand"],
+        "--color-accent-primary": r["brand"],
+    }
+    body = "\n".join(f"  {k}: {h} !important;" for k, h in v.items())
+    chrome = f"""/* Rain {name} — generated by tools/desktop_export.py.
+   Needs about:config toolkit.legacyUserProfileCustomizations.stylesheets = true (apply_theme.py sets it). */
+:root, :root:-moz-lwtheme {{
+{body}
+}}
+"""
+    content = f"""/* Rain {name} — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {{
+  :root, body {{
+    --newtab-background-color: {r['main_bg']} !important;
+    --newtab-background-color-secondary: {r['floating_bg']} !important;
+    --newtab-text-primary-color: {r['text_normal']} !important;
+    --newtab-primary-action-background: {r['brand']} !important;
+    background-color: {r['main_bg']} !important;
+  }}
+}}
+"""
+    return chrome, content
+
+
+# ---------- Vesktop ----------
+def vesktop(theme_json, spec):
+    sem = theme_json["semanticColors"]
+    raw = theme_json["rawColors"]
+    decls = [f"  --{k.lower().replace('_', '-')}: {v[0]} !important;" for k, v in sem.items()]
+    decls += [f"  --{k.lower().replace('_', '-')}: {v} !important;" for k, v in raw.items()]
+    return f"""/**
+ * @name Rain {spec['name']}
+ * @author {', '.join(spec['authors'])}
+ * @description {spec['description']} Generated from rain-themes (same mapping as the Rain mobile theme).
+ * @version 1
+ * @source https://github.com/alpine-vortex/rain-themes
+ */
+:root, .theme-dark, .theme-darker, .theme-midnight,
+.visual-refresh.theme-dark, .visual-refresh .theme-dark {{
+{chr(10).join(decls)}
+}}
+"""
+
+
+# ---------- wallpaper ----------
+def wallpaper(c, size, path, accent_share):
+    from PIL import Image, ImageDraw, ImageFilter
+    r = c.role
+    w, h = size
+    small = (w // 8, h // 8)  # draw small, blur, upscale: smooth and fast
+    img = Image.new("RGB", small)
+    top, bot = rgb(r["tertiary_bg"]), rgb(r["main_bg"])
+    d = ImageDraw.Draw(img)
+    for y in range(small[1]):
+        t = y / max(1, small[1] - 1)
+        d.line([(0, y), (small[0], y)], fill=tuple(round((a * (1 - t) + b * t) * 255) for a, b in zip(top, bot)))
+    sw, sh = small
+    # One big accent field (steers Material You), one secondary accent.
+    rad = int(min(sw, sh) * accent_share)
+    d.ellipse([sw - rad * 1.3, sh - rad * 1.2, sw + rad * 0.7, sh + rad * 0.8], fill=r["brand"])
+    rad2 = int(rad * 0.45)
+    d.ellipse([-rad2 * 0.6, -rad2 * 0.4, rad2 * 1.4, rad2 * 1.6], fill=r["link"])
+    img = img.filter(ImageFilter.GaussianBlur(min(sw, sh) / 9))
+    img = img.resize(size, Image.BICUBIC)
+    img.save(path, optimize=True)
+
+
+# ---------- README ----------
+def readme(c, spec, slug):
+    r = c.role
+    sw = nearest_swatch(r["brand"])
+    return f"""# {spec['name']} — desktop exports
+
+Generated by `tools/desktop_export.py`. Apply with `tools/apply_theme.py {slug}`;
+the steps below are the ones a script can't do.
+
+## Dark Reader (ChatGPT and other sites)
+On the site, open the Dark Reader popup → **Theme** → **Colors** (use its site-only option to keep other sites as they are):
+
+| Setting | Value |
+|---|---|
+| Background | `{r['main_bg']}` |
+| Text | `{r['text_normal']}` |
+| Selection | `{r['brand']}` |
+
+## Niagara Launcher (phone)
+1. Set `wallpaper-phone.png` as the wallpaper.
+2. Niagara → Theme colour → pick the **Wallpaper and System** swatch closest to `{r['brand']}`.
+   Fallback in **Standard**: **{sw}**.
+3. Export the theme (`.nlt`) and commit it here as `{slug}.nlt`.
+
+## Claude Code
+Once: `/theme` → the *ANSI colours only* dark option. It then follows the terminal palette.
+
+## Colours
+| Role | Hex |
+|---|---|
+| Background | `{r['main_bg']}` |
+| Sidebar / titlebar | `{r['secondary_bg']}` |
+| Panel | `{r['tertiary_bg']}` |
+| Text | `{r['text_normal']}` |
+| Accent | `{r['brand']}` (text on accent contrast {contrast(r['brand'], r['text_on_brand']):.1f}) |
+| Link | `{r['link']}` |
+
+Terminal: {' '.join(f'`{h}`' for h in c.ansi)}
+"""
+
+
+def export(theme_dir):
+    theme_dir = Path(theme_dir)
+    spec = json.loads((theme_dir / "theme.spec.json").read_text())
+    slug = spec["slug"]
+    if not all(k in spec for k in ("ansi", "terminal", "syntax")):
+        print(f"skip {slug}: spec has no ansi/terminal/syntax blocks")
+        return False
+    theme_json = json.loads((theme_dir / f"{slug}.json").read_text())
+    c = Colours(spec)
+    out = theme_dir / "desktop"
+    out.mkdir(exist_ok=True)
+    scss, meta = colloid(c)
+    (out / "colloid-palette.scss").write_text(scss)
+    meta["name"] = spec["name"]
+    meta["slug"] = slug
+    meta["gtk_theme"] = "Rain-" + "".join(w.capitalize() for w in slug.split("-"))
+    (out / "colloid.json").write_text(json.dumps(meta, indent=2) + "\n")
+    (out / "gnome-terminal.json").write_text(json.dumps(terminal(c, spec["name"]), indent=2) + "\n")
+    (out / f"geany-{slug}.conf").write_text(geany(c, spec))
+    chrome, content = firefox(c, spec["name"])
+    (out / "userChrome.css").write_text(chrome)
+    (out / "userContent.css").write_text(content)
+    (out / "brave.json").write_text(json.dumps(
+        {"seed": c.role["brand"], "user_color2": argb_int(c.role["brand"])}, indent=2) + "\n")
+    (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
+    wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
+    wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)
+    (out / "README.md").write_text(readme(c, spec, slug))
+    print(f"exported {slug} -> {out}")
+    return True
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    for d in sys.argv[1:]:
+        try:
+            export(d)
+        except SpecError as e:
+            sys.exit(f"{d}: {e}")
+
+
+if __name__ == "__main__":
+    main()

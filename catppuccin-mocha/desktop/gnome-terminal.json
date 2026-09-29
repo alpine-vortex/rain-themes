@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Catppuccin Mocha",
+  "use-theme-colors": false,
+  "background-color": "#1E1E2E",
+  "foreground-color": "#CDD6F4",
+  "palette": [
+    "#45475A",
+    "#F38BA8",
+    "#A6E3A1",
+    "#F9E2AF",
+    "#89B4FA",
+    "#F5C2E7",
+    "#94E2D5",
+    "#BAC2DE",
+    "#585B70",
+    "#F38BA8",
+    "#A6E3A1",
+    "#F9E2AF",
+    "#89B4FA",
+    "#F5C2E7",
+    "#94E2D5",
+    "#A6ADC8"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#F5E0DC",
+  "cursor-foreground-color": "#1E1E2E",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#585B70",
+  "highlight-foreground-color": "#CDD6F4"
+}

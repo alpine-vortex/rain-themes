@@ -37,3 +37,10 @@ Each folder also has `<slug>-preview.html` (a static colour mockup) and
 
 Themes are generated from `<folder>/theme.spec.json` by `tools/build_theme.py`;
 see [tools/README.md](tools/README.md).
+
+## Desktop
+
+Themes with a `desktop/` folder also come as a matching Linux Mint desktop:
+Cinnamon/GTK (a recoloured Colloid build), GNOME Terminal, Geany, Firefox,
+Brave, Vesktop and wallpapers. Apply with `tools/apply_theme.py <slug>`;
+see [tools/README.md](tools/README.md#desktop-exports-linux-mint--cinnamon).

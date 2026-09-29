@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#CBA6F7",
+    "#3c84f7": "#A88BCF",
+    "#2c2c2c": "#1E1E2E",
+    "#3c3c3c": "#313244",
+    "#242424": "#181825",
+    "#464646": "#45475A",
+    "#212121": "#11111B",
+    "#fd5f51": "#F38BA8",
+    "#38c76a": "#A6E3A1",
+    "#fdbe04": "#F9E2AF"
+  },
+  "accent": "#CBA6F7",
+  "name": "Catppuccin Mocha",
+  "slug": "catppuccin-mocha",
+  "gtk_theme": "Rain-CatppuccinMocha"
+}

@@ -74,3 +74,46 @@ python3 tools/gallery.py
 Screenshots every theme's preview to `<slug>/<slug>-preview.png`, then writes
 `GALLERY.md` and `index.html` at the repo root and refreshes the theme table in
 `README.md`. Run it after adding or changing a theme.
+
+## Desktop exports (Linux Mint / Cinnamon)
+
+The same palette, applied to the desktop and the apps around it.
+
+```sh
+python3 tools/desktop_export.py <theme-dir> ...   # writes <theme-dir>/desktop/
+tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,geany,firefox,brave,vesktop] [--dry-run]
+tools/apply_theme.py --restore                    # back to the settings saved on the first apply
+```
+
+A theme is exported only when its spec has three extra blocks; the others are
+skipped:
+
+```jsonc
+"ansi_source": "https://...",          // where ansi/syntax came from
+"ansi": [16 colour refs],               // black red green yellow blue magenta cyan white, then brights
+"terminal": {"background": "...", "foreground": "...", "cursor": "...", "selection": "..."},
+"syntax": {"comment": "...", "string": "...", "number": "...", "constant": "...", "keyword": "...",
+           "storage": "...", "type": "...", "class": "...", "function": "...", "parameter": "...",
+           "operator": "...", "builtin": "...", "tag": "...", "attribute": "...", "preprocessor": "...",
+           "error": "...", "added": "...", "removed": "...", "changed": "..."}
+```
+
+Refs are palette names (with `@AA` alpha, flattened over `main_bg`) or literal
+`#RRGGBB`. Everything else comes from `roles`.
+
+| Target | Export | How `apply_theme.py` applies it |
+|---|---|---|
+| Cinnamon, GTK 2/3/4, window borders (Nemo, Geany chrome) | `colloid-palette.scss`, `colloid.json` | Rebuilds [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) (GPL-3, pinned commit, cloned to `~/.cache/rain-themes`) as `~/.themes/Rain-<Name>-Dark`, sets the three Cinnamon theme keys, links `~/.config/gtk-4.0` for libadwaita. |
+| Wallpaper | `wallpaper-desktop.png` | Copied to `~/.local/share/backgrounds/rain-themes/`, set via gsettings. |
+| GNOME Terminal (and Claude Code via `/theme` → ANSI) | `gnome-terminal.json` | Profile "Rain <Name>" written with dconf (stable uuid5 id) and made default. |
+| Geany editor | `geany-<slug>.conf` | Into `~/.config/geany/colorschemes/`, `color_scheme=` in `geany.conf`. Geany must be closed. |
+| Firefox | `userChrome.css`, `userContent.css` | Into the default profile's `chrome/`, plus the `toolkit.legacyUserProfileCustomizations.stylesheets` pref in `user.js`. Firefox must be closed. |
+| Brave | `brave.json` | Sets the "Customize → colour" seed (`browser.theme.user_color2`), dark mode. Brave must be closed. |
+| Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
+| Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
+
+The first apply saves the current state to
+`~/.local/state/rain-themes/snapshot.json` (gsettings, terminal profile list,
+`~/.config/gtk-4.0`, Firefox files, Geany scheme, Brave colour, Vesktop enabled
+themes); `--restore` puts it back. The GTK2 widget PNGs are pre-rendered by
+Colloid and keep its stock colours.

@@ -1,0 +1,10 @@
+/* Rain Librekai — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #272822 !important;
+    --newtab-background-color-secondary: #3E3D32 !important;
+    --newtab-text-primary-color: #F8F8F2 !important;
+    --newtab-primary-action-background: #F93B7F !important;
+    background-color: #272822 !important;
+  }
+}
