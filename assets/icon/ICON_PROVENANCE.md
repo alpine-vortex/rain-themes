@@ -1,25 +1,24 @@
 # Rain Themes icon provenance
 
-- Generating model: `gpt-5.6-luna`
-- Generation date: 2026-09-29
-- Selected candidate: the single generated candidate (kept as `rain-themes-source.png`). No alternate candidates were retained because this candidate met the small-size readability and transparency requirements.
-- Generation mode: built-in image generation tool.
+- Source model: `gpt-5.6-luna` (source inherited from s222)
+- Cleanup date: 2026-09-29
+- Selected candidate: the cleaned source (`rain-themes-source.png`). It replaces the s222 version because the prior source had blurry white/dark smudges in the top-left and top-right tile corners.
+- Cleanup method: deterministic Pillow edit. Rebuilt the rounded tile as a clean solid `#1E1E2E` RGBA silhouette, retained the largest connected colored raindrop component, removed all stray marks, then resized directly from the cleaned source.
 
 ## Prompt
 
 ```text
-Use case: logo-brand
-Asset type: Linux GTK desktop app icon
-Primary request: an original bold flat square icon for Rain Themes: one large raindrop divided into four chunky horizontal colour bands, centered on a dark rounded-square tile.
-Style/medium: polished flat raster icon, geometric, highly legible at 16x16.
-Composition/framing: centered drop, generous padding, transparent outside tile.
-Color palette: tile #1E1E2E; bands #F93B7F, #CBA6F7, #94E2D5, #89B4FA.
-Constraints: no text, letters, numbers, logos, watermark, brand likeness, fine detail, thin lines, gradients, scenery, or multiple objects; genuinely transparent outside the rounded tile.
+Use case: precise-object-edit
+Asset type: Linux GTK desktop app icon cleanup
+Primary request: preserve the existing Rain Themes icon exactly while removing the two blurry corner smudges from the dark rounded tile.
+Input image: existing `rain-themes-source.png` as the edit target.
+Method: deterministic pixel cleanup rather than a new composition; rebuild the tile background, preserve the centered four-band raindrop, and keep genuine transparency outside the rounded tile.
+Constraints: change only stray tile artifacts; no text, letters, numbers, logos, watermark, fine detail, thin lines, scenery, or additional objects.
 ```
 
 ## Derivation
 
-`rain-themes-source.png` is the generated 1254x1254 RGBA PNG. Each numbered icon was resized directly from that source using Pillow's Lanczos resampling (`Image.Resampling.LANCZOS`), then saved as an optimized RGBA PNG. The source and every numbered file have transparent corner pixels.
+`rain-themes-source.png` is the cleaned 1254x1254 RGBA PNG. Each numbered icon was resized directly from that source using Pillow's Lanczos resampling (`Image.Resampling.LANCZOS`), then saved as an optimized RGBA PNG. The source and every numbered file have transparent corner pixels. Corner inspection found no bright background pixels in the four tile-corner windows; all seven numbered files were inspected at native size.
 
 At 16x16, the rounded tile remains a strong dark silhouette and the drop remains a single readable shape with four broad colour bands; no fine detail is required to distinguish the rain/palette mark.
 
@@ -27,11 +26,11 @@ At 16x16, the rounded tile remains a strong dark silhouette and the drop remains
 
 | File | SHA-256 |
 | --- | --- |
-| `rain-themes-source.png` | `1260d33afdef24e9725c46f74a342f42e756a61465c8fc45e25b368398005057` |
-| `rain-themes-256.png` | `db3b168dc7af642d0da58ff75f7337547936b7fc1257c021720eac7913afd52b` |
-| `rain-themes-128.png` | `c998a1907497b8936eab00b1d746d60b6337d126f7fcd6c811240e8fad709622` |
-| `rain-themes-64.png` | `d8115e4262d02791a365389254e067964354212661c162106ed92ae7326059bf` |
-| `rain-themes-48.png` | `d250d3f74cb80dbcd08f1b435cdfb0cceb3524affb9d0e4bfcf79e653624bcf3` |
-| `rain-themes-32.png` | `46b29f2b5bc57d2ccad0dc3ebeab14af1eb306ef32be4e70cf5ba099252433d5` |
-| `rain-themes-24.png` | `7f608f5f7cf6dd62f8f1eb0a470ff240ae5b7c7b6acb33cb3b83cfe0563593f4` |
-| `rain-themes-16.png` | `fff1c0dec3be94205f0fd38c4a615a2d660dc75bb909a11fdb08414fcc079cf4` |
+| `rain-themes-source.png` | `4d21d2216c448bd1e6f2f8c86e2dff16a1ee3d81b86759f417fb7633393821d2` |
+| `rain-themes-256.png` | `e7b9d947d6153d1f7ce841a1ac3d5669a4044cb92b9e91daf6e0aebf5dd2d13e` |
+| `rain-themes-128.png` | `3ef55481430aa8f82a31242078f33bcc5824ce65a8e596507dde44886295e7df` |
+| `rain-themes-64.png` | `1b7a91c88bde27de3c70b06a822abd10a475f8b96085b98b1fb29bc880445231` |
+| `rain-themes-48.png` | `0c2157921f3a6f499c84c6fb85f9e8bb6574fa210ee47259d0383b40911e3e1e` |
+| `rain-themes-32.png` | `c41ba0c2a57cd3f1bc07f395bf04c7e3283881f78e4dcb32cd841264774f7d65` |
+| `rain-themes-24.png` | `603b1daf5194d6fb94483db1b93ed4d0dbb0623ee44d6a286abd7c131b7ec4c4` |
+| `rain-themes-16.png` | `d54fb0ef0b2b40babd58d4676eb7341f9477d493b58126f6ffe8af025a1c0c27` |
