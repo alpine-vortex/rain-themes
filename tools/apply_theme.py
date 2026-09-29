@@ -101,6 +101,10 @@ def build_gtk(slug, dest):
         subprocess.run(["bash", str(work / "install.sh"), "-d", str(out), "-n", name, "-c", "dark", "-t", "default"],
                        check=True, capture_output=True, text=True)
         built = out / f"{name}-Dark"
+        # What Colloid's -l would write to ~/.config/gtk-4.0; kept in the theme so apply can link it.
+        (built / "libadwaita").mkdir()
+        subprocess.run(["sassc", "-M", "-t", "expanded", str(work / "src/main/libadwaita/libadwaita-Dark.scss"),
+                        str(built / "libadwaita/gtk.css")], check=True, capture_output=True, text=True)
         # Pre-drawn assets keep Colloid's stock colours; swap them in one pass.
         swap = {k.lower(): v for k, v in meta["swap"].items()}
         left = []
@@ -193,9 +197,6 @@ def restore():
             act(f"dconf reset {k}", run, "dconf", "reset", k)
     for key, f in snap["files"].items():
         p = Path(f["path"])
-        if key.startswith("firefox") and running("firefox"):
-            log(f"skip {p}: Firefox is running")
-            continue
 
         def put(p=p, f=f):
             if p.is_symlink() or p.is_file():
@@ -259,8 +260,8 @@ def apply_gtk(slug, exp):
                 p.unlink()
             elif p.is_dir():
                 shutil.rmtree(p)
-            p.symlink_to(tdir / "gtk-4.0" / f)
-    act(f"link {GTK4}/{{gtk.css,gtk-dark.css,assets}} -> {tdir}/gtk-4.0", link4)
+            p.symlink_to(tdir / ("gtk-4.0/assets" if f == "assets" else "libadwaita/gtk.css"))
+    act(f"link {GTK4}/{{gtk.css,gtk-dark.css,assets}} -> {tdir} (libadwaita)", link4)
 
 
 def apply_wallpaper(slug, exp):
@@ -315,8 +316,7 @@ def apply_firefox(slug, exp):
         log("skip Firefox: no profile found")
         return
     if running("firefox"):
-        log("skip Firefox: running — close it and re-run with --only firefox")
-        return
+        log("note: Firefox is running; restart it to load the new userChrome.css")
 
     def go():
         (ff / "chrome").mkdir(exist_ok=True)
