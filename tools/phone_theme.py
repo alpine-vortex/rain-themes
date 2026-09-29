@@ -135,8 +135,9 @@ def migrate(dev, dry):
     print(f"migrate {LEGACY_SNAPSHOT.name} and {STATE.name} to device {dev}")
     if dry:
         return
-    if LEGACY_SNAPSHOT.exists() and not snapshot_path(dev).exists():
-        LEGACY_SNAPSHOT.rename(snapshot_path(dev))
+    if LEGACY_SNAPSHOT.exists():  # keep an existing per-device one; the flat file is then only an old copy
+        LEGACY_SNAPSHOT.rename(snapshot_path(dev) if not snapshot_path(dev).exists()
+                               else STATE_DIR / f"phone-snapshot.{dev}.legacy.json")
     if "legacy" in st:
         save_state("legacy", None, dry)
         if dev not in load_state():
