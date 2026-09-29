@@ -1,0 +1,140 @@
+{
+  "slug": "everforest-dark",
+  "name": "Everforest Dark",
+  "description": "Everforest dark, medium contrast (sainnhe/everforest): warm grey-green bg0 chat, green accent, blue links, aqua online.",
+  "authors": [
+    "emeet"
+  ],
+  "source": "https://github.com/sainnhe/everforest",
+  "variant": "Dark · medium contrast · accent: green",
+  "palette": {
+    "bg_dim": "#232A2E",
+    "bg0": "#2D353B",
+    "bg1": "#343F44",
+    "bg2": "#3D484D",
+    "bg3": "#475258",
+    "bg4": "#4F585E",
+    "bg5": "#56635F",
+    "bg_visual": "#543A48",
+    "bg_red": "#514045",
+    "bg_yellow": "#4D4C43",
+    "bg_green": "#425047",
+    "bg_blue": "#3A515D",
+    "bg_purple": "#4A444E",
+    "fg": "#D3C6AA",
+    "red": "#E67E80",
+    "orange": "#E69875",
+    "yellow": "#DBBC7F",
+    "green": "#A7C080",
+    "aqua": "#83C092",
+    "blue": "#7FBBB3",
+    "purple": "#D699B6",
+    "grey0": "#7A8478",
+    "grey1": "#859289",
+    "grey2": "#9DA9A0",
+    "statusline1": "#A7C080",
+    "statusline2": "#D3C6AA",
+    "statusline3": "#E67E80"
+  },
+  "palette_roles": {
+    "bg_dim": "dim bg; floats with float_style='dim'",
+    "bg0": "Normal background",
+    "bg1": "CursorLine, LineNr bg",
+    "bg2": "Pmenu / NormalFloat (default), StatusLine bg",
+    "bg3": "",
+    "bg4": "MatchParen, VertSplit fg",
+    "bg5": "Conceal, LineNr fg",
+    "bg_visual": "Visual selection",
+    "bg_red": "DiagnosticError bg",
+    "bg_yellow": "DiagnosticWarn bg",
+    "bg_green": "DiagnosticOk/diff bg",
+    "bg_blue": "DiagnosticInfo bg",
+    "bg_purple": "DiagnosticHint bg",
+    "fg": "Normal foreground",
+    "red": "ErrorMsg, DiagnosticError",
+    "orange": "Title, Tag",
+    "yellow": "WarningMsg, MoreMsg, Question, DiagnosticWarn",
+    "green": "Directory, Search",
+    "aqua": "",
+    "blue": "URLs (TSURI), DiagnosticInfo, Todo",
+    "purple": "DiagnosticHint",
+    "grey0": "Conceal, LineNr (alt)",
+    "grey1": "Comment, StatusLine fg, FloatBorder",
+    "grey2": "",
+    "statusline1": "PmenuSel / TabLineSel bg (accent)",
+    "statusline2": "statusline",
+    "statusline3": "statusline (error)"
+  },
+  "roles": {
+    "main_bg": "bg0",
+    "secondary_bg": "bg1",
+    "tertiary_bg": "bg_dim",
+    "floating_bg": "bg2",
+    "nested_floating_bg": "bg3",
+    "input_bg": "bg1",
+    "hover": "fg@14",
+    "active": "fg@1F",
+    "faint": "fg@0D",
+    "selected": "green@26",
+    "text_strong": "fg",
+    "text_normal": "fg",
+    "text_secondary": {
+      "mix": [
+        "grey2",
+        "fg",
+        0.25
+      ]
+    },
+    "text_muted": "grey1",
+    "interactive_muted": "grey0",
+    "brand": "green",
+    "brand_bright": {
+      "mix": [
+        "green",
+        "fg",
+        0.35
+      ]
+    },
+    "text_on_brand": "bg0",
+    "link": "blue",
+    "danger": "red",
+    "positive": "aqua",
+    "warning": "yellow",
+    "mention": "green@26",
+    "mention_hover": "green@33",
+    "backdrop": "bg_dim@B3"
+  },
+  "raw": {
+    "BRAND_560": "bg_green",
+    "PRIMARY_630": "bg2",
+    "PRIMARY_660": "bg1",
+    "PRIMARY_700": "bg0",
+    "PRIMARY_800": "bg_dim"
+  },
+  "preview": {
+    "server_name": "Forest Cabin",
+    "tagline": "Comfy green hangout",
+    "users": [
+      "moss",
+      "fern_dev",
+      "sainnhe",
+      "ranger_bot",
+      "birch"
+    ],
+    "me": "emeet",
+    "msg5": "So easy on the eyes after dark.",
+    "embed_desc": "Comfortable & pleasant color scheme for Vim"
+  },
+  "notes": [
+    "Contrast: medium (g:everforest_background default 'medium').",
+    "Accent: green — the scheme's statusline1 / PmenuSel / TabLineSel colour. Online/positive uses aqua so it stays distinct from the green accent.",
+    "Links: blue, the scheme's URL colour (TSURI).",
+    "Everforest has a single foreground (fg), so text_strong and text_normal are both fg; unread channels still stand out against grey2 secondary text.",
+    "Author 'emeet' taken from git config.",
+    "Tertiary uses bg_dim, the darkest dark-mode background.",
+    "BRAND_560 uses bg_green (the palette's dark green tint).",
+    "Substitution: grey2 as secondary text was 4.44:1 on the bg1 channel list; replaced by a derived 75% grey2 + 25% fg.",
+    "Selected uses green at 15% (not 20%): at 20% strong text on a selected channel was 4.37:1.",
+    "Derived: brand_bright = 65% green + 35% fg (no brighter green in the palette)."
+  ]
+}

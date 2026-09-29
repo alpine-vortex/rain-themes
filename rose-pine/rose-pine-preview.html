@@ -3,11 +3,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}}</title>
+<title>Rosé Pine Preview</title>
 <style>
 /* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
 :root {
-__ROOT__
+  --BACKGROUND_PRIMARY: #191724;
+  --BG_BASE_PRIMARY: #191724;
+  --BACKGROUND_MOBILE_PRIMARY: #191724;
+  --CHAT_BACKGROUND: #191724;
+  --BACKGROUND_BASE_LOW: #191724;
+  --CHANNEL_BACKGROUND_DEFAULT: #191724;
+  --STANDALONE_CHANNEL_CONTENT_BACKGROUND: #191724;
+  --BACKGROUND_SECONDARY: #1F1D2E;
+  --BG_BASE_SECONDARY: #1F1D2E;
+  --BACKGROUND_MOBILE_SECONDARY: #1F1D2E;
+  --BACKGROUND_BASE_LOWER: #1F1D2E;
+  --CHAT_BANNER_BG: #1F1D2E;
+  --BACKGROUND_SECONDARY_ALT: #1F1D2E;
+  --BACKGROUND_TERTIARY: #191724;
+  --BG_BASE_TERTIARY: #191724;
+  --BACKGROUND_BASE_LOWEST: #191724;
+  --BACKGROUND_FLOATING: #26233A;
+  --BACKGROUND_SURFACE_HIGH: #26233A;
+  --MODAL_BACKGROUND: #26233A;
+  --MODAL_FOOTER_BACKGROUND: #26233A;
+  --MOBILE_ACTIONSHEET_BACKGROUND: #26233A;
+  --MOBILE_ACTIONSHEET_GRADIENT_BACKGROUND_DEFAULT: #26233A;
+  --CARD_PRIMARY_BG: #26233A;
+  --CARD_BACKGROUND_DEFAULT: #26233A;
+  --MOBILE_EMBED_BACKGROUND_DEFAULT: #26233A;
+  --BG_SURFACE_OVERLAY: #26233A;
+  --BG_SURFACE_OVERLAY_TMP: #26233A;
+  --BACKGROUND_NESTED_FLOATING: #403D52;
+  --BACKGROUND_SURFACE_HIGHEST: #403D52;
+  --CHAT_INPUT_BACKGROUND: #1F1D2E;
+  --REDESIGN_CHAT_INPUT_BACKGROUND: #1F1D2E;
+  --CHAT_INPUT_CONTAINER_BACKGROUND: #1F1D2E;
+  --INPUT_BACKGROUND: #1F1D2E;
+  --INPUT_BACKGROUND_DEFAULT: #1F1D2E;
+  --BACKGROUND_MODIFIER_HOVER: #E0DEF414;
+  --BACKGROUND_MESSAGE_HOVER: #E0DEF414;
+  --BACKGROUND_MOD_SUBTLE: #E0DEF414;
+  --BG_MOD_SUBTLE: #E0DEF414;
+  --BACKGROUND_MODIFIER_ACTIVE: #E0DEF41F;
+  --BACKGROUND_MOD_NORMAL: #E0DEF41F;
+  --BACKGROUND_MODIFIER_SELECTED: #C4A7E733;
+  --BACKGROUND_MOD_STRONG: #C4A7E733;
+  --BG_MOD_STRONG: #C4A7E733;
+  --MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED: #C4A7E733;
+  --BG_MOD_FAINT: #E0DEF40D;
+  --BACKGROUND_MOD_MUTED: #E0DEF40D;
+  --BACKGROUND_MODIFIER_ACCENT: #E0DEF414;
+  --BORDER_SUBTLE: #E0DEF414;
+  --BORDER_FAINT: #E0DEF414;
+  --BORDER_MUTED: #E0DEF414;
+  --TEXT_NORMAL: #E0DEF4;
+  --TEXT_DEFAULT: #E0DEF4;
+  --HEADER_SECONDARY: #E0DEF4;
+  --ICON_DEFAULT: #E0DEF4;
+  --HEADER_PRIMARY: #E0DEF4;
+  --TEXT_PRIMARY: #E0DEF4;
+  --TEXT_STRONG: #E0DEF4;
+  --ICON_STRONG: #E0DEF4;
+  --TEXT_SECONDARY: #908CAA;
+  --TEXT_SUBTLE: #908CAA;
+  --ICON_SUBTLE: #908CAA;
+  --CHANNELS_DEFAULT: #908CAA;
+  --CHANNEL_ICON: #908CAA;
+  --INTERACTIVE_NORMAL: #908CAA;
+  --INTERACTIVE_TEXT_DEFAULT: #908CAA;
+  --INTERACTIVE_ICON_DEFAULT: #908CAA;
+  --TEXT_MUTED: #6E6A86;
+  --ICON_MUTED: #6E6A86;
+  --INPUT_PLACEHOLDER_TEXT: #6E6A86;
+  --INPUT_PLACEHOLDER_TEXT_DEFAULT: #6E6A86;
+  --CHANNEL_TEXT_AREA_PLACEHOLDER: #6E6A86;
+  --INTERACTIVE_MUTED: #6E6A86;
+  --INTERACTIVE_HOVER: #E0DEF4;
+  --INTERACTIVE_TEXT_HOVER: #E0DEF4;
+  --INTERACTIVE_ICON_HOVER: #E0DEF4;
+  --INTERACTIVE_ACTIVE: #CFBDEC;
+  --INTERACTIVE_TEXT_ACTIVE: #CFBDEC;
+  --INTERACTIVE_ICON_ACTIVE: #CFBDEC;
+  --BG_BRAND: #C4A7E7;
+  --BACKGROUND_BRAND: #C4A7E7;
+  --REDESIGN_BUTTON_PRIMARY_BACKGROUND: #C4A7E7;
+  --CONTROL_PRIMARY_BACKGROUND_DEFAULT: #C4A7E7;
+  --CONTROL_BRAND_FOREGROUND: #C4A7E7;
+  --CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND: #C4A7E7;
+  --BADGE_BACKGROUND_BRAND: #C4A7E7;
+  --FOCUS_PRIMARY: #C4A7E7;
+  --BORDER_FOCUS: #C4A7E7;
+  --INPUT_BORDER_ACTIVE: #C4A7E7;
+  --REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND: #CFBDEC;
+  --CONTROL_PRIMARY_BACKGROUND_ACTIVE: #CFBDEC;
+  --REDESIGN_BUTTON_PRIMARY_TEXT: #191724;
+  --CONTROL_PRIMARY_TEXT_DEFAULT: #191724;
+  --BADGE_TEXT_BRAND: #191724;
+  --CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT: #191724;
+  --TEXT_BRAND: #CFBDEC;
+  --TEXT_LINK: #9CCFD8;
+  --TEXT_DANGER: #EB6F92;
+  --TEXT_FEEDBACK_CRITICAL: #EB6F92;
+  --ICON_FEEDBACK_CRITICAL: #EB6F92;
+  --INFO_DANGER_TEXT: #EB6F92;
+  --STATUS_DANGER: #EB6F92;
+  --INFO_DANGER_FOREGROUND: #EB6F92;
+  --STATUS_DANGER_BACKGROUND: #EB6F92;
+  --REDESIGN_BUTTON_DANGER_BACKGROUND: #EB6F92;
+  --CONTROL_CRITICAL_PRIMARY_BACKGROUND_DEFAULT: #EB6F92;
+  --TEXT_POSITIVE: #31748F;
+  --TEXT_FEEDBACK_POSITIVE: #31748F;
+  --ICON_FEEDBACK_POSITIVE: #31748F;
+  --INFO_POSITIVE_TEXT: #31748F;
+  --STATUS_POSITIVE: #31748F;
+  --INFO_POSITIVE_FOREGROUND: #31748F;
+  --STATUS_ONLINE: #31748F;
+  --ICON_STATUS_ONLINE: #31748F;
+  --TEXT_STATUS_ONLINE: #31748F;
+  --TEXT_WARNING: #F6C177;
+  --TEXT_FEEDBACK_WARNING: #F6C177;
+  --ICON_FEEDBACK_WARNING: #F6C177;
+  --INFO_WARNING_TEXT: #F6C177;
+  --STATUS_WARNING: #F6C177;
+  --INFO_WARNING_FOREGROUND: #F6C177;
+  --STATUS_IDLE: #F6C177;
+  --ICON_STATUS_IDLE: #F6C177;
+  --STATUS_DND: #EB6F92;
+  --ICON_STATUS_DND: #EB6F92;
+  --BACKGROUND_MENTIONED: #C4A7E726;
+  --MESSAGE_MENTIONED_BACKGROUND_DEFAULT: #C4A7E726;
+  --BACKGROUND_MENTIONED_HOVER: #C4A7E733;
+  --MESSAGE_MENTIONED_BACKGROUND_HOVER: #C4A7E733;
+  --BG_BACKDROP: #191724B3;
+  --MOBILE_BACKGROUND_SCRIM_OPAQUE: #191724B3;
+  --BRAND_500: #C4A7E7;
+  --BRAND_530: #CFBDEC;
+  --BRAND_560: #917CAC;
+  --PRIMARY_630: #26233A;
+  --PRIMARY_660: #21202E;
+  --PRIMARY_700: #1F1D2E;
+  --PRIMARY_800: #191724;
+  --PREVIEW_ON_DANGER: var(--REDESIGN_BUTTON_PRIMARY_TEXT);
+  --PREVIEW_PHONE_BASE: var(--BACKGROUND_PRIMARY);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -147,27 +285,27 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
 </style>
 </head>
 <body>
-<h1>{{NAME}} for Rain</h1>
-<p class="sub">{{SUBTITLE}} · colour preview only</p>
+<h1>Rosé Pine for Rain</h1>
+<p class="sub">Main (default dark) · accent: iris · colour preview only</p>
 <input type="checkbox" id="t" class="toggle">
 <div class="wrap">
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="cl" style="flex-direction:column">
       <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
       <div class="cl">
         <div class="rail">
           <div class="srv">DM<span class="ping">3</span></div>
           <hr>
-          <div class="srv sel">{{SERVER_INITIAL}}</div>
+          <div class="srv sel">R</div>
           <div class="srv">R</div>
           <div class="srv">V<span class="ping">1</span></div>
           <div class="srv">K</div>
           <div class="srv">+</div>
         </div>
         <div class="panel">
-          <div class="srv-head">{{SERVER_NAME}}<small>1,204 members · 312 online</small></div>
+          <div class="srv-head">Soho Vibes<small>1,204 members · 312 online</small></div>
           <div class="chs">
             <div class="cat">⌄ Information</div>
             <div class="ch"><span class="h">#</span>rules</div>
@@ -183,8 +321,8 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
             <div class="ch muted"><span class="h">◖</span>AFK</div>
           </div>
           <div class="userbar">
-            <div class="av">{{ME_INITIAL}}<span class="dot on"></span></div>
-            <div><div class="name">{{ME}}</div><div class="st">Online</div></div>
+            <div class="av">E<span class="dot on"></span></div>
+            <div><div class="name">emeet</div><div class="st">Online</div></div>
             <div class="icons"><span class="ico"></span><span class="ico"></span></div>
           </div>
         </div>
@@ -195,34 +333,34 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
     <div class="chat-head">
-      <div><div class="t"><span>#</span> general</div><div class="d">{{TAGLINE}}</div></div>
+      <div><div class="t"><span>#</span> general</div><div class="d">All natural pine, faux fur and a bit of soho vibes</div></div>
       <span class="ico"></span>
     </div>
     <div class="msgs">
       <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
-        <div class="who">{{USER1}}<span class="ts">Today 09:12</span></div>
-        <p>{{MSG1}}</p></div></div>
+        <div class="who">base<span class="ts">Today 09:12</span></div>
+        <p>Morning — switched my terminal over.</p></div></div>
       <div class="divider">NEW</div>
       <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
-        <div class="who">{{USER2}}<span class="ts">Today 09:13</span></div>
-        <p><span class="ping-me">@{{ME}}</span> {{MENTION_MSG}}</p>
+        <div class="who">love_bot<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@emeet</span> can you post your Rain theme?</p>
         <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
       </div></div>
       <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
-        <div class="who">{{USER3}}<span class="ts">Today 09:14</span></div>
-        <p>Palette reference is here: <a>{{LINK_TEXT}}</a></p>
-        <div class="embed"><div class="site">{{EMBED_SITE}}</div><div class="etitle">{{EMBED_TITLE}}</div>
-          <div class="edesc">{{EMBED_DESC}}</div></div>
+        <div class="who">pine_needle<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>rosepinetheme.com/palette</a></p>
+        <div class="embed"><div class="site">rosepinetheme.com</div><div class="etitle">rosepinetheme.com/palette</div>
+          <div class="edesc">All natural pine, faux fur and a bit of soho vibes</div></div>
       </div></div>
       <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
-        <div class="who">{{USER4}}<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
-        <p>{{MSG4}}</p></div></div>
+        <div class="who">rose_bot<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>Build passed ✔ theme validated.</p></div></div>
       <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
-        <div class="who">{{USER5}}<span class="ts">Today 09:25</span></div>
-        <p>{{MSG5}}</p></div></div>
+        <div class="who">dawnwalker<span class="ts">Today 09:25</span></div>
+        <p>Low-contrast, calm and cosy.</p></div></div>
       <div class="scrim"></div>
       <div class="sheet">
         <div class="grab"></div>
@@ -247,8 +385,33 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div class="legend">
-    <h2>Key groups → {{NAME}} palette</h2>
-__LEGEND__
+    <h2>Key groups → Rosé Pine palette</h2>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_PRIMARY)"></i></span><div><b>Main background</b><small>base</small></div><code>#191724</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_SECONDARY)"></i></span><div><b>Secondary background</b><small>surface</small></div><code>#1F1D2E</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_TERTIARY)"></i></span><div><b>Tertiary background</b><small>base</small></div><code>#191724</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_FLOATING)"></i></span><div><b>Floating surfaces</b><small>overlay</small></div><code>#26233A</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_NESTED_FLOATING)"></i></span><div><b>Nested floating</b><small>highlight_med</small></div><code>#403D52</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--CHAT_INPUT_BACKGROUND)"></i></span><div><b>Inputs</b><small>surface</small></div><code>#1F1D2E</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_HOVER)"></i></span><div><b>Hover / subtle / borders</b><small>text @ 8%</small></div><code>#E0DEF414</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_ACTIVE)"></i></span><div><b>Active</b><small>text @ 12%</small></div><code>#E0DEF41F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_MOD_FAINT)"></i></span><div><b>Faint</b><small>text @ 5%</small></div><code>#E0DEF40D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_SELECTED)"></i></span><div><b>Selected</b><small>iris @ 20%</small></div><code>#C4A7E733</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--HEADER_PRIMARY)"></i></span><div><b>Text strong</b><small>text</small></div><code>#E0DEF4</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_NORMAL)"></i></span><div><b>Text normal</b><small>text</small></div><code>#E0DEF4</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_SECONDARY)"></i></span><div><b>Text secondary</b><small>subtle</small></div><code>#908CAA</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_MUTED)"></i></span><div><b>Text muted</b><small>muted</small></div><code>#6E6A86</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--INTERACTIVE_MUTED)"></i></span><div><b>Interactive muted</b><small>muted</small></div><code>#6E6A86</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BRAND)"></i></span><div><b>Brand / accent</b><small>iris</small></div><code>#C4A7E7</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND)"></i></span><div><b>Brand bright (pressed, active, TEXT_BRAND)</b><small>DERIVED: 60% iris + 40% text</small></div><code>#CFBDEC</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_TEXT)"></i></span><div><b>Text on accent</b><small>base</small></div><code>#191724</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_LINK)"></i></span><div><b>Links</b><small>foam</small></div><code>#9CCFD8</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_DANGER)"></i></span><div><b>Danger / DND</b><small>love</small></div><code>#EB6F92</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_POSITIVE)"></i></span><div><b>Positive / online</b><small>pine</small></div><code>#31748F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_WARNING)"></i></span><div><b>Warning / idle</b><small>gold</small></div><code>#F6C177</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED)"></i></span><div><b>Mentions</b><small>iris @ 15%</small></div><code>#C4A7E726</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED_HOVER)"></i></span><div><b>Mentions hover</b><small>iris @ 20%</small></div><code>#C4A7E733</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BACKDROP)"></i></span><div><b>Backdrops</b><small>base @ 70%</small></div><code>#191724B3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BRAND_560)"></i></span><div><b>BRAND_560 (raw)</b><small>DERIVED: 70% iris + 30% base</small></div><code>#917CAC</code></div>
     <div class="cmp">Accent vs status:
       <span class="badge">accent</span><span class="dot dnd"></span>DND
       <span class="dot idle"></span>idle <span class="dot on"></span>online</div>

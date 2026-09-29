@@ -3,11 +3,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}}</title>
+<title>Catppuccin Frappé Preview</title>
 <style>
 /* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
 :root {
-__ROOT__
+  --BACKGROUND_PRIMARY: #303446;
+  --BG_BASE_PRIMARY: #303446;
+  --BACKGROUND_MOBILE_PRIMARY: #303446;
+  --CHAT_BACKGROUND: #303446;
+  --BACKGROUND_BASE_LOW: #303446;
+  --CHANNEL_BACKGROUND_DEFAULT: #303446;
+  --STANDALONE_CHANNEL_CONTENT_BACKGROUND: #303446;
+  --BACKGROUND_SECONDARY: #292C3C;
+  --BG_BASE_SECONDARY: #292C3C;
+  --BACKGROUND_MOBILE_SECONDARY: #292C3C;
+  --BACKGROUND_BASE_LOWER: #292C3C;
+  --CHAT_BANNER_BG: #292C3C;
+  --BACKGROUND_SECONDARY_ALT: #292C3C;
+  --BACKGROUND_TERTIARY: #232634;
+  --BG_BASE_TERTIARY: #232634;
+  --BACKGROUND_BASE_LOWEST: #232634;
+  --BACKGROUND_FLOATING: #414559;
+  --BACKGROUND_SURFACE_HIGH: #414559;
+  --MODAL_BACKGROUND: #414559;
+  --MODAL_FOOTER_BACKGROUND: #414559;
+  --MOBILE_ACTIONSHEET_BACKGROUND: #414559;
+  --MOBILE_ACTIONSHEET_GRADIENT_BACKGROUND_DEFAULT: #414559;
+  --CARD_PRIMARY_BG: #414559;
+  --CARD_BACKGROUND_DEFAULT: #414559;
+  --MOBILE_EMBED_BACKGROUND_DEFAULT: #414559;
+  --BG_SURFACE_OVERLAY: #414559;
+  --BG_SURFACE_OVERLAY_TMP: #414559;
+  --BACKGROUND_NESTED_FLOATING: #51576D;
+  --BACKGROUND_SURFACE_HIGHEST: #51576D;
+  --CHAT_INPUT_BACKGROUND: #414559;
+  --REDESIGN_CHAT_INPUT_BACKGROUND: #414559;
+  --CHAT_INPUT_CONTAINER_BACKGROUND: #414559;
+  --INPUT_BACKGROUND: #414559;
+  --INPUT_BACKGROUND_DEFAULT: #414559;
+  --BACKGROUND_MODIFIER_HOVER: #C6D0F51A;
+  --BACKGROUND_MESSAGE_HOVER: #C6D0F51A;
+  --BACKGROUND_MOD_SUBTLE: #C6D0F51A;
+  --BG_MOD_SUBTLE: #C6D0F51A;
+  --BACKGROUND_MODIFIER_ACTIVE: #949CBB40;
+  --BACKGROUND_MOD_NORMAL: #949CBB40;
+  --BACKGROUND_MODIFIER_SELECTED: #CA9EE633;
+  --BACKGROUND_MOD_STRONG: #CA9EE633;
+  --BG_MOD_STRONG: #CA9EE633;
+  --MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED: #CA9EE633;
+  --BG_MOD_FAINT: #C6D0F50D;
+  --BACKGROUND_MOD_MUTED: #C6D0F50D;
+  --BACKGROUND_MODIFIER_ACCENT: #C6D0F51A;
+  --BORDER_SUBTLE: #C6D0F51A;
+  --BORDER_FAINT: #C6D0F51A;
+  --BORDER_MUTED: #C6D0F51A;
+  --TEXT_NORMAL: #C6D0F5;
+  --TEXT_DEFAULT: #C6D0F5;
+  --HEADER_SECONDARY: #C6D0F5;
+  --ICON_DEFAULT: #C6D0F5;
+  --HEADER_PRIMARY: #C6D0F5;
+  --TEXT_PRIMARY: #C6D0F5;
+  --TEXT_STRONG: #C6D0F5;
+  --ICON_STRONG: #C6D0F5;
+  --TEXT_SECONDARY: #B5BFE2;
+  --TEXT_SUBTLE: #B5BFE2;
+  --ICON_SUBTLE: #B5BFE2;
+  --CHANNELS_DEFAULT: #B5BFE2;
+  --CHANNEL_ICON: #B5BFE2;
+  --INTERACTIVE_NORMAL: #B5BFE2;
+  --INTERACTIVE_TEXT_DEFAULT: #B5BFE2;
+  --INTERACTIVE_ICON_DEFAULT: #B5BFE2;
+  --TEXT_MUTED: #838BA7;
+  --ICON_MUTED: #838BA7;
+  --INPUT_PLACEHOLDER_TEXT: #838BA7;
+  --INPUT_PLACEHOLDER_TEXT_DEFAULT: #838BA7;
+  --CHANNEL_TEXT_AREA_PLACEHOLDER: #838BA7;
+  --INTERACTIVE_MUTED: #737994;
+  --INTERACTIVE_HOVER: #C6D0F5;
+  --INTERACTIVE_TEXT_HOVER: #C6D0F5;
+  --INTERACTIVE_ICON_HOVER: #C6D0F5;
+  --INTERACTIVE_ACTIVE: #C9ADEA;
+  --INTERACTIVE_TEXT_ACTIVE: #C9ADEA;
+  --INTERACTIVE_ICON_ACTIVE: #C9ADEA;
+  --BG_BRAND: #CA9EE6;
+  --BACKGROUND_BRAND: #CA9EE6;
+  --REDESIGN_BUTTON_PRIMARY_BACKGROUND: #CA9EE6;
+  --CONTROL_PRIMARY_BACKGROUND_DEFAULT: #CA9EE6;
+  --CONTROL_BRAND_FOREGROUND: #CA9EE6;
+  --CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND: #CA9EE6;
+  --BADGE_BACKGROUND_BRAND: #CA9EE6;
+  --FOCUS_PRIMARY: #CA9EE6;
+  --BORDER_FOCUS: #CA9EE6;
+  --INPUT_BORDER_ACTIVE: #CA9EE6;
+  --REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND: #C9ADEA;
+  --CONTROL_PRIMARY_BACKGROUND_ACTIVE: #C9ADEA;
+  --REDESIGN_BUTTON_PRIMARY_TEXT: #303446;
+  --CONTROL_PRIMARY_TEXT_DEFAULT: #303446;
+  --BADGE_TEXT_BRAND: #303446;
+  --CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT: #303446;
+  --TEXT_BRAND: #C9ADEA;
+  --TEXT_LINK: #8CAAEE;
+  --TEXT_DANGER: #E78284;
+  --TEXT_FEEDBACK_CRITICAL: #E78284;
+  --ICON_FEEDBACK_CRITICAL: #E78284;
+  --INFO_DANGER_TEXT: #E78284;
+  --STATUS_DANGER: #E78284;
+  --INFO_DANGER_FOREGROUND: #E78284;
+  --STATUS_DANGER_BACKGROUND: #E78284;
+  --REDESIGN_BUTTON_DANGER_BACKGROUND: #E78284;
+  --CONTROL_CRITICAL_PRIMARY_BACKGROUND_DEFAULT: #E78284;
+  --TEXT_POSITIVE: #A6D189;
+  --TEXT_FEEDBACK_POSITIVE: #A6D189;
+  --ICON_FEEDBACK_POSITIVE: #A6D189;
+  --INFO_POSITIVE_TEXT: #A6D189;
+  --STATUS_POSITIVE: #A6D189;
+  --INFO_POSITIVE_FOREGROUND: #A6D189;
+  --STATUS_ONLINE: #A6D189;
+  --ICON_STATUS_ONLINE: #A6D189;
+  --TEXT_STATUS_ONLINE: #A6D189;
+  --TEXT_WARNING: #E5C890;
+  --TEXT_FEEDBACK_WARNING: #E5C890;
+  --ICON_FEEDBACK_WARNING: #E5C890;
+  --INFO_WARNING_TEXT: #E5C890;
+  --STATUS_WARNING: #E5C890;
+  --INFO_WARNING_FOREGROUND: #E5C890;
+  --STATUS_IDLE: #E5C890;
+  --ICON_STATUS_IDLE: #E5C890;
+  --STATUS_DND: #E78284;
+  --ICON_STATUS_DND: #E78284;
+  --BACKGROUND_MENTIONED: #CA9EE626;
+  --MESSAGE_MENTIONED_BACKGROUND_DEFAULT: #CA9EE626;
+  --BACKGROUND_MENTIONED_HOVER: #CA9EE633;
+  --MESSAGE_MENTIONED_BACKGROUND_HOVER: #CA9EE633;
+  --BG_BACKDROP: #232634B3;
+  --MOBILE_BACKGROUND_SCRIM_OPAQUE: #232634B3;
+  --BRAND_500: #CA9EE6;
+  --BRAND_530: #C9ADEA;
+  --BRAND_560: #987AB1;
+  --PRIMARY_630: #414559;
+  --PRIMARY_660: #303446;
+  --PRIMARY_700: #292C3C;
+  --PRIMARY_800: #232634;
+  --PREVIEW_ON_DANGER: var(--REDESIGN_BUTTON_PRIMARY_TEXT);
+  --PREVIEW_PHONE_BASE: var(--BACKGROUND_PRIMARY);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -147,27 +285,27 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
 </style>
 </head>
 <body>
-<h1>{{NAME}} for Rain</h1>
-<p class="sub">{{SUBTITLE}} · colour preview only</p>
+<h1>Catppuccin Frappé for Rain</h1>
+<p class="sub">Frappé · accent: mauve · colour preview only</p>
 <input type="checkbox" id="t" class="toggle">
 <div class="wrap">
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="cl" style="flex-direction:column">
       <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
       <div class="cl">
         <div class="rail">
           <div class="srv">DM<span class="ping">3</span></div>
           <hr>
-          <div class="srv sel">{{SERVER_INITIAL}}</div>
+          <div class="srv sel">C</div>
           <div class="srv">R</div>
           <div class="srv">V<span class="ping">1</span></div>
           <div class="srv">K</div>
           <div class="srv">+</div>
         </div>
         <div class="panel">
-          <div class="srv-head">{{SERVER_NAME}}<small>1,204 members · 312 online</small></div>
+          <div class="srv-head">Cozy Café<small>1,204 members · 312 online</small></div>
           <div class="chs">
             <div class="cat">⌄ Information</div>
             <div class="ch"><span class="h">#</span>rules</div>
@@ -183,8 +321,8 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
             <div class="ch muted"><span class="h">◖</span>AFK</div>
           </div>
           <div class="userbar">
-            <div class="av">{{ME_INITIAL}}<span class="dot on"></span></div>
-            <div><div class="name">{{ME}}</div><div class="st">Online</div></div>
+            <div class="av">E<span class="dot on"></span></div>
+            <div><div class="name">emeet</div><div class="st">Online</div></div>
             <div class="icons"><span class="ico"></span><span class="ico"></span></div>
           </div>
         </div>
@@ -195,34 +333,34 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
     <div class="chat-head">
-      <div><div class="t"><span>#</span> general</div><div class="d">{{TAGLINE}}</div></div>
+      <div><div class="t"><span>#</span> general</div><div class="d">Soothing pastels</div></div>
       <span class="ico"></span>
     </div>
     <div class="msgs">
       <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
-        <div class="who">{{USER1}}<span class="ts">Today 09:12</span></div>
-        <p>{{MSG1}}</p></div></div>
+        <div class="who">rosewater<span class="ts">Today 09:12</span></div>
+        <p>Morning — switched my terminal over.</p></div></div>
       <div class="divider">NEW</div>
       <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
-        <div class="who">{{USER2}}<span class="ts">Today 09:13</span></div>
-        <p><span class="ping-me">@{{ME}}</span> {{MENTION_MSG}}</p>
+        <div class="who">flamingo<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@emeet</span> can you post your Rain theme?</p>
         <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
       </div></div>
       <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
-        <div class="who">{{USER3}}<span class="ts">Today 09:14</span></div>
-        <p>Palette reference is here: <a>{{LINK_TEXT}}</a></p>
-        <div class="embed"><div class="site">{{EMBED_SITE}}</div><div class="etitle">{{EMBED_TITLE}}</div>
-          <div class="edesc">{{EMBED_DESC}}</div></div>
+        <div class="who">lavender<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>github.com/catppuccin/catppuccin</a></p>
+        <div class="embed"><div class="site">GitHub</div><div class="etitle">catppuccin/catppuccin</div>
+          <div class="edesc">Soothing pastel theme for the high-spirited!</div></div>
       </div></div>
       <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
-        <div class="who">{{USER4}}<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
-        <p>{{MSG4}}</p></div></div>
+        <div class="who">mauve_bot<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>Build passed ✔ theme validated.</p></div></div>
       <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
-        <div class="who">{{USER5}}<span class="ts">Today 09:25</span></div>
-        <p>{{MSG5}}</p></div></div>
+        <div class="who">sapphire<span class="ts">Today 09:25</span></div>
+        <p>Pastels that don&#x27;t burn my eyes.</p></div></div>
       <div class="scrim"></div>
       <div class="sheet">
         <div class="grab"></div>
@@ -247,8 +385,33 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div class="legend">
-    <h2>Key groups → {{NAME}} palette</h2>
-__LEGEND__
+    <h2>Key groups → Catppuccin Frappé palette</h2>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_PRIMARY)"></i></span><div><b>Main background</b><small>base</small></div><code>#303446</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_SECONDARY)"></i></span><div><b>Secondary background</b><small>mantle</small></div><code>#292C3C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_TERTIARY)"></i></span><div><b>Tertiary background</b><small>crust</small></div><code>#232634</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_FLOATING)"></i></span><div><b>Floating surfaces</b><small>surface0</small></div><code>#414559</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_NESTED_FLOATING)"></i></span><div><b>Nested floating</b><small>surface1</small></div><code>#51576D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--CHAT_INPUT_BACKGROUND)"></i></span><div><b>Inputs</b><small>surface0</small></div><code>#414559</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_HOVER)"></i></span><div><b>Hover / subtle / borders</b><small>text @ 10%</small></div><code>#C6D0F51A</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_ACTIVE)"></i></span><div><b>Active</b><small>overlay2 @ 25%</small></div><code>#949CBB40</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_MOD_FAINT)"></i></span><div><b>Faint</b><small>text @ 5%</small></div><code>#C6D0F50D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_SELECTED)"></i></span><div><b>Selected</b><small>mauve @ 20%</small></div><code>#CA9EE633</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--HEADER_PRIMARY)"></i></span><div><b>Text strong</b><small>text</small></div><code>#C6D0F5</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_NORMAL)"></i></span><div><b>Text normal</b><small>text</small></div><code>#C6D0F5</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_SECONDARY)"></i></span><div><b>Text secondary</b><small>subtext1</small></div><code>#B5BFE2</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_MUTED)"></i></span><div><b>Text muted</b><small>overlay1</small></div><code>#838BA7</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--INTERACTIVE_MUTED)"></i></span><div><b>Interactive muted</b><small>overlay0</small></div><code>#737994</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BRAND)"></i></span><div><b>Brand / accent</b><small>mauve</small></div><code>#CA9EE6</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND)"></i></span><div><b>Brand bright (pressed, active, TEXT_BRAND)</b><small>DERIVED: 70% mauve + 30% text</small></div><code>#C9ADEA</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_TEXT)"></i></span><div><b>Text on accent</b><small>base</small></div><code>#303446</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_LINK)"></i></span><div><b>Links</b><small>blue</small></div><code>#8CAAEE</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_DANGER)"></i></span><div><b>Danger / DND</b><small>red</small></div><code>#E78284</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_POSITIVE)"></i></span><div><b>Positive / online</b><small>green</small></div><code>#A6D189</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_WARNING)"></i></span><div><b>Warning / idle</b><small>yellow</small></div><code>#E5C890</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED)"></i></span><div><b>Mentions</b><small>mauve @ 15%</small></div><code>#CA9EE626</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED_HOVER)"></i></span><div><b>Mentions hover</b><small>mauve @ 20%</small></div><code>#CA9EE633</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BACKDROP)"></i></span><div><b>Backdrops</b><small>crust @ 70%</small></div><code>#232634B3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BRAND_560)"></i></span><div><b>BRAND_560 (raw)</b><small>DERIVED: 70% mauve + 30% crust</small></div><code>#987AB1</code></div>
     <div class="cmp">Accent vs status:
       <span class="badge">accent</span><span class="dot dnd"></span>DND
       <span class="dot idle"></span>idle <span class="dot on"></span>online</div>

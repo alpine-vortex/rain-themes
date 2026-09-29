@@ -64,3 +64,14 @@ input_bg hover active faint selected text_strong text_normal text_secondary
 text_muted interactive_muted brand brand_bright text_on_brand link danger
 positive warning mention mention_hover backdrop`. The key lists for each are in
 `GROUPS` at the top of `build_theme.py`.
+
+## Gallery
+
+```sh
+python3 tools/gallery.py
+```
+
+Screenshots every theme's preview to `<slug>/<slug>-preview.png`, then writes
+`GALLERY.md` and `index.html` at the repo root and refreshes the theme table in
+`README.md`. Run it after adding or changing a theme. Folders under `held/`
+(gitignored) are skipped.

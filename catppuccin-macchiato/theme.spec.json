@@ -1,0 +1,135 @@
+{
+  "slug": "catppuccin-macchiato",
+  "name": "Catppuccin Macchiato",
+  "description": "Catppuccin Macchiato: soothing pastel dark theme with a mauve accent and blue links, following the official style guide.",
+  "authors": [
+    "emeet"
+  ],
+  "source": "https://github.com/catppuccin/catppuccin",
+  "variant": "Macchiato · accent: mauve",
+  "palette": {
+    "rosewater": "#F4DBD6",
+    "flamingo": "#F0C6C6",
+    "pink": "#F5BDE6",
+    "mauve": "#C6A0F6",
+    "red": "#ED8796",
+    "maroon": "#EE99A0",
+    "peach": "#F5A97F",
+    "yellow": "#EED49F",
+    "green": "#A6DA95",
+    "teal": "#8BD5CA",
+    "sky": "#91D7E3",
+    "sapphire": "#7DC4E4",
+    "blue": "#8AADF4",
+    "lavender": "#B7BDF8",
+    "text": "#CAD3F5",
+    "subtext1": "#B8C0E0",
+    "subtext0": "#A5ADCB",
+    "overlay2": "#939AB7",
+    "overlay1": "#8087A2",
+    "overlay0": "#6E738D",
+    "surface2": "#5B6078",
+    "surface1": "#494D64",
+    "surface0": "#363A4F",
+    "base": "#24273A",
+    "mantle": "#1E2030",
+    "crust": "#181926"
+  },
+  "palette_roles": {
+    "base": "Background pane",
+    "mantle": "Secondary panes",
+    "crust": "Secondary panes (darkest)",
+    "surface0": "Surface elements",
+    "surface1": "Surface elements",
+    "surface2": "Surface elements",
+    "overlay0": "Overlays; inactive border",
+    "overlay1": "Overlays; subtle text, line numbers",
+    "overlay2": "Overlays; selection bg (20–30%), comments",
+    "text": "Body copy, main headline",
+    "subtext1": "Sub-headlines, labels",
+    "subtext0": "Sub-headlines, labels",
+    "blue": "Links, URLs; tags/pills",
+    "green": "Success",
+    "yellow": "Warnings",
+    "peach": "Warnings (alt); constants",
+    "red": "Errors",
+    "rosewater": "Cursor",
+    "lavender": "Active border; followed links, active line number",
+    "mauve": "Keywords; mark 2",
+    "sky": "Operators; hover links",
+    "teal": "Information",
+    "sapphire": "Mark 3",
+    "pink": "Escape sequences",
+    "maroon": "Parameters",
+    "flamingo": ""
+  },
+  "roles": {
+    "main_bg": "base",
+    "secondary_bg": "mantle",
+    "tertiary_bg": "crust",
+    "floating_bg": "surface0",
+    "nested_floating_bg": "surface1",
+    "input_bg": "surface0",
+    "hover": "text@1A",
+    "active": "overlay2@40",
+    "faint": "text@0D",
+    "selected": "mauve@33",
+    "text_strong": "text",
+    "text_normal": "text",
+    "text_secondary": "subtext1",
+    "text_muted": "overlay1",
+    "interactive_muted": "overlay0",
+    "brand": "mauve",
+    "brand_bright": {
+      "mix": [
+        "mauve",
+        "text",
+        0.3
+      ]
+    },
+    "text_on_brand": "base",
+    "link": "blue",
+    "danger": "red",
+    "positive": "green",
+    "warning": "yellow",
+    "mention": "mauve@26",
+    "mention_hover": "mauve@33",
+    "backdrop": "crust@B3"
+  },
+  "raw": {
+    "BRAND_560": {
+      "mix": [
+        "mauve",
+        "crust",
+        0.3
+      ]
+    },
+    "PRIMARY_630": "surface0",
+    "PRIMARY_660": "base",
+    "PRIMARY_700": "mantle",
+    "PRIMARY_800": "crust"
+  },
+  "preview": {
+    "server_name": "Cozy Café",
+    "tagline": "Soothing pastels",
+    "users": [
+      "rosewater",
+      "flamingo",
+      "lavender",
+      "mauve_bot",
+      "sapphire"
+    ],
+    "me": "emeet",
+    "msg5": "Pastels that don't burn my eyes.",
+    "embed_desc": "Soothing pastel theme for the high-spirited!"
+  },
+  "notes": [
+    "Flavor: Macchiato (dark), from catppuccin/palette palette.json v1.8.0.",
+    "Roles follow the Catppuccin style guide: Base = background pane, Mantle/Crust = secondary panes, Surface 0–2 = surface elements, Text = body copy & headlines, Subtext = labels, Overlay 1 = subtle text, Base = text on accent, Blue = links, Green/Yellow/Red = success/warnings/errors.",
+    "Hover = Text at 10% (the guide's cursor-line value); active = Overlay 2 at 25% (the guide's selection range).",
+    "Accent: mauve (default; the guide doesn't mandate one).",
+    "Strong and normal text are both Text — the guide uses Text for both body copy and headlines. Channels use Subtext 1, so unread (Text) still stands out.",
+    "Derived: brand_bright = 70% mauve + 30% text; BRAND_560 = 70% mauve + 30% crust (the palette has one mauve).",
+    "Author 'emeet' taken from git config."
+  ]
+}

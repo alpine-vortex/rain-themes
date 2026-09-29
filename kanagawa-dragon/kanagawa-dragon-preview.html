@@ -3,11 +3,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}}</title>
+<title>Kanagawa Dragon Preview</title>
 <style>
 /* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
 :root {
-__ROOT__
+  --BACKGROUND_PRIMARY: #181616;
+  --BG_BASE_PRIMARY: #181616;
+  --BACKGROUND_MOBILE_PRIMARY: #181616;
+  --CHAT_BACKGROUND: #181616;
+  --BACKGROUND_BASE_LOW: #181616;
+  --CHANNEL_BACKGROUND_DEFAULT: #181616;
+  --STANDALONE_CHANNEL_CONTENT_BACKGROUND: #181616;
+  --BACKGROUND_SECONDARY: #12120F;
+  --BG_BASE_SECONDARY: #12120F;
+  --BACKGROUND_MOBILE_SECONDARY: #12120F;
+  --BACKGROUND_BASE_LOWER: #12120F;
+  --CHAT_BANNER_BG: #12120F;
+  --BACKGROUND_SECONDARY_ALT: #12120F;
+  --BACKGROUND_TERTIARY: #0D0C0C;
+  --BG_BASE_TERTIARY: #0D0C0C;
+  --BACKGROUND_BASE_LOWEST: #0D0C0C;
+  --BACKGROUND_FLOATING: #282727;
+  --BACKGROUND_SURFACE_HIGH: #282727;
+  --MODAL_BACKGROUND: #282727;
+  --MODAL_FOOTER_BACKGROUND: #282727;
+  --MOBILE_ACTIONSHEET_BACKGROUND: #282727;
+  --MOBILE_ACTIONSHEET_GRADIENT_BACKGROUND_DEFAULT: #282727;
+  --CARD_PRIMARY_BG: #282727;
+  --CARD_BACKGROUND_DEFAULT: #282727;
+  --MOBILE_EMBED_BACKGROUND_DEFAULT: #282727;
+  --BG_SURFACE_OVERLAY: #282727;
+  --BG_SURFACE_OVERLAY_TMP: #282727;
+  --BACKGROUND_NESTED_FLOATING: #393836;
+  --BACKGROUND_SURFACE_HIGHEST: #393836;
+  --CHAT_INPUT_BACKGROUND: #282727;
+  --REDESIGN_CHAT_INPUT_BACKGROUND: #282727;
+  --CHAT_INPUT_CONTAINER_BACKGROUND: #282727;
+  --INPUT_BACKGROUND: #282727;
+  --INPUT_BACKGROUND_DEFAULT: #282727;
+  --BACKGROUND_MODIFIER_HOVER: #C5C9C514;
+  --BACKGROUND_MESSAGE_HOVER: #C5C9C514;
+  --BACKGROUND_MOD_SUBTLE: #C5C9C514;
+  --BG_MOD_SUBTLE: #C5C9C514;
+  --BACKGROUND_MODIFIER_ACTIVE: #C5C9C51F;
+  --BACKGROUND_MOD_NORMAL: #C5C9C51F;
+  --BACKGROUND_MODIFIER_SELECTED: #8BA4B033;
+  --BACKGROUND_MOD_STRONG: #8BA4B033;
+  --BG_MOD_STRONG: #8BA4B033;
+  --MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED: #8BA4B033;
+  --BG_MOD_FAINT: #C5C9C50D;
+  --BACKGROUND_MOD_MUTED: #C5C9C50D;
+  --BACKGROUND_MODIFIER_ACCENT: #C5C9C514;
+  --BORDER_SUBTLE: #C5C9C514;
+  --BORDER_FAINT: #C5C9C514;
+  --BORDER_MUTED: #C5C9C514;
+  --TEXT_NORMAL: #C5C9C5;
+  --TEXT_DEFAULT: #C5C9C5;
+  --HEADER_SECONDARY: #C5C9C5;
+  --ICON_DEFAULT: #C5C9C5;
+  --HEADER_PRIMARY: #C5C9C5;
+  --TEXT_PRIMARY: #C5C9C5;
+  --TEXT_STRONG: #C5C9C5;
+  --ICON_STRONG: #C5C9C5;
+  --TEXT_SECONDARY: #A6A69C;
+  --TEXT_SUBTLE: #A6A69C;
+  --ICON_SUBTLE: #A6A69C;
+  --CHANNELS_DEFAULT: #A6A69C;
+  --CHANNEL_ICON: #A6A69C;
+  --INTERACTIVE_NORMAL: #A6A69C;
+  --INTERACTIVE_TEXT_DEFAULT: #A6A69C;
+  --INTERACTIVE_ICON_DEFAULT: #A6A69C;
+  --TEXT_MUTED: #737C73;
+  --ICON_MUTED: #737C73;
+  --INPUT_PLACEHOLDER_TEXT: #737C73;
+  --INPUT_PLACEHOLDER_TEXT_DEFAULT: #737C73;
+  --CHANNEL_TEXT_AREA_PLACEHOLDER: #737C73;
+  --INTERACTIVE_MUTED: #625E5A;
+  --INTERACTIVE_HOVER: #C5C9C5;
+  --INTERACTIVE_TEXT_HOVER: #C5C9C5;
+  --INTERACTIVE_ICON_HOVER: #C5C9C5;
+  --INTERACTIVE_ACTIVE: #A2B3B8;
+  --INTERACTIVE_TEXT_ACTIVE: #A2B3B8;
+  --INTERACTIVE_ICON_ACTIVE: #A2B3B8;
+  --BG_BRAND: #8BA4B0;
+  --BACKGROUND_BRAND: #8BA4B0;
+  --REDESIGN_BUTTON_PRIMARY_BACKGROUND: #8BA4B0;
+  --CONTROL_PRIMARY_BACKGROUND_DEFAULT: #8BA4B0;
+  --CONTROL_BRAND_FOREGROUND: #8BA4B0;
+  --CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND: #8BA4B0;
+  --BADGE_BACKGROUND_BRAND: #8BA4B0;
+  --FOCUS_PRIMARY: #8BA4B0;
+  --BORDER_FOCUS: #8BA4B0;
+  --INPUT_BORDER_ACTIVE: #8BA4B0;
+  --REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND: #A2B3B8;
+  --CONTROL_PRIMARY_BACKGROUND_ACTIVE: #A2B3B8;
+  --REDESIGN_BUTTON_PRIMARY_TEXT: #0D0C0C;
+  --CONTROL_PRIMARY_TEXT_DEFAULT: #0D0C0C;
+  --BADGE_TEXT_BRAND: #0D0C0C;
+  --CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT: #0D0C0C;
+  --TEXT_BRAND: #A2B3B8;
+  --TEXT_LINK: #949FB5;
+  --TEXT_DANGER: #E82424;
+  --TEXT_FEEDBACK_CRITICAL: #E82424;
+  --ICON_FEEDBACK_CRITICAL: #E82424;
+  --INFO_DANGER_TEXT: #E82424;
+  --STATUS_DANGER: #E82424;
+  --INFO_DANGER_FOREGROUND: #E82424;
+  --STATUS_DANGER_BACKGROUND: #E82424;
+  --REDESIGN_BUTTON_DANGER_BACKGROUND: #E82424;
+  --CONTROL_CRITICAL_PRIMARY_BACKGROUND_DEFAULT: #E82424;
+  --TEXT_POSITIVE: #98BB6C;
+  --TEXT_FEEDBACK_POSITIVE: #98BB6C;
+  --ICON_FEEDBACK_POSITIVE: #98BB6C;
+  --INFO_POSITIVE_TEXT: #98BB6C;
+  --STATUS_POSITIVE: #98BB6C;
+  --INFO_POSITIVE_FOREGROUND: #98BB6C;
+  --STATUS_ONLINE: #98BB6C;
+  --ICON_STATUS_ONLINE: #98BB6C;
+  --TEXT_STATUS_ONLINE: #98BB6C;
+  --TEXT_WARNING: #FF9E3B;
+  --TEXT_FEEDBACK_WARNING: #FF9E3B;
+  --ICON_FEEDBACK_WARNING: #FF9E3B;
+  --INFO_WARNING_TEXT: #FF9E3B;
+  --STATUS_WARNING: #FF9E3B;
+  --INFO_WARNING_FOREGROUND: #FF9E3B;
+  --STATUS_IDLE: #FF9E3B;
+  --ICON_STATUS_IDLE: #FF9E3B;
+  --STATUS_DND: #E82424;
+  --ICON_STATUS_DND: #E82424;
+  --BACKGROUND_MENTIONED: #8BA4B026;
+  --MESSAGE_MENTIONED_BACKGROUND_DEFAULT: #8BA4B026;
+  --BACKGROUND_MENTIONED_HOVER: #8BA4B033;
+  --MESSAGE_MENTIONED_BACKGROUND_HOVER: #8BA4B033;
+  --BG_BACKDROP: #0D0C0CB3;
+  --MOBILE_BACKGROUND_SCRIM_OPAQUE: #0D0C0CB3;
+  --BRAND_500: #8BA4B0;
+  --BRAND_530: #A2B3B8;
+  --BRAND_560: #2D4F67;
+  --PRIMARY_630: #282727;
+  --PRIMARY_660: #181616;
+  --PRIMARY_700: #12120F;
+  --PRIMARY_800: #0D0C0C;
+  --PREVIEW_ON_DANGER: var(--REDESIGN_BUTTON_PRIMARY_TEXT);
+  --PREVIEW_PHONE_BASE: var(--BACKGROUND_PRIMARY);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -147,27 +285,27 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
 </style>
 </head>
 <body>
-<h1>{{NAME}} for Rain</h1>
-<p class="sub">{{SUBTITLE}} · colour preview only</p>
+<h1>Kanagawa Dragon for Rain</h1>
+<p class="sub">Dragon (dark, muted) · accent: dragonBlue2 · colour preview only</p>
 <input type="checkbox" id="t" class="toggle">
 <div class="wrap">
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="cl" style="flex-direction:column">
       <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
       <div class="cl">
         <div class="rail">
           <div class="srv">DM<span class="ping">3</span></div>
           <hr>
-          <div class="srv sel">{{SERVER_INITIAL}}</div>
+          <div class="srv sel">K</div>
           <div class="srv">R</div>
           <div class="srv">V<span class="ping">1</span></div>
           <div class="srv">K</div>
           <div class="srv">+</div>
         </div>
         <div class="panel">
-          <div class="srv-head">{{SERVER_NAME}}<small>1,204 members · 312 online</small></div>
+          <div class="srv-head">Great Wave Dojo<small>1,204 members · 312 online</small></div>
           <div class="chs">
             <div class="cat">⌄ Information</div>
             <div class="ch"><span class="h">#</span>rules</div>
@@ -183,8 +321,8 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
             <div class="ch muted"><span class="h">◖</span>AFK</div>
           </div>
           <div class="userbar">
-            <div class="av">{{ME_INITIAL}}<span class="dot on"></span></div>
-            <div><div class="name">{{ME}}</div><div class="st">Online</div></div>
+            <div class="av">E<span class="dot on"></span></div>
+            <div><div class="name">emeet</div><div class="st">Online</div></div>
             <div class="icons"><span class="ico"></span><span class="ico"></span></div>
           </div>
         </div>
@@ -195,34 +333,34 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div>
-  <div class="phone">{{BG_LAYER}}
+  <div class="phone">
     <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
     <div class="chat-head">
-      <div><div class="t"><span>#</span> general</div><div class="d">{{TAGLINE}}</div></div>
+      <div><div class="t"><span>#</span> general</div><div class="d">Ink, paper and neovim</div></div>
       <span class="ico"></span>
     </div>
     <div class="msgs">
       <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
-        <div class="who">{{USER1}}<span class="ts">Today 09:12</span></div>
-        <p>{{MSG1}}</p></div></div>
+        <div class="who">hokusai<span class="ts">Today 09:12</span></div>
+        <p>Morning — switched my terminal over.</p></div></div>
       <div class="divider">NEW</div>
       <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
-        <div class="who">{{USER2}}<span class="ts">Today 09:13</span></div>
-        <p><span class="ping-me">@{{ME}}</span> {{MENTION_MSG}}</p>
+        <div class="who">sumi_ink<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@emeet</span> can you post your Rain theme?</p>
         <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
       </div></div>
       <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
-        <div class="who">{{USER3}}<span class="ts">Today 09:14</span></div>
-        <p>Palette reference is here: <a>{{LINK_TEXT}}</a></p>
-        <div class="embed"><div class="site">{{EMBED_SITE}}</div><div class="etitle">{{EMBED_TITLE}}</div>
-          <div class="edesc">{{EMBED_DESC}}</div></div>
+        <div class="who">rebelot<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>github.com/rebelot/kanagawa.nvim</a></p>
+        <div class="embed"><div class="site">GitHub</div><div class="etitle">rebelot/kanagawa.nvim</div>
+          <div class="edesc">NeoVim dark colorscheme inspired by Katsushika Hokusai</div></div>
       </div></div>
       <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
-        <div class="who">{{USER4}}<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
-        <p>{{MSG4}}</p></div></div>
+        <div class="who">fuji_bot<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>Build passed ✔ theme validated.</p></div></div>
       <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
-        <div class="who">{{USER5}}<span class="ts">Today 09:25</span></div>
-        <p>{{MSG5}}</p></div></div>
+        <div class="who">sakura<span class="ts">Today 09:25</span></div>
+        <p>Colours look great on OLED.</p></div></div>
       <div class="scrim"></div>
       <div class="sheet">
         <div class="grab"></div>
@@ -247,8 +385,33 @@ a { color: var(--TEXT_LINK); text-decoration: underline; }
   </div>
 
   <div class="legend">
-    <h2>Key groups → {{NAME}} palette</h2>
-__LEGEND__
+    <h2>Key groups → Kanagawa Dragon palette</h2>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_PRIMARY)"></i></span><div><b>Main background</b><small>dragonBlack3</small></div><code>#181616</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_SECONDARY)"></i></span><div><b>Secondary background</b><small>dragonBlack1</small></div><code>#12120F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_TERTIARY)"></i></span><div><b>Tertiary background</b><small>dragonBlack0</small></div><code>#0D0C0C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_FLOATING)"></i></span><div><b>Floating surfaces</b><small>dragonBlack4</small></div><code>#282727</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_NESTED_FLOATING)"></i></span><div><b>Nested floating</b><small>dragonBlack5</small></div><code>#393836</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--CHAT_INPUT_BACKGROUND)"></i></span><div><b>Inputs</b><small>dragonBlack4</small></div><code>#282727</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_HOVER)"></i></span><div><b>Hover / subtle / borders</b><small>dragonWhite @ 8%</small></div><code>#C5C9C514</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_ACTIVE)"></i></span><div><b>Active</b><small>dragonWhite @ 12%</small></div><code>#C5C9C51F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_MOD_FAINT)"></i></span><div><b>Faint</b><small>dragonWhite @ 5%</small></div><code>#C5C9C50D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_SELECTED)"></i></span><div><b>Selected</b><small>dragonBlue2 @ 20%</small></div><code>#8BA4B033</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--HEADER_PRIMARY)"></i></span><div><b>Text strong</b><small>dragonWhite</small></div><code>#C5C9C5</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_NORMAL)"></i></span><div><b>Text normal</b><small>dragonWhite</small></div><code>#C5C9C5</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_SECONDARY)"></i></span><div><b>Text secondary</b><small>dragonGray</small></div><code>#A6A69C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_MUTED)"></i></span><div><b>Text muted</b><small>dragonAsh</small></div><code>#737C73</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--INTERACTIVE_MUTED)"></i></span><div><b>Interactive muted</b><small>dragonBlack6</small></div><code>#625E5A</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BRAND)"></i></span><div><b>Brand / accent</b><small>dragonBlue2</small></div><code>#8BA4B0</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND)"></i></span><div><b>Brand bright (pressed, active, TEXT_BRAND)</b><small>DERIVED: 60% dragonBlue2 + 40% dragonWhite</small></div><code>#A2B3B8</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_TEXT)"></i></span><div><b>Text on accent</b><small>dragonBlack0</small></div><code>#0D0C0C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_LINK)"></i></span><div><b>Links</b><small>dragonTeal</small></div><code>#949FB5</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_DANGER)"></i></span><div><b>Danger / DND</b><small>samuraiRed</small></div><code>#E82424</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_POSITIVE)"></i></span><div><b>Positive / online</b><small>springGreen</small></div><code>#98BB6C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_WARNING)"></i></span><div><b>Warning / idle</b><small>roninYellow</small></div><code>#FF9E3B</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED)"></i></span><div><b>Mentions</b><small>dragonBlue2 @ 15%</small></div><code>#8BA4B026</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED_HOVER)"></i></span><div><b>Mentions hover</b><small>dragonBlue2 @ 20%</small></div><code>#8BA4B033</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BACKDROP)"></i></span><div><b>Backdrops</b><small>dragonBlack0 @ 70%</small></div><code>#0D0C0CB3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BRAND_560)"></i></span><div><b>BRAND_560 (raw)</b><small>waveBlue2</small></div><code>#2D4F67</code></div>
     <div class="cmp">Accent vs status:
       <span class="badge">accent</span><span class="dot dnd"></span>DND
       <span class="dot idle"></span>idle <span class="dot on"></span>online</div>

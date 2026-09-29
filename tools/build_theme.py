@@ -268,8 +268,12 @@ def build(spec_path, out_dir=None):
     pv.update(spec.get("preview", {}))
     src = spec.get("source", "")
     short = re.sub(r"^https?://", "", src).rstrip("/")
-    pv["link_text"] = pv["link_text"] or short or "example.com"
+    host = short.split("/")[0]
+    pv.setdefault("embed_site", {"github.com": "GitHub"}.get(host, host) or spec["name"])
     pv["embed_title"] = pv["embed_title"] or re.sub(r"^github\.com/", "", short) or spec["name"]
+    if len(short) > 42:  # keep the chat line to about one wrap
+        short = host + "/…/" + short.rsplit("/", 1)[-1]
+    pv["link_text"] = pv["link_text"] or short or "example.com"
     pv["embed_desc"] = pv["embed_desc"] or spec["description"][:60]
     pv["server_initial"] = pv["server_initial"] or spec["name"][0].upper()
     pv["subtitle"] = pv["subtitle"] or spec.get("variant", "")
@@ -292,7 +296,7 @@ def build(spec_path, out_dir=None):
         "TITLE": f"{spec['name']} Preview", "NAME": spec["name"], "SUBTITLE": pv["subtitle"],
         "SERVER_NAME": pv["server_name"], "SERVER_INITIAL": pv["server_initial"], "TAGLINE": pv["tagline"],
         "MSG1": pv["msg1"], "MENTION_MSG": pv["mention_msg"], "LINK_TEXT": pv["link_text"],
-        "EMBED_TITLE": pv["embed_title"], "EMBED_DESC": pv["embed_desc"], "MSG4": pv["msg4"], "MSG5": pv["msg5"],
+        "EMBED_TITLE": pv["embed_title"], "EMBED_SITE": pv["embed_site"], "EMBED_DESC": pv["embed_desc"], "MSG4": pv["msg4"], "MSG5": pv["msg5"],
         "ME": pv["me"], "ME_INITIAL": pv["me"][0].upper(),
     }
     for i, u in enumerate(pv["users"][:5], 1):

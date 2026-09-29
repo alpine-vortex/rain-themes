@@ -1,0 +1,116 @@
+{
+  "slug": "rose-pine",
+  "name": "Rosé Pine",
+  "description": "Rosé Pine (rose-pine/rose-pine-palette): base chat, surface panels, overlay sheets, iris accent, foam links.",
+  "authors": [
+    "emeet"
+  ],
+  "source": "https://rosepinetheme.com/palette/",
+  "variant": "Main (default dark) · accent: iris",
+  "palette": {
+    "base": "#191724",
+    "surface": "#1F1D2E",
+    "overlay": "#26233A",
+    "muted": "#6E6A86",
+    "subtle": "#908CAA",
+    "text": "#E0DEF4",
+    "love": "#EB6F92",
+    "gold": "#F6C177",
+    "rose": "#EBBCBA",
+    "pine": "#31748F",
+    "foam": "#9CCFD8",
+    "iris": "#C4A7E7",
+    "highlight_low": "#21202E",
+    "highlight_med": "#403D52",
+    "highlight_high": "#524F67"
+  },
+  "palette_roles": {
+    "base": "Primary background; sidebars; composite base",
+    "surface": "Secondary background: floating panels, input fields, status bars",
+    "overlay": "Tertiary background: hovered items, selection, dialogs",
+    "muted": "Low contrast fg: comments, disabled labels",
+    "subtle": "Medium contrast fg: secondary text, placeholders",
+    "text": "High contrast fg: body text",
+    "love": "Errors, destructive actions",
+    "gold": "Warnings",
+    "rose": "Functions; modified content",
+    "pine": "Keywords; constructive/affirmative signals",
+    "foam": "Informational signals",
+    "iris": "Hints; fuzzy match highlights",
+    "highlight_low": "Cursor line",
+    "highlight_med": "Text selection; hovered popup item",
+    "highlight_high": "Borders, dividers"
+  },
+  "roles": {
+    "main_bg": "base",
+    "secondary_bg": "surface",
+    "tertiary_bg": "base",
+    "floating_bg": "overlay",
+    "nested_floating_bg": "highlight_med",
+    "input_bg": "surface",
+    "hover": "text@14",
+    "active": "text@1F",
+    "faint": "text@0D",
+    "selected": "iris@33",
+    "text_strong": "text",
+    "text_normal": "text",
+    "text_secondary": "subtle",
+    "text_muted": "muted",
+    "interactive_muted": "muted",
+    "brand": "iris",
+    "brand_bright": {
+      "mix": [
+        "iris",
+        "text",
+        0.4
+      ]
+    },
+    "text_on_brand": "base",
+    "link": "foam",
+    "danger": "love",
+    "positive": "pine",
+    "warning": "gold",
+    "mention": "iris@26",
+    "mention_hover": "iris@33",
+    "backdrop": "base@B3"
+  },
+  "raw": {
+    "BRAND_560": {
+      "mix": [
+        "iris",
+        "base",
+        0.3
+      ]
+    },
+    "PRIMARY_630": "overlay",
+    "PRIMARY_660": "highlight_low",
+    "PRIMARY_700": "surface",
+    "PRIMARY_800": "base"
+  },
+  "preview": {
+    "server_name": "Soho Vibes",
+    "tagline": "All natural pine, faux fur and a bit of soho vibes",
+    "users": [
+      "base",
+      "love_bot",
+      "pine_needle",
+      "rose_bot",
+      "dawnwalker"
+    ],
+    "me": "emeet",
+    "msg5": "Low-contrast, calm and cosy.",
+    "embed_desc": "All natural pine, faux fur and a bit of soho vibes"
+  },
+  "notes": [
+    "Variant: Rosé Pine. Palette from rose-pine/rose-pine-palette palette.json; highlight low/med/high (not in palette.json) from rosepinetheme.com/palette.",
+    "Roles follow the per-colour usage docs in rose-pine/rose-pine-site: base = primary background, surface = inputs/status bars, overlay = dialogs, highlight_med = hovered popup items, subtle = secondary text, muted = disabled/dimmed labels, love = errors, gold = warnings, pine = affirmative signals, foam = informational.",
+    "Secondary (channel list) uses surface rather than base (the docs put sidebars on base) so the channel list separates from chat. Tertiary = base: nothing darker in the palette.",
+    "Accent: iris. Rose is the namesake, but love (danger) and rose are only ~19° apart in hue — closer still in Moon — so iris keeps danger clearly distinct. Links use foam (informational).",
+    "Strong and normal text are both 'text': the palette has a single high-contrast foreground.",
+    "Positive/online uses pine, the documented affirmative colour (Rosé Pine has no green).",
+    "Placeholder text uses muted (the build groups placeholders with muted text); the docs suggest subtle for placeholders.",
+    "Derived: brand_bright = 60% iris + 40% text; BRAND_560 = 70% iris + 30% base.",
+    "Pine (online/positive) is only 3.38:1 on base in Main — fine for status dots, dim for status text.",
+    "Author 'emeet' taken from git config."
+  ]
+}

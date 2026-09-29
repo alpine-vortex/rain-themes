@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rain Theme Gallery</title>
+<style>
+:root { --bg: #111214; --card: #1b1c20; --line: #2c2e34; --text: #e6e6e9; --muted: #9a9ca5; --accent: #8ab4f8; }
+@media (prefers-color-scheme: light) { :root { --bg: #f4f4f6; --card: #ffffff; --line: #dcdde2; --text: #1c1d21; --muted: #5d606b; --accent: #1a5fd0; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1400px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { margin: 0 0 4px; font-size: 26px; }
+.lead { color: var(--muted); margin: 0 0 20px; }
+nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+nav a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+nav a:hover { border-color: var(--accent); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 20px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+.card header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.card h2 { margin: 0; font-size: 18px; }
+.variant { margin: 2px 0 12px; color: var(--muted); font-size: 13px; }
+.sw { display: flex; gap: 3px; flex: none; }
+.sw i { width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--line); }
+.card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+.install { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+.install code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted); }
+.install button { flex: none; background: none; color: var(--accent); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Rain Theme Gallery</h1>
+<p class="lead">18 themes for Rain (Bunny spec 2). Tap a preview for the full mockup and colour legend; copy the URL and add it in Rain → Themes.</p>
+<nav><a href="#catppuccin-frappe">Catppuccin Frappé</a><a href="#catppuccin-macchiato">Catppuccin Macchiato</a><a href="#catppuccin-mocha">Catppuccin Mocha</a><a href="#dracula">Dracula</a><a href="#everforest-dark">Everforest Dark</a><a href="#gruvbox">Gruvbox</a><a href="#gruvbox-material-dark">Gruvbox Material Dark</a><a href="#kanagawa-dragon">Kanagawa Dragon</a><a href="#kanagawa-wave">Kanagawa Wave</a><a href="#nord-frost">Nord Frost</a><a href="#nord-polar-night">Nord Polar Night</a><a href="#rose-pine">Rosé Pine</a><a href="#rose-pine-moon">Rosé Pine Moon</a><a href="#solarized-osaka">Solarized Osaka</a><a href="#tokyodark">Tokyo Dark</a><a href="#tokyonight-moon">Tokyo Night Moon</a><a href="#tokyonight-night">Tokyo Night Night</a><a href="#tokyonight-storm">Tokyo Night Storm</a></nav>
+<div class="grid">
+  <article class="card" id="catppuccin-frappe">
+    <header><h2>Catppuccin Frappé</h2><span class="sw"><i style="background:#303446" title="#303446"></i><i style="background:#292C3C" title="#292C3C"></i><i style="background:#C6D0F5" title="#C6D0F5"></i><i style="background:#CA9EE6" title="#CA9EE6"></i><i style="background:#8CAAEE" title="#8CAAEE"></i><i style="background:#E78284" title="#E78284"></i><i style="background:#A6D189" title="#A6D189"></i><i style="background:#E5C890" title="#E5C890"></i></span></header>
+    <p class="variant">Frappé · accent: mauve</p>
+    <a href="catppuccin-frappe/catppuccin-frappe-preview.html"><img src="catppuccin-frappe/catppuccin-frappe-preview.png" alt="Catppuccin Frappé preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-frappe/catppuccin-frappe.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-frappe/catppuccin-frappe.json">Copy</button></div>
+  </article>
+  <article class="card" id="catppuccin-macchiato">
+    <header><h2>Catppuccin Macchiato</h2><span class="sw"><i style="background:#24273A" title="#24273A"></i><i style="background:#1E2030" title="#1E2030"></i><i style="background:#CAD3F5" title="#CAD3F5"></i><i style="background:#C6A0F6" title="#C6A0F6"></i><i style="background:#8AADF4" title="#8AADF4"></i><i style="background:#ED8796" title="#ED8796"></i><i style="background:#A6DA95" title="#A6DA95"></i><i style="background:#EED49F" title="#EED49F"></i></span></header>
+    <p class="variant">Macchiato · accent: mauve</p>
+    <a href="catppuccin-macchiato/catppuccin-macchiato-preview.html"><img src="catppuccin-macchiato/catppuccin-macchiato-preview.png" alt="Catppuccin Macchiato preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-macchiato/catppuccin-macchiato.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-macchiato/catppuccin-macchiato.json">Copy</button></div>
+  </article>
+  <article class="card" id="catppuccin-mocha">
+    <header><h2>Catppuccin Mocha</h2><span class="sw"><i style="background:#1E1E2E" title="#1E1E2E"></i><i style="background:#181825" title="#181825"></i><i style="background:#CDD6F4" title="#CDD6F4"></i><i style="background:#CBA6F7" title="#CBA6F7"></i><i style="background:#89B4FA" title="#89B4FA"></i><i style="background:#F38BA8" title="#F38BA8"></i><i style="background:#A6E3A1" title="#A6E3A1"></i><i style="background:#F9E2AF" title="#F9E2AF"></i></span></header>
+    <p class="variant">Mocha · accent: mauve</p>
+    <a href="catppuccin-mocha/catppuccin-mocha-preview.html"><img src="catppuccin-mocha/catppuccin-mocha-preview.png" alt="Catppuccin Mocha preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-mocha/catppuccin-mocha.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-mocha/catppuccin-mocha.json">Copy</button></div>
+  </article>
+  <article class="card" id="dracula">
+    <header><h2>Dracula</h2><span class="sw"><i style="background:#282A36" title="#282A36"></i><i style="background:#21222C" title="#21222C"></i><i style="background:#F8F8F2" title="#F8F8F2"></i><i style="background:#BD93F9" title="#BD93F9"></i><i style="background:#8BE9FD" title="#8BE9FD"></i><i style="background:#FF5555" title="#FF5555"></i><i style="background:#50FA7B" title="#50FA7B"></i><i style="background:#FFB86C" title="#FFB86C"></i></span></header>
+    <p class="variant">Dracula Classic (dark) · accent: purple</p>
+    <a href="dracula/dracula-preview.html"><img src="dracula/dracula-preview.png" alt="Dracula preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/dracula/dracula.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/dracula/dracula.json">Copy</button></div>
+  </article>
+  <article class="card" id="everforest-dark">
+    <header><h2>Everforest Dark</h2><span class="sw"><i style="background:#2D353B" title="#2D353B"></i><i style="background:#343F44" title="#343F44"></i><i style="background:#D3C6AA" title="#D3C6AA"></i><i style="background:#A7C080" title="#A7C080"></i><i style="background:#7FBBB3" title="#7FBBB3"></i><i style="background:#E67E80" title="#E67E80"></i><i style="background:#83C092" title="#83C092"></i><i style="background:#DBBC7F" title="#DBBC7F"></i></span></header>
+    <p class="variant">Dark · medium contrast · accent: green</p>
+    <a href="everforest-dark/everforest-dark-preview.html"><img src="everforest-dark/everforest-dark-preview.png" alt="Everforest Dark preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/everforest-dark/everforest-dark.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/everforest-dark/everforest-dark.json">Copy</button></div>
+  </article>
+  <article class="card" id="gruvbox">
+    <header><h2>Gruvbox</h2><span class="sw"><i style="background:#282828" title="#282828"></i><i style="background:#32302F" title="#32302F"></i><i style="background:#EBDBB2" title="#EBDBB2"></i><i style="background:#FE8019" title="#FE8019"></i><i style="background:#83A598" title="#83A598"></i><i style="background:#FB4934" title="#FB4934"></i><i style="background:#B8BB26" title="#B8BB26"></i><i style="background:#FABD2F" title="#FABD2F"></i></span></header>
+    <p class="variant">Dark · medium contrast (default) · accent: bright orange</p>
+    <a href="gruvbox/gruvbox-preview.html"><img src="gruvbox/gruvbox-preview.png" alt="Gruvbox preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox/gruvbox.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox/gruvbox.json">Copy</button></div>
+  </article>
+  <article class="card" id="gruvbox-material-dark">
+    <header><h2>Gruvbox Material Dark</h2><span class="sw"><i style="background:#282828" title="#282828"></i><i style="background:#32302F" title="#32302F"></i><i style="background:#D4BE98" title="#D4BE98"></i><i style="background:#7DAEA3" title="#7DAEA3"></i><i style="background:#D3869B" title="#D3869B"></i><i style="background:#EA6962" title="#EA6962"></i><i style="background:#A9B665" title="#A9B665"></i><i style="background:#D8A657" title="#D8A657"></i></span></header>
+    <p class="variant">Dark · background medium · foreground material · accent: blue</p>
+    <a href="gruvbox-material-dark/gruvbox-material-dark-preview.html"><img src="gruvbox-material-dark/gruvbox-material-dark-preview.png" alt="Gruvbox Material Dark preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox-material-dark/gruvbox-material-dark.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox-material-dark/gruvbox-material-dark.json">Copy</button></div>
+  </article>
+  <article class="card" id="kanagawa-dragon">
+    <header><h2>Kanagawa Dragon</h2><span class="sw"><i style="background:#181616" title="#181616"></i><i style="background:#12120F" title="#12120F"></i><i style="background:#C5C9C5" title="#C5C9C5"></i><i style="background:#8BA4B0" title="#8BA4B0"></i><i style="background:#949FB5" title="#949FB5"></i><i style="background:#E82424" title="#E82424"></i><i style="background:#98BB6C" title="#98BB6C"></i><i style="background:#FF9E3B" title="#FF9E3B"></i></span></header>
+    <p class="variant">Dragon (dark, muted) · accent: dragonBlue2</p>
+    <a href="kanagawa-dragon/kanagawa-dragon-preview.html"><img src="kanagawa-dragon/kanagawa-dragon-preview.png" alt="Kanagawa Dragon preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/kanagawa-dragon.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/kanagawa-dragon.json">Copy</button></div>
+  </article>
+  <article class="card" id="kanagawa-wave">
+    <header><h2>Kanagawa Wave</h2><span class="sw"><i style="background:#1F1F28" title="#1F1F28"></i><i style="background:#181820" title="#181820"></i><i style="background:#DCD7BA" title="#DCD7BA"></i><i style="background:#7E9CD8" title="#7E9CD8"></i><i style="background:#7FB4CA" title="#7FB4CA"></i><i style="background:#E82424" title="#E82424"></i><i style="background:#98BB6C" title="#98BB6C"></i><i style="background:#FF9E3B" title="#FF9E3B"></i></span></header>
+    <p class="variant">Wave (default dark) · accent: crystalBlue</p>
+    <a href="kanagawa-wave/kanagawa-wave-preview.html"><img src="kanagawa-wave/kanagawa-wave-preview.png" alt="Kanagawa Wave preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/kanagawa-wave.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/kanagawa-wave.json">Copy</button></div>
+  </article>
+  <article class="card" id="nord-frost">
+    <header><h2>Nord Frost</h2><span class="sw"><i style="background:#2E3440" title="#2E3440"></i><i style="background:#3B4252" title="#3B4252"></i><i style="background:#D8DEE9" title="#D8DEE9"></i><i style="background:#88C0D0" title="#88C0D0"></i><i style="background:#81A1C1" title="#81A1C1"></i><i style="background:#CA848C" title="#CA848C"></i><i style="background:#A3BE8C" title="#A3BE8C"></i><i style="background:#EBCB8B" title="#EBCB8B"></i></span></header>
+    <p class="variant">Polar Night · bright nord8 Frost accent</p>
+    <a href="nord-frost/nord-frost-preview.html"><img src="nord-frost/nord-frost-preview.png" alt="Nord Frost preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/nord-frost.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/nord-frost.json">Copy</button></div>
+  </article>
+  <article class="card" id="nord-polar-night">
+    <header><h2>Nord Polar Night</h2><span class="sw"><i style="background:#2E3440" title="#2E3440"></i><i style="background:#3B4252" title="#3B4252"></i><i style="background:#D8DEE9" title="#D8DEE9"></i><i style="background:#81A1C1" title="#81A1C1"></i><i style="background:#88C0D0" title="#88C0D0"></i><i style="background:#CA848C" title="#CA848C"></i><i style="background:#A3BE8C" title="#A3BE8C"></i><i style="background:#EBCB8B" title="#EBCB8B"></i></span></header>
+    <p class="variant">Polar Night · quiet nord9 accent</p>
+    <a href="nord-polar-night/nord-polar-night-preview.html"><img src="nord-polar-night/nord-polar-night-preview.png" alt="Nord Polar Night preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-polar-night/nord-polar-night.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-polar-night/nord-polar-night.json">Copy</button></div>
+  </article>
+  <article class="card" id="rose-pine">
+    <header><h2>Rosé Pine</h2><span class="sw"><i style="background:#191724" title="#191724"></i><i style="background:#1F1D2E" title="#1F1D2E"></i><i style="background:#E0DEF4" title="#E0DEF4"></i><i style="background:#C4A7E7" title="#C4A7E7"></i><i style="background:#9CCFD8" title="#9CCFD8"></i><i style="background:#EB6F92" title="#EB6F92"></i><i style="background:#31748F" title="#31748F"></i><i style="background:#F6C177" title="#F6C177"></i></span></header>
+    <p class="variant">Main (default dark) · accent: iris</p>
+    <a href="rose-pine/rose-pine-preview.html"><img src="rose-pine/rose-pine-preview.png" alt="Rosé Pine preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine/rose-pine.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine/rose-pine.json">Copy</button></div>
+  </article>
+  <article class="card" id="rose-pine-moon">
+    <header><h2>Rosé Pine Moon</h2><span class="sw"><i style="background:#232136" title="#232136"></i><i style="background:#2A273F" title="#2A273F"></i><i style="background:#E0DEF4" title="#E0DEF4"></i><i style="background:#C4A7E7" title="#C4A7E7"></i><i style="background:#9CCFD8" title="#9CCFD8"></i><i style="background:#EB6F92" title="#EB6F92"></i><i style="background:#3E8FB0" title="#3E8FB0"></i><i style="background:#F6C177" title="#F6C177"></i></span></header>
+    <p class="variant">Moon · accent: iris</p>
+    <a href="rose-pine-moon/rose-pine-moon-preview.html"><img src="rose-pine-moon/rose-pine-moon-preview.png" alt="Rosé Pine Moon preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine-moon/rose-pine-moon.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine-moon/rose-pine-moon.json">Copy</button></div>
+  </article>
+  <article class="card" id="solarized-osaka">
+    <header><h2>Solarized Osaka</h2><span class="sw"><i style="background:#001419" title="#001419"></i><i style="background:#002C38" title="#002C38"></i><i style="background:#9EABAC" title="#9EABAC"></i><i style="background:#268BD3" title="#268BD3"></i><i style="background:#29A298" title="#29A298"></i><i style="background:#F55350" title="#F55350"></i><i style="background:#849900" title="#849900"></i><i style="background:#B28500" title="#B28500"></i></span></header>
+    <p class="variant">Default dark style · accent: Solarized blue</p>
+    <a href="solarized-osaka/solarized-osaka-preview.html"><img src="solarized-osaka/solarized-osaka-preview.png" alt="Solarized Osaka preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/solarized-osaka/solarized-osaka.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/solarized-osaka/solarized-osaka.json">Copy</button></div>
+  </article>
+  <article class="card" id="tokyodark">
+    <header><h2>Tokyo Dark</h2><span class="sw"><i style="background:#11121D" title="#11121D"></i><i style="background:#1A1B2A" title="#1A1B2A"></i><i style="background:#A0A8CD" title="#A0A8CD"></i><i style="background:#7199EE" title="#7199EE"></i><i style="background:#A485DD" title="#A485DD"></i><i style="background:#EE6D85" title="#EE6D85"></i><i style="background:#95C561" title="#95C561"></i><i style="background:#D7A65F" title="#D7A65F"></i></span></header>
+    <p class="variant">Default (gamma 1.0) · accent: blue</p>
+    <a href="tokyodark/tokyodark-preview.html"><img src="tokyodark/tokyodark-preview.png" alt="Tokyo Dark preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyodark/tokyodark.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyodark/tokyodark.json">Copy</button></div>
+  </article>
+  <article class="card" id="tokyonight-moon">
+    <header><h2>Tokyo Night Moon</h2><span class="sw"><i style="background:#222436" title="#222436"></i><i style="background:#1E2030" title="#1E2030"></i><i style="background:#C8D3F5" title="#C8D3F5"></i><i style="background:#82AAFF" title="#82AAFF"></i><i style="background:#4FD6BE" title="#4FD6BE"></i><i style="background:#FF757F" title="#FF757F"></i><i style="background:#C3E88D" title="#C3E88D"></i><i style="background:#FFC777" title="#FFC777"></i></span></header>
+    <p class="variant">Moon style · accent: blue</p>
+    <a href="tokyonight-moon/tokyonight-moon-preview.html"><img src="tokyonight-moon/tokyonight-moon-preview.png" alt="Tokyo Night Moon preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon/tokyonight-moon.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon/tokyonight-moon.json">Copy</button></div>
+  </article>
+  <article class="card" id="tokyonight-night">
+    <header><h2>Tokyo Night Night</h2><span class="sw"><i style="background:#1A1B26" title="#1A1B26"></i><i style="background:#16161E" title="#16161E"></i><i style="background:#C0CAF5" title="#C0CAF5"></i><i style="background:#7AA2F7" title="#7AA2F7"></i><i style="background:#1ABC9C" title="#1ABC9C"></i><i style="background:#DB4B4B" title="#DB4B4B"></i><i style="background:#9ECE6A" title="#9ECE6A"></i><i style="background:#E0AF68" title="#E0AF68"></i></span></header>
+    <p class="variant">Night style · accent: blue</p>
+    <a href="tokyonight-night/tokyonight-night-preview.html"><img src="tokyonight-night/tokyonight-night-preview.png" alt="Tokyo Night Night preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-night/tokyonight-night.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-night/tokyonight-night.json">Copy</button></div>
+  </article>
+  <article class="card" id="tokyonight-storm">
+    <header><h2>Tokyo Night Storm</h2><span class="sw"><i style="background:#24283B" title="#24283B"></i><i style="background:#1F2335" title="#1F2335"></i><i style="background:#C0CAF5" title="#C0CAF5"></i><i style="background:#7AA2F7" title="#7AA2F7"></i><i style="background:#1ABC9C" title="#1ABC9C"></i><i style="background:#DB4B4B" title="#DB4B4B"></i><i style="background:#9ECE6A" title="#9ECE6A"></i><i style="background:#E0AF68" title="#E0AF68"></i></span></header>
+    <p class="variant">Storm style · accent: blue</p>
+    <a href="tokyonight-storm/tokyonight-storm-preview.html"><img src="tokyonight-storm/tokyonight-storm-preview.png" alt="Tokyo Night Storm preview" loading="lazy"></a>
+    <div class="install"><code>https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-storm/tokyonight-storm.json</code><button type="button" data-url="https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-storm/tokyonight-storm.json">Copy</button></div>
+  </article>
+</div>
+</main>
+<script>
+document.querySelectorAll('.install button').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.url); b.textContent = 'Copied'; }
+  catch (e) { b.textContent = 'Copy failed'; }
+  setTimeout(() => b.textContent = 'Copy', 1500);
+}));
+</script>
+</body>
+</html>
