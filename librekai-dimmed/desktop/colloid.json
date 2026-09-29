@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#E58520",
+    "#3c84f7": "#BD7020",
+    "#2c2c2c": "#1E1E1E",
+    "#3c3c3c": "#404040",
+    "#242424": "#272727",
+    "#464646": "#505050",
+    "#212121": "#1E1E1E",
+    "#fd5f51": "#F44747",
+    "#38c76a": "#9AA83A",
+    "#fdbe04": "#D0B344"
+  },
+  "accent": "#E58520",
+  "name": "Librekai Dimmed",
+  "slug": "librekai-dimmed",
+  "gtk_theme": "Rain-LibrekaiDimmed"
+}

@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Tokyo Night Moon",
+  "use-theme-colors": false,
+  "background-color": "#222436",
+  "foreground-color": "#C8D3F5",
+  "palette": [
+    "#1B1D2B",
+    "#FF757F",
+    "#C3E88D",
+    "#FFC777",
+    "#82AAFF",
+    "#C099FF",
+    "#86E1FC",
+    "#828BB8",
+    "#444A73",
+    "#FF8D94",
+    "#C7FB6D",
+    "#FFD8AB",
+    "#9AB8FF",
+    "#CAABFF",
+    "#B2EBFF",
+    "#C8D3F5"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#C8D3F5",
+  "cursor-foreground-color": "#222436",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#2D3F76",
+  "highlight-foreground-color": "#C8D3F5"
+}

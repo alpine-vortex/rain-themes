@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#7AA2F7",
+    "#3c84f7": "#6787CD",
+    "#2c2c2c": "#1A1B26",
+    "#3c3c3c": "#292E42",
+    "#242424": "#16161E",
+    "#464646": "#3B4261",
+    "#212121": "#0C0E14",
+    "#fd5f51": "#DB4B4B",
+    "#38c76a": "#9ECE6A",
+    "#fdbe04": "#E0AF68"
+  },
+  "accent": "#7AA2F7",
+  "name": "Tokyo Night Night",
+  "slug": "tokyonight-night",
+  "gtk_theme": "Rain-TokyonightNight"
+}

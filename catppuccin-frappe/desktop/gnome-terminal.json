@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Catppuccin Frapp\u00e9",
+  "use-theme-colors": false,
+  "background-color": "#303446",
+  "foreground-color": "#C6D0F5",
+  "palette": [
+    "#51576D",
+    "#E78284",
+    "#A6D189",
+    "#E5C890",
+    "#8CAAEE",
+    "#F4B8E4",
+    "#81C8BE",
+    "#B5BFE2",
+    "#626880",
+    "#E78284",
+    "#A6D189",
+    "#E5C890",
+    "#8CAAEE",
+    "#F4B8E4",
+    "#81C8BE",
+    "#A5ADCE"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#F2D5CF",
+  "cursor-foreground-color": "#303446",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#626880",
+  "highlight-foreground-color": "#C6D0F5"
+}

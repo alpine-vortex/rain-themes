@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#A7C080",
+    "#3c84f7": "#8FA472",
+    "#2c2c2c": "#2D353B",
+    "#3c3c3c": "#3D484D",
+    "#242424": "#343F44",
+    "#464646": "#475258",
+    "#212121": "#232A2E",
+    "#fd5f51": "#E67E80",
+    "#38c76a": "#83C092",
+    "#fdbe04": "#DBBC7F"
+  },
+  "accent": "#A7C080",
+  "name": "Everforest Dark",
+  "slug": "everforest-dark",
+  "gtk_theme": "Rain-EverforestDark"
+}

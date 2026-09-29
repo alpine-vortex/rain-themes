@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Librekai Dimmed",
+  "use-theme-colors": false,
+  "background-color": "#1E1E1E",
+  "foreground-color": "#C5C8C6",
+  "palette": [
+    "#1E1E1E",
+    "#C4265E",
+    "#86B42B",
+    "#B3B42B",
+    "#6A7EC8",
+    "#8C6BC8",
+    "#56ADBC",
+    "#E3E3DD",
+    "#666666",
+    "#F92672",
+    "#A6E22E",
+    "#E2E22E",
+    "#819AFF",
+    "#AE81FF",
+    "#66D9EF",
+    "#F8F8F2"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#C07020",
+  "cursor-foreground-color": "#1E1E1E",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#434448",
+  "highlight-foreground-color": "#C5C8C6"
+}

@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#88C0D0",
+    "#3c84f7": "#76A4B3",
+    "#2c2c2c": "#2E3440",
+    "#3c3c3c": "#434C5E",
+    "#242424": "#3B4252",
+    "#464646": "#4C566A",
+    "#212121": "#2E3440",
+    "#fd5f51": "#CA848C",
+    "#38c76a": "#A3BE8C",
+    "#fdbe04": "#EBCB8B"
+  },
+  "accent": "#88C0D0",
+  "name": "Nord Frost",
+  "slug": "nord-frost",
+  "gtk_theme": "Rain-NordFrost"
+}

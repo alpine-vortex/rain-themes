@@ -1,0 +1,10 @@
+/* Rain Everforest Dark — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #2D353B !important;
+    --newtab-background-color-secondary: #3D484D !important;
+    --newtab-text-primary-color: #D3C6AA !important;
+    --newtab-primary-action-background: #A7C080 !important;
+    background-color: #2D353B !important;
+  }
+}

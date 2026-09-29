@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#C6A0F6",
+    "#3c84f7": "#A688D0",
+    "#2c2c2c": "#24273A",
+    "#3c3c3c": "#363A4F",
+    "#242424": "#1E2030",
+    "#464646": "#494D64",
+    "#212121": "#181926",
+    "#fd5f51": "#ED8796",
+    "#38c76a": "#A6DA95",
+    "#fdbe04": "#EED49F"
+  },
+  "accent": "#C6A0F6",
+  "name": "Catppuccin Macchiato",
+  "slug": "catppuccin-macchiato",
+  "gtk_theme": "Rain-CatppuccinMacchiato"
+}

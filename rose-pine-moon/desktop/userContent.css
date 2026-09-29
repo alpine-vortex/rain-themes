@@ -1,0 +1,10 @@
+/* Rain Rosé Pine Moon — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #232136 !important;
+    --newtab-background-color-secondary: #393552 !important;
+    --newtab-text-primary-color: #E0DEF4 !important;
+    --newtab-primary-action-background: #C4A7E7 !important;
+    background-color: #232136 !important;
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJI_u7cQw-uvAmVdWznKypL-h2NKGFSNbs8vNqnCFCp_XYQtxtNiWapV9kk5WWcHyZAUT346pfrVqWqqxLp6VbVh5pec66YQTue-HyX0YbY7vvjqN3hEFALCuGvbuIy8EykQzsEJLz85RFTl2wyn-AEpaVGNAypy78JBU27WGVTJpg1qgY-oUw_aNzjHq1zEGXXlLB9ZbW932O6uChbomYlY-aIp5OnfE-o12OCFpC5zb_APVyLRl47LPYrxG_0gzOzUqAYZKpHTwdzkv-j_bcw-YaB1WdoZVk9PC9AYZk453Oz2VfS4GCGjtVdYnvh7yRahOnwq9faepoUIFrtQ2dKHJZEWpNLvWTlZnAt0Cm0urwiUrXh3Bw9HjBKpfx6HZT6LXBnRDYQtSLy0Xi3XPBbjT0FoLVh2vwR56xFCorR4USnurtf3z91oEACGwi7iwXUcVfzRp3TrNIyG7DeH5oNtda4rNJqPHvIR30qyWAdIyUwPXdBbzDlHP76GwSK0CYuFKShaNhcNsvz__0notWA",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 0,
+        "g": 44,
+        "b": 56
+      },
+      "toolbar_text": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "frame": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "tab_background_text": {
+        "r": 131,
+        "g": 147,
+        "b": 149
+      },
+      "toolbar_field": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "toolbar_field_text": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "tab_line": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "popup": {
+        "r": 0,
+        "g": 44,
+        "b": 56
+      },
+      "popup_text": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "button_background_active": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      },
+      "button_background_hover": {
+        "r": 0,
+        "g": 44,
+        "b": 56
+      },
+      "frame_inactive": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "icons": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "icons_attention": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "ntp_background": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "ntp_text": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "popup_border": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      },
+      "popup_highlight": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "popup_highlight_text": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "sidebar": {
+        "r": 0,
+        "g": 44,
+        "b": 56
+      },
+      "sidebar_border": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "sidebar_text": {
+        "r": 158,
+        "g": 171,
+        "b": 172
+      },
+      "sidebar_highlight": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "sidebar_highlight_text": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "tab_background_separator": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      },
+      "tab_loading": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "tab_selected": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "tab_text": {
+        "r": 237,
+        "g": 231,
+        "b": 211
+      },
+      "toolbar_bottom_separator": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "toolbar_field_border": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      },
+      "toolbar_field_border_focus": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "toolbar_field_focus": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "toolbar_field_highlight": {
+        "r": 38,
+        "g": 139,
+        "b": 211
+      },
+      "toolbar_field_highlight_text": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "toolbar_field_separator": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      },
+      "toolbar_field_text_focus": {
+        "r": 237,
+        "g": 231,
+        "b": 211
+      },
+      "toolbar_top_separator": {
+        "r": 0,
+        "g": 20,
+        "b": 25
+      },
+      "toolbar_vertical_separator": {
+        "r": 6,
+        "g": 53,
+        "b": 64
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Solarized Osaka"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#7DAEA3",
+    "#3c84f7": "#6C938A",
+    "#2c2c2c": "#282828",
+    "#3c3c3c": "#45403D",
+    "#242424": "#32302F",
+    "#464646": "#504945",
+    "#212121": "#1B1B1B",
+    "#fd5f51": "#EA6962",
+    "#38c76a": "#A9B665",
+    "#fdbe04": "#D8A657"
+  },
+  "accent": "#7DAEA3",
+  "name": "Gruvbox Material Dark",
+  "slug": "gruvbox-material-dark",
+  "gtk_theme": "Rain-GruvboxMaterialDark"
+}

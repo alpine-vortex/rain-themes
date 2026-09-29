@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Ros\u00e9 Pine Moon",
+  "use-theme-colors": false,
+  "background-color": "#232136",
+  "foreground-color": "#E0DEF4",
+  "palette": [
+    "#393552",
+    "#EB6F92",
+    "#3E8FB0",
+    "#F6C177",
+    "#9CCFD8",
+    "#C4A7E7",
+    "#EA9A97",
+    "#E0DEF4",
+    "#6E6A86",
+    "#EB6F92",
+    "#3E8FB0",
+    "#F6C177",
+    "#9CCFD8",
+    "#C4A7E7",
+    "#EA9A97",
+    "#E0DEF4"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#56526E",
+  "cursor-foreground-color": "#E0DEF4",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#44415A",
+  "highlight-foreground-color": "#E0DEF4"
+}

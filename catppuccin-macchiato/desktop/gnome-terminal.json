@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Catppuccin Macchiato",
+  "use-theme-colors": false,
+  "background-color": "#24273A",
+  "foreground-color": "#CAD3F5",
+  "palette": [
+    "#494D64",
+    "#ED8796",
+    "#A6DA95",
+    "#EED49F",
+    "#8AADF4",
+    "#F5BDE6",
+    "#8BD5CA",
+    "#B8C0E0",
+    "#5B6078",
+    "#ED8796",
+    "#A6DA95",
+    "#EED49F",
+    "#8AADF4",
+    "#F5BDE6",
+    "#8BD5CA",
+    "#A5ADCB"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#F4DBD6",
+  "cursor-foreground-color": "#24273A",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#5B6078",
+  "highlight-foreground-color": "#CAD3F5"
+}

@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Librekai Refined",
+  "use-theme-colors": false,
+  "background-color": "#272822",
+  "foreground-color": "#E8E8E3",
+  "palette": [
+    "#272822",
+    "#E73C50",
+    "#A6E22D",
+    "#E6DB74",
+    "#66D9EF",
+    "#AE81FF",
+    "#A1EFE4",
+    "#E8E8E3",
+    "#64645E",
+    "#F92772",
+    "#9EC400",
+    "#E7C547",
+    "#7AA6DA",
+    "#B77EE0",
+    "#54CED6",
+    "#FFFFFF"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#E8E8E3",
+  "cursor-foreground-color": "#272822",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#575B61",
+  "highlight-foreground-color": "#E8E8E3"
+}

@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#C4A7E7",
+    "#3c84f7": "#A48CC4",
+    "#2c2c2c": "#232136",
+    "#3c3c3c": "#393552",
+    "#242424": "#2A273F",
+    "#464646": "#44415A",
+    "#212121": "#232136",
+    "#fd5f51": "#EB6F92",
+    "#38c76a": "#3E8FB0",
+    "#fdbe04": "#F6C177"
+  },
+  "accent": "#C4A7E7",
+  "name": "Ros\u00e9 Pine Moon",
+  "slug": "rose-pine-moon",
+  "gtk_theme": "Rain-RosePineMoon"
+}

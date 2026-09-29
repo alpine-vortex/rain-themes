@@ -1,0 +1,10 @@
+/* Rain Solarized Osaka — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #001419 !important;
+    --newtab-background-color-secondary: #002C38 !important;
+    --newtab-text-primary-color: #9EABAC !important;
+    --newtab-primary-action-background: #268BD3 !important;
+    background-color: #001419 !important;
+  }
+}

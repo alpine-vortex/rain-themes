@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Solarized Osaka",
+  "use-theme-colors": false,
+  "background-color": "#001419",
+  "foreground-color": "#839395",
+  "palette": [
+    "#001419",
+    "#DB302D",
+    "#849900",
+    "#B28500",
+    "#268BD3",
+    "#D23681",
+    "#29A298",
+    "#839395",
+    "#576D74",
+    "#DB302D",
+    "#849900",
+    "#B28500",
+    "#268BD3",
+    "#D23681",
+    "#29A298",
+    "#839395"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#839395",
+  "cursor-foreground-color": "#001419",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#002C38",
+  "highlight-foreground-color": "#839395"
+}

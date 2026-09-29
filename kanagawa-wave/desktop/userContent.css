@@ -1,0 +1,10 @@
+/* Rain Kanagawa Wave — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #1F1F28 !important;
+    --newtab-background-color-secondary: #2A2A37 !important;
+    --newtab-text-primary-color: #DCD7BA !important;
+    --newtab-primary-action-background: #7E9CD8 !important;
+    background-color: #1F1F28 !important;
+  }
+}

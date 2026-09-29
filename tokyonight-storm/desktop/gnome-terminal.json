@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Tokyo Night Storm",
+  "use-theme-colors": false,
+  "background-color": "#24283B",
+  "foreground-color": "#C0CAF5",
+  "palette": [
+    "#1D202F",
+    "#F7768E",
+    "#9ECE6A",
+    "#E0AF68",
+    "#7AA2F7",
+    "#BB9AF7",
+    "#7DCFFF",
+    "#A9B1D6",
+    "#414868",
+    "#FF899D",
+    "#9FE044",
+    "#FABA4A",
+    "#8DB0FF",
+    "#C7A9FF",
+    "#A4DAFF",
+    "#C0CAF5"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#C0CAF5",
+  "cursor-foreground-color": "#24283B",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#2E3C64",
+  "highlight-foreground-color": "#C0CAF5"
+}

@@ -1,0 +1,10 @@
+/* Rain Kanagawa Dragon — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #181616 !important;
+    --newtab-background-color-secondary: #282727 !important;
+    --newtab-text-primary-color: #C5C9C5 !important;
+    --newtab-primary-action-background: #8BA4B0 !important;
+    background-color: #181616 !important;
+  }
+}

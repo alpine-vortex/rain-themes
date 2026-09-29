@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJLemPMWTIVo6PpHdSWdxkIgnN7fZxvgSQPKuIidagOrAtabfeik894Tr_nEn70QgVvgvQM3i8ycOfv_EqPGqGA8BhdAZD7Qqozc6_m99PlX3KIdsWCqxHhMKQHb7dtxcHCqihhykAz6kXQuwKnNZ9BWA5sFY1scexFaXwLA5MvI_1Sx2kWaGgfS27ApLMcSqTMI8I9BDKbwXSE4X7NoMVYJ14NQmKCirhDpMQe0RboYuIjpP1UR3WNvyefrXhzAMWflQAcNJ1THr-q_-wXLXE7_2rRnp7i89rm5zPsLbUGK9cZ3OL4lTBvZ2UbOr8efB4P6GIrCkmuM9cA1wNvSacUuoQgdBzJYaFNklpSU0tZoqWSEVX3HLiK6GRXiUsSZgJKfB0fYbgu3VyzQztUVy9z0E-OWvTwIP-_lhOGKCsvzwtomRSY44Ba3niyBjZDobrLdy7QSaTl5itZwmC2ig3sN_HrfSR1r1UBFIVzHdl1z9wZ7pGw8lu9qtyJM4KE16BszFnfVCttMKGhcX0IXQZtTc_vFUAY",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 59,
+        "g": 66,
+        "b": 82
+      },
+      "toolbar_text": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "frame": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "tab_background_text": {
+        "r": 174,
+        "g": 181,
+        "b": 195
+      },
+      "toolbar_field": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "toolbar_field_text": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "tab_line": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "popup": {
+        "r": 67,
+        "g": 76,
+        "b": 94
+      },
+      "popup_text": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "button_background_active": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      },
+      "button_background_hover": {
+        "r": 67,
+        "g": 76,
+        "b": 94
+      },
+      "frame_inactive": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "icons": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "icons_attention": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "ntp_background": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "ntp_text": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "popup_border": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      },
+      "popup_highlight": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "popup_highlight_text": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "sidebar": {
+        "r": 59,
+        "g": 66,
+        "b": 82
+      },
+      "sidebar_border": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "sidebar_text": {
+        "r": 216,
+        "g": 222,
+        "b": 233
+      },
+      "sidebar_highlight": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "sidebar_highlight_text": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "tab_background_separator": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      },
+      "tab_loading": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "tab_selected": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "tab_text": {
+        "r": 236,
+        "g": 239,
+        "b": 244
+      },
+      "toolbar_bottom_separator": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "toolbar_field_border": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      },
+      "toolbar_field_border_focus": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "toolbar_field_focus": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "toolbar_field_highlight": {
+        "r": 136,
+        "g": 192,
+        "b": 208
+      },
+      "toolbar_field_highlight_text": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "toolbar_field_separator": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      },
+      "toolbar_field_text_focus": {
+        "r": 236,
+        "g": 239,
+        "b": 244
+      },
+      "toolbar_top_separator": {
+        "r": 46,
+        "g": 52,
+        "b": 64
+      },
+      "toolbar_vertical_separator": {
+        "r": 76,
+        "g": 86,
+        "b": 106
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Nord Frost"
+  }
+}

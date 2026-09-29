@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Tokyo Night Night",
+  "use-theme-colors": false,
+  "background-color": "#1A1B26",
+  "foreground-color": "#C0CAF5",
+  "palette": [
+    "#15161E",
+    "#F7768E",
+    "#9ECE6A",
+    "#E0AF68",
+    "#7AA2F7",
+    "#BB9AF7",
+    "#7DCFFF",
+    "#A9B1D6",
+    "#414868",
+    "#FF899D",
+    "#9FE044",
+    "#FABA4A",
+    "#8DB0FF",
+    "#C7A9FF",
+    "#A4DAFF",
+    "#C0CAF5"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#C0CAF5",
+  "cursor-foreground-color": "#1A1B26",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#283457",
+  "highlight-foreground-color": "#C0CAF5"
+}

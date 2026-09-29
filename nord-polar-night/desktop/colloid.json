@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#81A1C1",
+    "#3c84f7": "#708BA7",
+    "#2c2c2c": "#2E3440",
+    "#3c3c3c": "#434C5E",
+    "#242424": "#3B4252",
+    "#464646": "#4C566A",
+    "#212121": "#2E3440",
+    "#fd5f51": "#CA848C",
+    "#38c76a": "#A3BE8C",
+    "#fdbe04": "#EBCB8B"
+  },
+  "accent": "#81A1C1",
+  "name": "Nord Polar Night",
+  "slug": "nord-polar-night",
+  "gtk_theme": "Rain-NordPolarNight"
+}

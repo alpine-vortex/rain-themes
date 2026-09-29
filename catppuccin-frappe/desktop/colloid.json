@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#CA9EE6",
+    "#3c84f7": "#AB89C6",
+    "#2c2c2c": "#303446",
+    "#3c3c3c": "#414559",
+    "#242424": "#292C3C",
+    "#464646": "#51576D",
+    "#212121": "#232634",
+    "#fd5f51": "#E78284",
+    "#38c76a": "#A6D189",
+    "#fdbe04": "#E5C890"
+  },
+  "accent": "#CA9EE6",
+  "name": "Catppuccin Frapp\u00e9",
+  "slug": "catppuccin-frappe",
+  "gtk_theme": "Rain-CatppuccinFrappe"
+}

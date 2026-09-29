@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Nord Frost",
+  "use-theme-colors": false,
+  "background-color": "#2E3440",
+  "foreground-color": "#D8DEE9",
+  "palette": [
+    "#3B4252",
+    "#BF616A",
+    "#A3BE8C",
+    "#EBCB8B",
+    "#81A1C1",
+    "#B48EAD",
+    "#88C0D0",
+    "#E5E9F0",
+    "#4C566A",
+    "#BF616A",
+    "#A3BE8C",
+    "#EBCB8B",
+    "#81A1C1",
+    "#B48EAD",
+    "#8FBCBB",
+    "#ECEFF4"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#D8DEE9",
+  "cursor-foreground-color": "#2E3440",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#4C566A",
+  "highlight-foreground-color": "#D8DEE9"
+}

@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#7E9CD8",
+    "#3c84f7": "#6B83B5",
+    "#2c2c2c": "#1F1F28",
+    "#3c3c3c": "#2A2A37",
+    "#242424": "#181820",
+    "#464646": "#363646",
+    "#212121": "#16161D",
+    "#fd5f51": "#E82424",
+    "#38c76a": "#98BB6C",
+    "#fdbe04": "#FF9E3B"
+  },
+  "accent": "#7E9CD8",
+  "name": "Kanagawa Wave",
+  "slug": "kanagawa-wave",
+  "gtk_theme": "Rain-KanagawaWave"
+}

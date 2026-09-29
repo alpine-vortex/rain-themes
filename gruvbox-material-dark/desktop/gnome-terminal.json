@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Gruvbox Material Dark",
+  "use-theme-colors": false,
+  "background-color": "#282828",
+  "foreground-color": "#D4BE98",
+  "palette": [
+    "#5A524C",
+    "#EA6962",
+    "#A9B665",
+    "#D8A657",
+    "#7DAEA3",
+    "#D3869B",
+    "#89B482",
+    "#D4BE98",
+    "#5A524C",
+    "#EA6962",
+    "#A9B665",
+    "#D8A657",
+    "#7DAEA3",
+    "#D3869B",
+    "#89B482",
+    "#D4BE98"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#D4BE98",
+  "cursor-foreground-color": "#282828",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#45403D",
+  "highlight-foreground-color": "#D4BE98"
+}

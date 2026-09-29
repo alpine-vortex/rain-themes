@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#82AAFF",
+    "#3c84f7": "#6F8FD7",
+    "#2c2c2c": "#222436",
+    "#3c3c3c": "#2F334D",
+    "#242424": "#1E2030",
+    "#464646": "#3B4261",
+    "#212121": "#191B29",
+    "#fd5f51": "#FF757F",
+    "#38c76a": "#C3E88D",
+    "#fdbe04": "#FFC777"
+  },
+  "accent": "#82AAFF",
+  "name": "Tokyo Night Moon",
+  "slug": "tokyonight-moon",
+  "gtk_theme": "Rain-TokyonightMoon"
+}

@@ -1,0 +1,18 @@
+{
+  "swap": {
+    "#5b9bf8": "#8BA4B0",
+    "#3c84f7": "#748891",
+    "#2c2c2c": "#181616",
+    "#3c3c3c": "#282727",
+    "#242424": "#12120F",
+    "#464646": "#393836",
+    "#212121": "#0D0C0C",
+    "#fd5f51": "#E82424",
+    "#38c76a": "#98BB6C",
+    "#fdbe04": "#FF9E3B"
+  },
+  "accent": "#8BA4B0",
+  "name": "Kanagawa Dragon",
+  "slug": "kanagawa-dragon",
+  "gtk_theme": "Rain-KanagawaDragon"
+}

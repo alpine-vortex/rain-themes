@@ -1,0 +1,10 @@
+/* Rain Tokyo Dark — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #11121D !important;
+    --newtab-background-color-secondary: #212234 !important;
+    --newtab-text-primary-color: #A0A8CD !important;
+    --newtab-primary-action-background: #7199EE !important;
+    background-color: #11121D !important;
+  }
+}

@@ -1,0 +1,10 @@
+/* Rain Gruvbox Material Dark — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #282828 !important;
+    --newtab-background-color-secondary: #45403D !important;
+    --newtab-text-primary-color: #D4BE98 !important;
+    --newtab-primary-action-background: #7DAEA3 !important;
+    background-color: #282828 !important;
+  }
+}

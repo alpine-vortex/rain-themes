@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Kanagawa Wave",
+  "use-theme-colors": false,
+  "background-color": "#1F1F28",
+  "foreground-color": "#DCD7BA",
+  "palette": [
+    "#16161D",
+    "#C34043",
+    "#76946A",
+    "#C0A36E",
+    "#7E9CD8",
+    "#957FB8",
+    "#6A9589",
+    "#C8C093",
+    "#727169",
+    "#E82424",
+    "#98BB6C",
+    "#E6C384",
+    "#7FB4CA",
+    "#938AA9",
+    "#7AA89F",
+    "#DCD7BA"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#C8C093",
+  "cursor-foreground-color": "#1F1F28",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#2D4F67",
+  "highlight-foreground-color": "#DCD7BA"
+}

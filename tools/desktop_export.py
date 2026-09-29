@@ -58,6 +58,8 @@ class Colours:
             raise SpecError("ansi must list 16 colours")
         t = spec["terminal"]
         self.term = {k: self.ref(t[k]) for k in ("background", "foreground", "cursor", "selection")}
+        # optional: text under a block cursor (defaults to the background, i.e. reverse video)
+        self.term["cursor_text"] = self.ref(t["cursor_text"]) if "cursor_text" in t else self.term["background"]
         missing = set(SYNTAX_KEYS) - set(spec["syntax"])
         if missing:
             raise SpecError(f"syntax missing {sorted(missing)}")
@@ -150,7 +152,7 @@ def terminal(c, name):
         "bold-color-same-as-fg": True,
         "cursor-colors-set": True,
         "cursor-background-color": t["cursor"],
-        "cursor-foreground-color": t["background"],
+        "cursor-foreground-color": t["cursor_text"],
         "highlight-colors-set": True,
         "highlight-background-color": t["selection"],
         "highlight-foreground-color": t["foreground"],

@@ -1,0 +1,10 @@
+/* Rain Catppuccin Frappé — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #303446 !important;
+    --newtab-background-color-secondary: #414559 !important;
+    --newtab-text-primary-color: #C6D0F5 !important;
+    --newtab-primary-action-background: #CA9EE6 !important;
+    background-color: #303446 !important;
+  }
+}

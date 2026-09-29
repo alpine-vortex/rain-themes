@@ -125,7 +125,10 @@ skipped:
 ```
 
 Refs are palette names (with `@AA` alpha, flattened over `main_bg`) or literal
-`#RRGGBB`. Everything else comes from `roles`.
+`#RRGGBB`. Everything else comes from `roles`. `terminal` may also set
+`cursor_text` (the text under a block cursor); it defaults to `background`.
+Selected text is always drawn in `foreground`, so `selection` must be a dark
+colour even where upstream uses a light one with dark selected text.
 
 | Target | Export | How `apply_theme.py` applies it |
 |---|---|---|

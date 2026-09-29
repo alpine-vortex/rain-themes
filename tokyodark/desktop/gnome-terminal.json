@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Tokyo Dark",
+  "use-theme-colors": false,
+  "background-color": "#11121D",
+  "foreground-color": "#A0A8CD",
+  "palette": [
+    "#06080A",
+    "#EE6D85",
+    "#95C561",
+    "#D7A65F",
+    "#7199EE",
+    "#A485DD",
+    "#38A89D",
+    "#A0A8CD",
+    "#212234",
+    "#EE6D85",
+    "#95C561",
+    "#D7A65F",
+    "#7199EE",
+    "#A485DD",
+    "#38A89D",
+    "#A0A8CD"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#A0A8CD",
+  "cursor-foreground-color": "#11121D",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#212234",
+  "highlight-foreground-color": "#A0A8CD"
+}

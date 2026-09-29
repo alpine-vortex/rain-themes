@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-09-28 (end of the first session).
+Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 
 - Everything is on `main`: desktop exports, docs, Firefox Color links,
   `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
@@ -25,6 +25,25 @@ Last updated 2026-09-28 (end of the first session).
   Code's built-in Monokai) and **Catppuccin Mocha** (from catppuccin/kitty and
   the Catppuccin style guide). Rebuilding all 21 Rain themes after the change
   gave byte-identical output.
+- **All 21 palettes now have desktop exports.** On 2026-09-28 the other 19
+  gained `ansi_source` / `ansi` / `terminal` / `syntax` blocks. Each value was
+  taken from the palette's own upstream terminal file (kitty / alacritty /
+  `g:terminal_color_*` / VS Code `terminal.ansi*`) and colorscheme highlight
+  groups; `ansi_source` in each spec names the files. Every ANSI hex matched
+  a colour already in the spec's palette. Rain outputs stayed byte-identical.
+  - Deliberate deviations from upstream:
+    - **Selection:** Catppuccin Frappé/Macchiato use `surface2` (as Mocha
+      does) and Tokyodark uses its Visual `bg2`, because upstream uses a
+      light selection with dark selected text and the exporter always draws
+      selected text in the foreground colour.
+    - **Monokai Dimmed:** its selection is upstream's 50%-alpha colour
+      flattened onto the background.
+    - **Rosé Pine:** it uses the new `terminal.cursor_text`, keeping its
+      light text on a dark cursor.
+  - Filled where upstream has no rule:
+    - **Dracula:** operator, preprocessor and added/changed.
+    - **Gruvbox:** parameter (Identifier) and tag/attribute (htmlTagName/htmlArg).
+    - **Monokai Dimmed:** operator and preprocessor (keyword.control purple).
 - `tools/desktop_export.py`, `tools/apply_theme.py`,
   `tools/dev/preview_desktop.py`.
 - `tools/rain` (single CLI incl. `check`), pending queue + login autostart, the
@@ -44,6 +63,10 @@ Last updated 2026-09-28 (end of the first session).
 | Firefox 156 tab strip, toolbar, URL bar + focus ring, new-tab page | ✅ | ✅ |
 | Geany editor scheme + GTK chrome | ✅ | ✅ |
 | Wallpapers | ✅ | ✅ |
+
+Of the other 19, only four were screenshotted: Gruvbox, Rosé Pine, Kanagawa
+Dragon and Solarized Osaka. Each got a Geany shot and a GTK shot, and all
+eight looked right. The rest are covered by `rain check` and a contrast scan.
 
 ## Not yet verified
 
@@ -65,6 +88,13 @@ Last updated 2026-09-28 (end of the first session).
 
 ## Known issues / rough edges
 
+- Some upstream syntax colours are low-contrast on their own background, and
+  were kept as upstream has them:
+  - Monokai Dimmed type/class `#9B0000`, 1.9:1.
+  - Nord comment `#616E88`, 2.4:1.
+  - Tokyodark comment, 2.3:1.
+  - Tokyo Night Storm comment 2.4:1 and git-delete 2.3:1.
+
 - Firefox: the bookmarks-toolbar notice link stays Firefox-blue. The new-tab
   page's own purple accents (buttons) are page content, not ours.
 - GTK2 widget PNGs keep Colloid's stock colours.
@@ -77,11 +107,8 @@ Last updated 2026-09-28 (end of the first session).
 
 1. Review the live Librekai apply (panel, Nemo, terminal, Vesktop, Brave) with
    the owner and fix what looks off.
-2. **The other 19 palettes** (the planned next session): add `ansi_source`,
-   `ansi`, `terminal`, `syntax` to each spec from the palette's upstream
-   (families and shortcuts are listed in `CLAUDE.md`), then `tools/rain build`
-   and `tools/rain check`. Existing Rain outputs must not change. Spot-check
-   with `tools/rain preview <slug>`. They then appear in the GUI automatically.
+2. ~~The other 19 palettes~~: done on 2026-09-28. Next is Firefox previews
+   (`tools/rain preview <slug>`) for the palettes the owner actually picks.
 3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
    offer it as an option.
 4. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.

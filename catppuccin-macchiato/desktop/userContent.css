@@ -1,0 +1,10 @@
+/* Rain Catppuccin Macchiato — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #24273A !important;
+    --newtab-background-color-secondary: #363A4F !important;
+    --newtab-text-primary-color: #CAD3F5 !important;
+    --newtab-primary-action-background: #C6A0F6 !important;
+    background-color: #24273A !important;
+  }
+}

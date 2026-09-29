@@ -1,0 +1,10 @@
+/* Rain Dracula — new-tab page colours. */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank"), url("about:privatebrowsing") {
+  :root, body {
+    --newtab-background-color: #282A36 !important;
+    --newtab-background-color-secondary: #343746 !important;
+    --newtab-text-primary-color: #F8F8F2 !important;
+    --newtab-primary-action-background: #BD93F9 !important;
+    background-color: #282A36 !important;
+  }
+}

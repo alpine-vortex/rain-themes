@@ -1,0 +1,32 @@
+{
+  "visible-name": "Rain Everforest Dark",
+  "use-theme-colors": false,
+  "background-color": "#2D353B",
+  "foreground-color": "#D3C6AA",
+  "palette": [
+    "#475258",
+    "#E67E80",
+    "#A7C080",
+    "#DBBC7F",
+    "#7FBBB3",
+    "#D699B6",
+    "#83C092",
+    "#D3C6AA",
+    "#475258",
+    "#E67E80",
+    "#A7C080",
+    "#DBBC7F",
+    "#7FBBB3",
+    "#D699B6",
+    "#83C092",
+    "#D3C6AA"
+  ],
+  "bold-is-bright": false,
+  "bold-color-same-as-fg": true,
+  "cursor-colors-set": true,
+  "cursor-background-color": "#D3C6AA",
+  "cursor-foreground-color": "#2D353B",
+  "highlight-colors-set": true,
+  "highlight-background-color": "#543A48",
+  "highlight-foreground-color": "#D3C6AA"
+}

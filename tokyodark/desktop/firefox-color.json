@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJE6OcQBjebCm1nilC_3ivsFiao_gcmZXVntZ9JcVJ8NQzfu2rinKH-cck7c67y68xLePucDaPjGGwNOhnjAoys3Va-Q00Dhx3sVsRiBN9noKf9juMeQry2B3mxPRZHWatZYK3GPHw1MjkI3sAjlKogziGYqNB9Dt8VsgAup4fVKV6emuhEe6MFQmwu_zRBzr0S59gNMc4AE5J07mfthK8h8LW4PoVE1jt1H40nDXACZRIxj7vxxwvgMsHhrNVmbDslNR4w78ojFxZRI-s5L4CrdulcmpMEqRTkXnwK7HAzMa0l-vglTjlTsjn76MTlh9j_DHUwQVEW-LdfuvVJfBNrfsfMKfZzRA0jJ8LmJ_HFkL6yaMHTz25v_op9O7jcx3Cw23enUB34aTvbB75SZHb16BkgerggsqFUAvJ8KNnrBwNOI6Fqb_jHDh4Kc7ytSV9WRObXhm_xVQunBIZBTinI8M6blt2Npgng9YuH4gNm91PnFyyIMNrSb9LLDiChLDymnW2RMtufWmUw2oSuJxGeuaUj2jzpEE8qt_8phVXI",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 26,
+        "g": 27,
+        "b": 42
+      },
+      "toolbar_text": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "frame": {
+        "r": 6,
+        "g": 8,
+        "b": 10
+      },
+      "tab_background_text": {
+        "r": 138,
+        "g": 146,
+        "b": 176
+      },
+      "toolbar_field": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "toolbar_field_text": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "tab_line": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "popup": {
+        "r": 33,
+        "g": 34,
+        "b": 52
+      },
+      "popup_text": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "button_background_active": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      },
+      "button_background_hover": {
+        "r": 33,
+        "g": 34,
+        "b": 52
+      },
+      "frame_inactive": {
+        "r": 6,
+        "g": 8,
+        "b": 10
+      },
+      "icons": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "icons_attention": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "ntp_background": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "ntp_text": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "popup_border": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      },
+      "popup_highlight": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "popup_highlight_text": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "sidebar": {
+        "r": 26,
+        "g": 27,
+        "b": 42
+      },
+      "sidebar_border": {
+        "r": 6,
+        "g": 8,
+        "b": 10
+      },
+      "sidebar_text": {
+        "r": 160,
+        "g": 168,
+        "b": 205
+      },
+      "sidebar_highlight": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "sidebar_highlight_text": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "tab_background_separator": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      },
+      "tab_loading": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "tab_selected": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "tab_text": {
+        "r": 159,
+        "g": 187,
+        "b": 243
+      },
+      "toolbar_bottom_separator": {
+        "r": 6,
+        "g": 8,
+        "b": 10
+      },
+      "toolbar_field_border": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      },
+      "toolbar_field_border_focus": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "toolbar_field_focus": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "toolbar_field_highlight": {
+        "r": 113,
+        "g": 153,
+        "b": 238
+      },
+      "toolbar_field_highlight_text": {
+        "r": 17,
+        "g": 18,
+        "b": 29
+      },
+      "toolbar_field_separator": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      },
+      "toolbar_field_text_focus": {
+        "r": 159,
+        "g": 187,
+        "b": 243
+      },
+      "toolbar_top_separator": {
+        "r": 6,
+        "g": 8,
+        "b": 10
+      },
+      "toolbar_vertical_separator": {
+        "r": 53,
+        "g": 57,
+        "b": 69
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Tokyo Dark"
+  }
+}

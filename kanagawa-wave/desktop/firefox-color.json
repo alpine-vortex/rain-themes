@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJEgvcajvXWlSPRJ0F_F447xQs-eIO1FGjCv24eOz6Bu1VH09-ekN4naYfxL--w2jbwegAn-jAIv7vg2TyIiVfMFjjdm53qs7taZpmzeODpGEYXGeRu53A1vYVz63LvfOyO77LEJG9_BbXYVbTj6-R8IWMHkVuBoZr_61c7BBhHguV6Au3K_TVbIa8p40VkhbrsCwXVN7cMRye4Y3f1HXT7f18dNCJnvRrseg3nvILG-28Mo4gm1RW20-rW0Cjt1hvzInENZtEBHzEOwFFSUgAdWl4d8qhM93sHeOYM-RJi9kb4mm5s6WzX3xZdRRSF2E8Qs9F6A9991Rotjjy13aukp6IKauHHADrjcvmmvcdx2npyWkfHIHFEfCkc6ivbUn-Itdf--P5QmX3Vi76t1r9GQkyGkGSF36IgFCLS2FTfFkLsoQ4xENcagOvIcG_JyPHfJX2xih0D4rkQeUN4TiM6IdjD6Q1vkKQZi6iM9FUQYl-L3byWO-1Awci6r21bsM0EDLhlGjljxpDw6hxY5X6Rhb5fNmv60MtU",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 24,
+        "g": 24,
+        "b": 32
+      },
+      "toolbar_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "frame": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "tab_background_text": {
+        "r": 200,
+        "g": 192,
+        "b": 147
+      },
+      "toolbar_field": {
+        "r": 31,
+        "g": 31,
+        "b": 40
+      },
+      "toolbar_field_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "tab_line": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "popup": {
+        "r": 42,
+        "g": 42,
+        "b": 55
+      },
+      "popup_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "button_background_active": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      },
+      "button_background_hover": {
+        "r": 42,
+        "g": 42,
+        "b": 55
+      },
+      "frame_inactive": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "icons": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "icons_attention": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "ntp_background": {
+        "r": 31,
+        "g": 31,
+        "b": 40
+      },
+      "ntp_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "popup_border": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      },
+      "popup_highlight": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "popup_highlight_text": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "sidebar": {
+        "r": 24,
+        "g": 24,
+        "b": 32
+      },
+      "sidebar_border": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "sidebar_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "sidebar_highlight": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "sidebar_highlight_text": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "tab_background_separator": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      },
+      "tab_loading": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "tab_selected": {
+        "r": 31,
+        "g": 31,
+        "b": 40
+      },
+      "tab_text": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "toolbar_bottom_separator": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "toolbar_field_border": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      },
+      "toolbar_field_border_focus": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "toolbar_field_focus": {
+        "r": 31,
+        "g": 31,
+        "b": 40
+      },
+      "toolbar_field_highlight": {
+        "r": 126,
+        "g": 156,
+        "b": 216
+      },
+      "toolbar_field_highlight_text": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "toolbar_field_separator": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      },
+      "toolbar_field_text_focus": {
+        "r": 220,
+        "g": 215,
+        "b": 186
+      },
+      "toolbar_top_separator": {
+        "r": 22,
+        "g": 22,
+        "b": 29
+      },
+      "toolbar_vertical_separator": {
+        "r": 54,
+        "g": 54,
+        "b": 70
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Kanagawa Wave"
+  }
+}

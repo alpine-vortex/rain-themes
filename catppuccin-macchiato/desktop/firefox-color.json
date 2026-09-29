@@ -1,0 +1,201 @@
+{
+  "url": "https://color.firefox.com/?theme=XQAAAAT__________wBBqYhm849SCicxcUhA3DJozHnOMuotJJFtMcQQcPu53BdWznKypL-h2NKJRDlbtbC0WTiRZQrPfZjwwBb56jVXkFTxlrORxOivKp5Evps5RwyQmhMlhIzz09W_1Pk8eaRQNm4YKePxKQAb-orsEsKjP_JLA3D8kEi_juVrtQGXiSrUd17hJyAqz13NV_6c-LaxNWXr6jC1oSvtJwDkqmkG2rb0Pt50nu6FEzVm52nlnqBiyHmv8D5iW0vGV6GalerIQDWuBW1JyFSPtLFnfKvvH0ugGBZ25ByfNpYO4pIcbJrdcIm6EfwbYV0Ctqt-7yLWWk1NGJlXzN1laQnpfbK7cZ8fVDbxEA0e6v3GmTP1VgjaM9hFLVHSlPozM7ldiOcmRGXpsVseN92gMrLgBp1LK41YBQapXgzO8g7VGW5BnaJUmhGHULbGrfsOVsd8EaOF9PsZrIcdWcKOEvSMU-VbBuMvo3M5YCkJZHdDJIpdX6yosrsguTtqFAcnrw0NGRKhmmIBIQCEyKSa7ySZuC0UATvOFPjgVxq9u-tn7bfSxJuXiw325oEq_RS9n_ojqfiqC__vBKKJ",
+  "theme": {
+    "colors": {
+      "toolbar": {
+        "r": 30,
+        "g": 32,
+        "b": 48
+      },
+      "toolbar_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "frame": {
+        "r": 24,
+        "g": 25,
+        "b": 38
+      },
+      "tab_background_text": {
+        "r": 184,
+        "g": 192,
+        "b": 224
+      },
+      "toolbar_field": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "toolbar_field_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "tab_line": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "popup": {
+        "r": 54,
+        "g": 58,
+        "b": 79
+      },
+      "popup_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "button_background_active": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      },
+      "button_background_hover": {
+        "r": 54,
+        "g": 58,
+        "b": 79
+      },
+      "frame_inactive": {
+        "r": 24,
+        "g": 25,
+        "b": 38
+      },
+      "icons": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "icons_attention": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "ntp_background": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "ntp_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "popup_border": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      },
+      "popup_highlight": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "popup_highlight_text": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "sidebar": {
+        "r": 30,
+        "g": 32,
+        "b": 48
+      },
+      "sidebar_border": {
+        "r": 24,
+        "g": 25,
+        "b": 38
+      },
+      "sidebar_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "sidebar_highlight": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "sidebar_highlight_text": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "tab_background_separator": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      },
+      "tab_loading": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "tab_selected": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "tab_text": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "toolbar_bottom_separator": {
+        "r": 24,
+        "g": 25,
+        "b": 38
+      },
+      "toolbar_field_border": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      },
+      "toolbar_field_border_focus": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "toolbar_field_focus": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "toolbar_field_highlight": {
+        "r": 198,
+        "g": 160,
+        "b": 246
+      },
+      "toolbar_field_highlight_text": {
+        "r": 36,
+        "g": 39,
+        "b": 58
+      },
+      "toolbar_field_separator": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      },
+      "toolbar_field_text_focus": {
+        "r": 202,
+        "g": 211,
+        "b": 245
+      },
+      "toolbar_top_separator": {
+        "r": 24,
+        "g": 25,
+        "b": 38
+      },
+      "toolbar_vertical_separator": {
+        "r": 73,
+        "g": 77,
+        "b": 100
+      }
+    },
+    "images": {
+      "additional_backgrounds": []
+    },
+    "title": "Rain Catppuccin Macchiato"
+  }
+}
