@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nord Polar Night Preview</title>
+<style>
+/* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
+:root {
+  --BACKGROUND_PRIMARY: #2E3440;
+  --BG_BASE_PRIMARY: #2E3440;
+  --BACKGROUND_MOBILE_PRIMARY: #2E3440;
+  --CHAT_BACKGROUND: #2E3440;
+  --BACKGROUND_BASE_LOW: #2E3440;
+  --CHANNEL_BACKGROUND_DEFAULT: #2E3440;
+  --STANDALONE_CHANNEL_CONTENT_BACKGROUND: #2E3440;
+  --BACKGROUND_SECONDARY: #3B4252;
+  --BG_BASE_SECONDARY: #3B4252;
+  --BACKGROUND_MOBILE_SECONDARY: #3B4252;
+  --BACKGROUND_BASE_LOWER: #3B4252;
+  --CHAT_BANNER_BG: #3B4252;
+  --BACKGROUND_SECONDARY_ALT: #3B4252;
+  --BACKGROUND_TERTIARY: #2E3440;
+  --BG_BASE_TERTIARY: #2E3440;
+  --BACKGROUND_BASE_LOWEST: #2E3440;
+  --BACKGROUND_FLOATING: #434C5E;
+  --BACKGROUND_SURFACE_HIGH: #434C5E;
+  --MODAL_BACKGROUND: #434C5E;
+  --MODAL_FOOTER_BACKGROUND: #434C5E;
+  --MOBILE_ACTIONSHEET_BACKGROUND: #434C5E;
+  --MOBILE_ACTIONSHEET_GRADIENT_BACKGROUND_DEFAULT: #434C5E;
+  --CARD_PRIMARY_BG: #434C5E;
+  --CARD_BACKGROUND_DEFAULT: #434C5E;
+  --MOBILE_EMBED_BACKGROUND_DEFAULT: #434C5E;
+  --BG_SURFACE_OVERLAY: #434C5E;
+  --BG_SURFACE_OVERLAY_TMP: #434C5E;
+  --BACKGROUND_NESTED_FLOATING: #4C566A;
+  --BACKGROUND_SURFACE_HIGHEST: #4C566A;
+  --CHAT_INPUT_BACKGROUND: #3B4252;
+  --REDESIGN_CHAT_INPUT_BACKGROUND: #3B4252;
+  --CHAT_INPUT_CONTAINER_BACKGROUND: #3B4252;
+  --INPUT_BACKGROUND: #3B4252;
+  --INPUT_BACKGROUND_DEFAULT: #3B4252;
+  --BACKGROUND_MODIFIER_HOVER: #D8DEE914;
+  --BACKGROUND_MESSAGE_HOVER: #D8DEE914;
+  --BACKGROUND_MOD_SUBTLE: #D8DEE914;
+  --BG_MOD_SUBTLE: #D8DEE914;
+  --BACKGROUND_MODIFIER_ACTIVE: #D8DEE91F;
+  --BACKGROUND_MOD_NORMAL: #D8DEE91F;
+  --BACKGROUND_MODIFIER_SELECTED: #81A1C133;
+  --BACKGROUND_MOD_STRONG: #81A1C133;
+  --BG_MOD_STRONG: #81A1C133;
+  --MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED: #81A1C133;
+  --BG_MOD_FAINT: #D8DEE90D;
+  --BACKGROUND_MOD_MUTED: #D8DEE90D;
+  --BACKGROUND_MODIFIER_ACCENT: #D8DEE914;
+  --BORDER_SUBTLE: #D8DEE914;
+  --BORDER_FAINT: #D8DEE914;
+  --BORDER_MUTED: #D8DEE914;
+  --TEXT_NORMAL: #D8DEE9;
+  --TEXT_DEFAULT: #D8DEE9;
+  --HEADER_SECONDARY: #D8DEE9;
+  --ICON_DEFAULT: #D8DEE9;
+  --HEADER_PRIMARY: #ECEFF4;
+  --TEXT_PRIMARY: #ECEFF4;
+  --TEXT_STRONG: #ECEFF4;
+  --ICON_STRONG: #ECEFF4;
+  --TEXT_SECONDARY: #AEB5C3;
+  --TEXT_SUBTLE: #AEB5C3;
+  --ICON_SUBTLE: #AEB5C3;
+  --CHANNELS_DEFAULT: #AEB5C3;
+  --CHANNEL_ICON: #AEB5C3;
+  --INTERACTIVE_NORMAL: #AEB5C3;
+  --INTERACTIVE_TEXT_DEFAULT: #AEB5C3;
+  --INTERACTIVE_ICON_DEFAULT: #AEB5C3;
+  --TEXT_MUTED: #8B93A3;
+  --ICON_MUTED: #8B93A3;
+  --INPUT_PLACEHOLDER_TEXT: #8B93A3;
+  --INPUT_PLACEHOLDER_TEXT_DEFAULT: #8B93A3;
+  --CHANNEL_TEXT_AREA_PLACEHOLDER: #8B93A3;
+  --INTERACTIVE_MUTED: #737C8E;
+  --INTERACTIVE_HOVER: #ECEFF4;
+  --INTERACTIVE_TEXT_HOVER: #ECEFF4;
+  --INTERACTIVE_ICON_HOVER: #ECEFF4;
+  --INTERACTIVE_ACTIVE: #A6BCD3;
+  --INTERACTIVE_TEXT_ACTIVE: #A6BCD3;
+  --INTERACTIVE_ICON_ACTIVE: #A6BCD3;
+  --BG_BRAND: #81A1C1;
+  --BACKGROUND_BRAND: #81A1C1;
+  --REDESIGN_BUTTON_PRIMARY_BACKGROUND: #81A1C1;
+  --CONTROL_PRIMARY_BACKGROUND_DEFAULT: #81A1C1;
+  --CONTROL_BRAND_FOREGROUND: #81A1C1;
+  --CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND: #81A1C1;
+  --BADGE_BACKGROUND_BRAND: #81A1C1;
+  --FOCUS_PRIMARY: #81A1C1;
+  --BORDER_FOCUS: #81A1C1;
+  --INPUT_BORDER_ACTIVE: #81A1C1;
+  --REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND: #A6BCD3;
+  --CONTROL_PRIMARY_BACKGROUND_ACTIVE: #A6BCD3;
+  --REDESIGN_BUTTON_PRIMARY_TEXT: #2E3440;
+  --CONTROL_PRIMARY_TEXT_DEFAULT: #2E3440;
+  --BADGE_TEXT_BRAND: #2E3440;
+  --CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT: #2E3440;
+  --TEXT_BRAND: #A6BCD3;
+  --TEXT_LINK: #88C0D0;
+  --TEXT_DANGER: #CA848C;
+  --TEXT_FEEDBACK_CRITICAL: #CA848C;
+  --ICON_FEEDBACK_CRITICAL: #CA848C;
+  --INFO_DANGER_TEXT: #CA848C;
+  --STATUS_DANGER: #CA848C;
+  --INFO_DANGER_FOREGROUND: #CA848C;
+  --STATUS_DANGER_BACKGROUND: #CA848C;
+  --REDESIGN_BUTTON_DANGER_BACKGROUND: #CA848C;
+  --CONTROL_CRITICAL_PRIMARY_BACKGROUND_DEFAULT: #CA848C;
+  --TEXT_POSITIVE: #A3BE8C;
+  --TEXT_FEEDBACK_POSITIVE: #A3BE8C;
+  --ICON_FEEDBACK_POSITIVE: #A3BE8C;
+  --INFO_POSITIVE_TEXT: #A3BE8C;
+  --STATUS_POSITIVE: #A3BE8C;
+  --INFO_POSITIVE_FOREGROUND: #A3BE8C;
+  --STATUS_ONLINE: #A3BE8C;
+  --ICON_STATUS_ONLINE: #A3BE8C;
+  --TEXT_STATUS_ONLINE: #A3BE8C;
+  --TEXT_WARNING: #EBCB8B;
+  --TEXT_FEEDBACK_WARNING: #EBCB8B;
+  --ICON_FEEDBACK_WARNING: #EBCB8B;
+  --INFO_WARNING_TEXT: #EBCB8B;
+  --STATUS_WARNING: #EBCB8B;
+  --INFO_WARNING_FOREGROUND: #EBCB8B;
+  --STATUS_IDLE: #EBCB8B;
+  --ICON_STATUS_IDLE: #EBCB8B;
+  --STATUS_DND: #CA848C;
+  --ICON_STATUS_DND: #CA848C;
+  --BACKGROUND_MENTIONED: #81A1C126;
+  --MESSAGE_MENTIONED_BACKGROUND_DEFAULT: #81A1C126;
+  --BACKGROUND_MENTIONED_HOVER: #81A1C133;
+  --MESSAGE_MENTIONED_BACKGROUND_HOVER: #81A1C133;
+  --BG_BACKDROP: #2E3440B3;
+  --MOBILE_BACKGROUND_SCRIM_OPAQUE: #2E3440B3;
+  --BRAND_500: #81A1C1;
+  --BRAND_530: #A6BCD3;
+  --BRAND_560: #5E81AC;
+  --PRIMARY_630: #434C5E;
+  --PRIMARY_660: #3B4252;
+  --PRIMARY_700: #2E3440;
+  --PRIMARY_800: #2E3440;
+  --PREVIEW_ON_DANGER: var(--REDESIGN_BUTTON_PRIMARY_TEXT);
+  --PREVIEW_PHONE_BASE: var(--BACKGROUND_PRIMARY);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--PRIMARY_800);
+  color: var(--TEXT_NORMAL);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 32px 16px;
+}
+h1 { color: var(--HEADER_PRIMARY); font-size: 22px; text-align: center; }
+.sub { color: var(--TEXT_MUTED); text-align: center; margin: 4px 0 24px; }
+.wrap { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: flex-start; }
+.phone {
+  width: 390px; height: 844px; max-width: 100%;
+  border-radius: 44px; overflow: hidden; position: relative;
+  border: 10px solid var(--PRIMARY_630);
+  display: flex; flex-direction: column;
+  background: var(--PREVIEW_PHONE_BASE);
+}
+.bgimg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; }
+.phone > :not(.bgimg) { position: relative; z-index: 1; }
+.status-bar { height: 34px; flex: none; display: flex; justify-content: space-between; align-items: center;
+  padding: 0 26px; font-size: 12px; font-weight: 600; color: var(--TEXT_STRONG); }
+.label { text-align: center; color: var(--TEXT_SECONDARY); font-size: 12px; margin-top: 8px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* ---------- Channel list ---------- */
+.cl { flex: 1; display: flex; min-height: 0; }
+.cl .status-bar { background: var(--BACKGROUND_TERTIARY); }
+.rail { width: 72px; flex: none; background: var(--BACKGROUND_TERTIARY); display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 10px; }
+.srv { width: 48px; height: 48px; border-radius: 24px; display: grid; place-items: center; font-weight: 700;
+  background: var(--BACKGROUND_SURFACE_HIGH); color: var(--TEXT_NORMAL); position: relative; }
+.srv.sel { border-radius: 16px; background: var(--BG_BRAND); color: var(--BADGE_TEXT_BRAND); }
+.srv.sel::before { content: ""; position: absolute; left: -12px; width: 4px; height: 40px; border-radius: 0 4px 4px 0; background: var(--TEXT_STRONG); }
+.srv .ping { position: absolute; right: -3px; bottom: -3px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px;
+  background: var(--STATUS_DANGER); color: var(--PREVIEW_ON_DANGER); font-size: 11px; display: grid; place-items: center; border: 3px solid var(--BACKGROUND_TERTIARY); }
+.rail hr { width: 32px; border: 0; border-top: 2px solid var(--BORDER_SUBTLE); }
+.panel { flex: 1; background: var(--BACKGROUND_SECONDARY); border-radius: 16px 0 0 0; display: flex; flex-direction: column; min-width: 0; }
+.srv-head { padding: 16px; font-weight: 700; font-size: 17px; color: var(--HEADER_PRIMARY); border-bottom: 1px solid var(--BORDER_SUBTLE); }
+.srv-head small { display: block; font-weight: 400; font-size: 12px; color: var(--TEXT_MUTED); }
+.chs { flex: 1; overflow: hidden; padding: 8px 8px; }
+.cat { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--CHANNELS_DEFAULT); padding: 14px 8px 4px; }
+.ch { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; color: var(--CHANNELS_DEFAULT); font-size: 15px; }
+.ch .h { color: var(--CHANNEL_ICON); font-weight: 700; width: 16px; text-align: center; }
+.ch.sel { background: var(--MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED); color: var(--TEXT_STRONG); }
+.ch.sel .h { color: var(--ICON_STRONG); }
+.ch.unread { color: var(--TEXT_STRONG); font-weight: 600; }
+.ch.unread .h { color: var(--ICON_STRONG); }
+.ch.muted, .ch.muted .h { color: var(--INTERACTIVE_MUTED); }
+.ch.hover { background: var(--BACKGROUND_MODIFIER_HOVER); }
+.ch .badge { margin-left: auto; }
+.badge { background: var(--BADGE_BACKGROUND_BRAND); color: var(--BADGE_TEXT_BRAND); font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 9px; }
+.userbar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--BACKGROUND_BASE_LOWEST); border-top: 1px solid var(--BORDER_SUBTLE); }
+.userbar .name { font-weight: 600; color: var(--TEXT_STRONG); font-size: 14px; }
+.userbar .st { font-size: 12px; color: var(--TEXT_STATUS_ONLINE); }
+.userbar .icons { margin-left: auto; display: flex; gap: 12px; }
+.ico { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--ICON_DEFAULT); }
+
+/* ---------- Avatars & status ---------- */
+.av { width: 36px; height: 36px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 15px; position: relative;
+  background: var(--BACKGROUND_NESTED_FLOATING); color: var(--TEXT_STRONG); }
+.dot { position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--BACKGROUND_PRIMARY); }
+.userbar .dot { border-color: var(--BACKGROUND_BASE_LOWEST); }
+.on  { background: var(--STATUS_ONLINE); }
+.idle{ background: var(--STATUS_IDLE); }
+.dnd { background: var(--STATUS_DND); }
+
+/* ---------- Chat ---------- */
+.chat-head { flex: none; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--CHAT_BANNER_BG); border-bottom: 1px solid var(--BORDER_SUBTLE); }
+.chat-head .t { font-weight: 700; color: var(--HEADER_PRIMARY); font-size: 16px; }
+.chat-head .t span { color: var(--ICON_MUTED); }
+.chat-head .d { color: var(--TEXT_MUTED); font-size: 12px; }
+.chat-head .ico { margin-left: auto; border-color: var(--INTERACTIVE_NORMAL); }
+.msgs { flex: 1; min-height: 0; overflow: hidden; padding: 8px 0; position: relative; background: var(--CHAT_BACKGROUND); }
+.msg { display: flex; gap: 12px; padding: 7px 16px; }
+.msg .who { font-weight: 600; color: var(--HEADER_PRIMARY); }
+.msg .ts { font-size: 11px; color: var(--TEXT_MUTED); margin-left: 6px; font-weight: 400; }
+.msg p { color: var(--TEXT_NORMAL); }
+.msg.mention { background: var(--MESSAGE_MENTIONED_BACKGROUND_DEFAULT); box-shadow: inset 3px 0 0 var(--BG_BRAND); }
+.msg.hovered { background: var(--BACKGROUND_MESSAGE_HOVER); }
+.ping-me { color: var(--TEXT_BRAND); background: var(--BACKGROUND_MODIFIER_SELECTED); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+a { color: var(--TEXT_LINK); text-decoration: underline; }
+.embed { margin-top: 6px; background: var(--MOBILE_EMBED_BACKGROUND_DEFAULT); border-left: 4px solid var(--BG_BRAND); border-radius: 6px; padding: 10px 12px; }
+.embed .site { font-size: 11px; color: var(--TEXT_MUTED); }
+.embed .etitle { color: var(--TEXT_LINK); font-weight: 600; }
+.embed .edesc { color: var(--TEXT_SECONDARY); font-size: 13px; }
+.embed .img { margin-top: 8px; height: 56px; border-radius: 4px; background: var(--BACKGROUND_NESTED_FLOATING); }
+.reacts { display: flex; gap: 6px; margin-top: 6px; }
+.react { display: inline-flex; gap: 5px; align-items: center; padding: 2px 8px; border-radius: 8px; font-size: 12px;
+  background: var(--BACKGROUND_MOD_SUBTLE); border: 1px solid var(--BORDER_SUBTLE); color: var(--TEXT_SECONDARY); }
+.react.me { background: var(--BACKGROUND_MODIFIER_SELECTED); border-color: var(--BG_BRAND); color: var(--TEXT_BRAND); font-weight: 700; }
+.react i { width: 10px; height: 10px; border-radius: 50%; background: var(--STATUS_WARNING); display: inline-block; }
+.react.me i { background: var(--BG_BRAND); }
+.divider { display: flex; align-items: center; gap: 8px; padding: 4px 16px; color: var(--TEXT_DANGER); font-size: 11px; font-weight: 700; }
+.divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--STATUS_DANGER); }
+.input-wrap { flex: none; padding: 8px 12px 22px; background: var(--CHAT_INPUT_CONTAINER_BACKGROUND); display: flex; gap: 8px; align-items: center; position: relative; z-index: 3; }
+.plus { width: 36px; height: 36px; border-radius: 50%; background: var(--BACKGROUND_MOD_NORMAL); color: var(--INTERACTIVE_NORMAL); display: grid; place-items: center; font-size: 20px; flex: none; }
+.input { flex: 1; height: 40px; border-radius: 20px; background: var(--CHAT_INPUT_BACKGROUND); color: var(--CHANNEL_TEXT_AREA_PLACEHOLDER);
+  display: flex; align-items: center; padding: 0 14px; border: 2px solid var(--INPUT_BORDER_ACTIVE); font-size: 14px; }
+.send { width: 40px; height: 40px; border-radius: 50%; background: var(--CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND); flex: none; display: grid; place-items: center; }
+.send::after { content: ""; width: 12px; height: 14px; background: var(--CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT); clip-path: polygon(0 0, 100% 50%, 0 100%); margin-left: 3px; }
+
+/* ---------- Action sheet (floating surfaces) ---------- */
+.scrim { position: absolute; inset: 0; background: var(--MOBILE_BACKGROUND_SCRIM_OPAQUE); z-index: 1; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--MOBILE_ACTIONSHEET_BACKGROUND);
+  border-radius: 20px 20px 0 0; padding: 8px 16px 14px; border-top: 1px solid var(--BORDER_SUBTLE); }
+.grab { width: 40px; height: 4px; border-radius: 2px; background: var(--INTERACTIVE_MUTED); margin: 0 auto 10px; }
+.sheet h3 { color: var(--HEADER_PRIMARY); font-size: 14px; margin-bottom: 6px; }
+.emojis { display: flex; gap: 8px; margin-bottom: 10px; }
+.emojis span { width: 40px; height: 40px; border-radius: 50%; background: var(--BACKGROUND_NESTED_FLOATING); display: grid; place-items: center; color: var(--TEXT_SECONDARY); font-weight: 700; }
+.emojis span.pick { background: var(--BACKGROUND_MODIFIER_SELECTED); color: var(--TEXT_BRAND); box-shadow: inset 0 0 0 2px var(--FOCUS_PRIMARY); }
+.group { background: var(--BACKGROUND_SURFACE_HIGHEST); border-radius: 12px; overflow: hidden; }
+.item { padding: 9px 14px; color: var(--TEXT_NORMAL); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--BORDER_FAINT); }
+.item:last-child { border-bottom: 0; }
+.item .ico { width: 16px; height: 16px; border-color: var(--ICON_SUBTLE); }
+.item.warn { color: var(--TEXT_WARNING); } .item.warn .ico { border-color: var(--ICON_FEEDBACK_WARNING); }
+.item.danger { color: var(--TEXT_DANGER); } .item.danger .ico { border-color: var(--ICON_FEEDBACK_CRITICAL); }
+.btns { display: flex; gap: 8px; margin-top: 10px; }
+.btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font-weight: 700; }
+.btn.primary { background: var(--REDESIGN_BUTTON_PRIMARY_BACKGROUND); color: var(--REDESIGN_BUTTON_PRIMARY_TEXT); }
+.btn.pressed { background: var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND); color: var(--REDESIGN_BUTTON_PRIMARY_TEXT); }
+.btn.danger { background: var(--REDESIGN_BUTTON_DANGER_BACKGROUND); color: var(--PREVIEW_ON_DANGER); }
+.toggle { display: none; }
+.toggle:checked ~ .wrap .scrim, .toggle:checked ~ .wrap .sheet { display: none; }
+.tlabel { display: block; text-align: center; margin-top: 6px; color: var(--TEXT_LINK); font-size: 12px; cursor: pointer; text-decoration: underline; }
+
+/* ---------- Legend ---------- */
+.legend { width: 380px; max-width: 100%; background: var(--BACKGROUND_SECONDARY); border: 1px solid var(--BORDER_SUBTLE); border-radius: 16px; padding: 16px; }
+.legend h2 { font-size: 15px; color: var(--HEADER_PRIMARY); margin-bottom: 10px; }
+.row { display: flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--BORDER_FAINT); }
+.row:last-child { border-bottom: 0; }
+.sw { width: 28px; height: 28px; border-radius: 6px; flex: none; border: 1px solid var(--BORDER_SUBTLE); background-color: var(--BACKGROUND_PRIMARY); position: relative; overflow: hidden; }
+.sw i { position: absolute; inset: 0; }
+.row b { display: block; font-size: 13px; color: var(--TEXT_STRONG); font-weight: 600; }
+.row small { color: var(--TEXT_SECONDARY); font-size: 12px; }
+.row code { color: var(--TEXT_MUTED); font-size: 12px; margin-left: auto; font-family: ui-monospace, monospace; white-space: nowrap; }
+.cmp { display: flex; gap: 8px; align-items: center; margin: 12px 0 4px; font-size: 12px; color: var(--TEXT_SECONDARY); flex-wrap: wrap; }
+.cmp .dot { position: static; border-color: var(--BACKGROUND_SECONDARY); }
+</style>
+</head>
+<body>
+<h1>Nord Polar Night for Rain</h1>
+<p class="sub">Polar Night · quiet nord9 accent · colour preview only</p>
+<input type="checkbox" id="t" class="toggle">
+<div class="wrap">
+
+  <div>
+  <div class="phone">
+    <div class="cl" style="flex-direction:column">
+      <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="cl">
+        <div class="rail">
+          <div class="srv">DM<span class="ping">3</span></div>
+          <hr>
+          <div class="srv sel">N</div>
+          <div class="srv">R</div>
+          <div class="srv">V<span class="ping">1</span></div>
+          <div class="srv">K</div>
+          <div class="srv">+</div>
+        </div>
+        <div class="panel">
+          <div class="srv-head">Arctic Studio<small>1,204 members · 312 online</small></div>
+          <div class="chs">
+            <div class="cat">⌄ Information</div>
+            <div class="ch"><span class="h">#</span>rules</div>
+            <div class="ch unread"><span class="h">#</span>announcements<span class="badge">2</span></div>
+            <div class="cat">⌄ Text channels</div>
+            <div class="ch sel"><span class="h">#</span>general</div>
+            <div class="ch unread"><span class="h">#</span>vim-configs</div>
+            <div class="ch hover"><span class="h">#</span>screenshots</div>
+            <div class="ch"><span class="h">#</span>fonts</div>
+            <div class="ch muted"><span class="h">#</span>off-topic (muted)</div>
+            <div class="cat">⌄ Voice</div>
+            <div class="ch"><span class="h">◖</span>Lounge</div>
+            <div class="ch muted"><span class="h">◖</span>AFK</div>
+          </div>
+          <div class="userbar">
+            <div class="av">E<span class="dot on"></span></div>
+            <div><div class="name">emeet</div><div class="st">Online</div></div>
+            <div class="icons"><span class="ico"></span><span class="ico"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Channel list</div>
+  </div>
+
+  <div>
+  <div class="phone">
+    <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
+    <div class="chat-head">
+      <div><div class="t"><span>#</span> general</div><div class="d">Clean, minimal, north-bluish</div></div>
+      <span class="ico"></span>
+    </div>
+    <div class="msgs">
+      <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
+        <div class="who">polar_night<span class="ts">Today 09:12</span></div>
+        <p>Morning — switched my terminal over.</p></div></div>
+      <div class="divider">NEW</div>
+      <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
+        <div class="who">snow_storm<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@emeet</span> can you post your Rain theme?</p>
+        <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
+      </div></div>
+      <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
+        <div class="who">frost<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>github.com/nordtheme/nord</a></p>
+        <div class="embed"><div class="site">GitHub</div><div class="etitle">nordtheme/nord</div>
+          <div class="edesc">An arctic, north-bluish color palette</div></div>
+      </div></div>
+      <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
+        <div class="who">aurora_bot<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>Build passed ✔ theme validated.</p></div></div>
+      <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
+        <div class="who">nordic<span class="ts">Today 09:25</span></div>
+        <p>Such calm colours for late-night chats.</p></div></div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="grab"></div>
+        <h3>Message actions</h3>
+        <div class="emojis"><span class="pick">+1</span><span>♥</span><span>☺</span><span>★</span><span>…</span></div>
+        <div class="group">
+          <div class="item"><span class="ico"></span>Reply</div>
+          <div class="item warn"><span class="ico"></span>Mark unread</div>
+          <div class="item danger"><span class="ico"></span>Delete message</div>
+        </div>
+        <div class="btns"><div class="btn primary">Save</div><div class="btn pressed">Pressed</div><div class="btn danger">Delete</div></div>
+      </div>
+    </div>
+    <div class="input-wrap">
+      <div class="plus">+</div>
+      <div class="input">Message #general</div>
+      <div class="send"></div>
+    </div>
+  </div>
+  <label for="t" class="tlabel">Toggle action sheet</label>
+  <div class="label">Chat view</div>
+  </div>
+
+  <div class="legend">
+    <h2>Key groups → Nord Polar Night palette</h2>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_PRIMARY)"></i></span><div><b>Main background</b><small>nord0</small></div><code>#2E3440</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_SECONDARY)"></i></span><div><b>Secondary background</b><small>nord1</small></div><code>#3B4252</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_TERTIARY)"></i></span><div><b>Tertiary background</b><small>nord0</small></div><code>#2E3440</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_FLOATING)"></i></span><div><b>Floating surfaces</b><small>nord2</small></div><code>#434C5E</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_NESTED_FLOATING)"></i></span><div><b>Nested floating</b><small>nord3</small></div><code>#4C566A</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--CHAT_INPUT_BACKGROUND)"></i></span><div><b>Inputs</b><small>nord1</small></div><code>#3B4252</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_HOVER)"></i></span><div><b>Hover / subtle / borders</b><small>nord4 @ 8%</small></div><code>#D8DEE914</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_ACTIVE)"></i></span><div><b>Active</b><small>nord4 @ 12%</small></div><code>#D8DEE91F</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_MOD_FAINT)"></i></span><div><b>Faint</b><small>nord4 @ 5%</small></div><code>#D8DEE90D</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MODIFIER_SELECTED)"></i></span><div><b>Selected</b><small>nord9 @ 20%</small></div><code>#81A1C133</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--HEADER_PRIMARY)"></i></span><div><b>Text strong</b><small>nord6</small></div><code>#ECEFF4</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_NORMAL)"></i></span><div><b>Text normal</b><small>nord4</small></div><code>#D8DEE9</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_SECONDARY)"></i></span><div><b>Text secondary</b><small>DERIVED: 70% nord4 + 30% nord3</small></div><code>#AEB5C3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_MUTED)"></i></span><div><b>Text muted</b><small>DERIVED: 45% nord4 + 55% nord3</small></div><code>#8B93A3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--INTERACTIVE_MUTED)"></i></span><div><b>Interactive muted</b><small>DERIVED: 28% nord4 + 72% nord3</small></div><code>#737C8E</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BRAND)"></i></span><div><b>Brand / accent</b><small>nord9</small></div><code>#81A1C1</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND)"></i></span><div><b>Brand bright (pressed, active, TEXT_BRAND)</b><small>DERIVED: 65% nord9 + 35% nord6</small></div><code>#A6BCD3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--REDESIGN_BUTTON_PRIMARY_TEXT)"></i></span><div><b>Text on accent</b><small>nord0</small></div><code>#2E3440</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_LINK)"></i></span><div><b>Links</b><small>nord8</small></div><code>#88C0D0</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_DANGER)"></i></span><div><b>Danger / DND</b><small>DERIVED: 75% nord11 + 25% nord6</small></div><code>#CA848C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_POSITIVE)"></i></span><div><b>Positive / online</b><small>nord14</small></div><code>#A3BE8C</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--TEXT_WARNING)"></i></span><div><b>Warning / idle</b><small>nord13</small></div><code>#EBCB8B</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED)"></i></span><div><b>Mentions</b><small>nord9 @ 15%</small></div><code>#81A1C126</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BACKGROUND_MENTIONED_HOVER)"></i></span><div><b>Mentions hover</b><small>nord9 @ 20%</small></div><code>#81A1C133</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BG_BACKDROP)"></i></span><div><b>Backdrops</b><small>nord0 @ 70%</small></div><code>#2E3440B3</code></div>
+    <div class="row"><span class="sw"><i style="background:var(--BRAND_560)"></i></span><div><b>BRAND_560 (raw)</b><small>nord10</small></div><code>#5E81AC</code></div>
+    <div class="cmp">Accent vs status:
+      <span class="badge">accent</span><span class="dot dnd"></span>DND
+      <span class="dot idle"></span>idle <span class="dot on"></span>online</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+{
+  "slug": "nord-polar-night",
+  "name": "Nord Polar Night",
+  "description": "Nord (nordtheme/nord): Polar Night surfaces with a quiet nord9 Frost accent and nord8 links.",
+  "authors": [
+    "emeet"
+  ],
+  "source": "https://github.com/nordtheme/nord",
+  "variant": "Polar Night · quiet nord9 accent",
+  "palette": {
+    "nord0": "#2E3440",
+    "nord1": "#3B4252",
+    "nord2": "#434C5E",
+    "nord3": "#4C566A",
+    "nord4": "#D8DEE9",
+    "nord5": "#E5E9F0",
+    "nord6": "#ECEFF4",
+    "nord7": "#8FBCBB",
+    "nord8": "#88C0D0",
+    "nord9": "#81A1C1",
+    "nord10": "#5E81AC",
+    "nord11": "#BF616A",
+    "nord12": "#D08770",
+    "nord13": "#EBCB8B",
+    "nord14": "#A3BE8C",
+    "nord15": "#B48EAD"
+  },
+  "palette_roles": {
+    "nord0": "Polar Night base; backgrounds",
+    "nord1": "Polar Night; lighter bg for UI elements like status bars",
+    "nord2": "Polar Night; line highlight, UI selection/highlight",
+    "nord3": "Polar Night; comments, disabled UI elements",
+    "nord4": "Snow Storm base; main text colour",
+    "nord5": "Snow Storm; lighter",
+    "nord6": "Snow Storm; lightest",
+    "nord7": "Frost; classes/types",
+    "nord8": "Frost; THE accent colour, primary UI elements, markup link URLs",
+    "nord9": "Frost; secondary UI elements, keywords",
+    "nord10": "Frost; tertiary UI elements, imports",
+    "nord11": "Aurora red; errors",
+    "nord12": "Aurora orange; annotations",
+    "nord13": "Aurora yellow; UI warnings",
+    "nord14": "Aurora green; UI success",
+    "nord15": "Aurora purple; numbers"
+  },
+  "roles": {
+    "main_bg": "nord0",
+    "secondary_bg": "nord1",
+    "tertiary_bg": "nord0",
+    "floating_bg": "nord2",
+    "nested_floating_bg": "nord3",
+    "input_bg": "nord1",
+    "hover": "nord4@14",
+    "active": "nord4@1F",
+    "faint": "nord4@0D",
+    "text_strong": "nord6",
+    "text_normal": "nord4",
+    "text_secondary": {
+      "mix": [
+        "nord4",
+        "nord3",
+        0.3
+      ]
+    },
+    "text_muted": {
+      "mix": [
+        "nord4",
+        "nord3",
+        0.55
+      ]
+    },
+    "interactive_muted": {
+      "mix": [
+        "nord4",
+        "nord3",
+        0.72
+      ]
+    },
+    "text_on_brand": "nord0",
+    "danger": {
+      "mix": [
+        "nord11",
+        "nord6",
+        0.25
+      ]
+    },
+    "positive": "nord14",
+    "warning": "nord13",
+    "backdrop": "nord0@B3",
+    "selected": "nord9@33",
+    "brand": "nord9",
+    "brand_bright": {
+      "mix": [
+        "nord9",
+        "nord6",
+        0.35
+      ]
+    },
+    "link": "nord8",
+    "mention": "nord9@26",
+    "mention_hover": "nord9@33"
+  },
+  "raw": {
+    "BRAND_560": "nord10",
+    "PRIMARY_630": "nord2",
+    "PRIMARY_660": "nord1",
+    "PRIMARY_700": "nord0",
+    "PRIMARY_800": "nord0"
+  },
+  "preview": {
+    "server_name": "Arctic Studio",
+    "tagline": "Clean, minimal, north-bluish",
+    "users": [
+      "polar_night",
+      "snow_storm",
+      "frost",
+      "aurora_bot",
+      "nordic"
+    ],
+    "me": "emeet",
+    "msg5": "Such calm colours for late-night chats.",
+    "embed_desc": "An arctic, north-bluish color palette"
+  },
+  "notes": [
+    "Accent: nord9 (documented 'secondary UI elements') for a quieter look; links use nord8, which Nord documents for markup link URLs.",
+    "Nord has a single dark palette. The two Nord themes share the same Polar Night surfaces and differ only in accent (user's choice).",
+    "Polar Night's darkest colour is nord0, so tertiary = main (nord0); PRIMARY_700/800 both nord0.",
+    "Floating surfaces use nord2 (documented UI highlight colour) so sheets stand out from nord1 panels.",
+    "Derived: text_secondary / text_muted / interactive_muted are mixes of nord4 and nord3. nord3 (documented comment/disabled colour) is ~1.6:1 on nord0, unusable as text.",
+    "Derived: danger is nord11 lightened 25% toward nord6 — nord11 itself is ~2.9:1 on nord0, too low even for status text.",
+    "Author 'emeet' taken from git config."
+  ]
+}

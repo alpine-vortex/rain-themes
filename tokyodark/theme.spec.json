@@ -1,0 +1,131 @@
+{
+  "slug": "tokyodark",
+  "name": "Tokyo Dark",
+  "description": "Tokyo Dark (tiagovla/tokyodark.nvim): ink-black bg0 chat, bg1 panels, blue accent, purple links.",
+  "authors": [
+    "emeet"
+  ],
+  "source": "https://github.com/tiagovla/tokyodark.nvim",
+  "variant": "Default (gamma 1.0) · accent: blue",
+  "palette": {
+    "black": "#06080A",
+    "bg0": "#11121D",
+    "bg1": "#1A1B2A",
+    "bg2": "#212234",
+    "bg3": "#353945",
+    "bg4": "#4A5057",
+    "bg5": "#282C34",
+    "bg_red": "#FE6D85",
+    "bg_green": "#98C379",
+    "bg_blue": "#9FBBF3",
+    "diff_red": "#773440",
+    "diff_green": "#587738",
+    "diff_blue": "#2A3A5A",
+    "diff_add": "#1E2326",
+    "diff_change": "#262B3D",
+    "diff_delete": "#281B27",
+    "diff_text": "#1C4474",
+    "fg": "#A0A8CD",
+    "red": "#EE6D85",
+    "orange": "#F6955B",
+    "yellow": "#D7A65F",
+    "green": "#95C561",
+    "blue": "#7199EE",
+    "cyan": "#38A89D",
+    "purple": "#A485DD",
+    "grey": "#4A5057"
+  },
+  "palette_roles": {
+    "black": "darkest",
+    "bg0": "Normal / NormalFloat / Pmenu background",
+    "bg1": "CursorLine; lualine bg",
+    "bg2": "StatusLine, Visual",
+    "bg3": "",
+    "bg4": "Comment, LineNr, FloatBorder",
+    "bg5": "WinSeparator",
+    "bg_red": "TabLineSel bg",
+    "bg_green": "Search / PmenuSel bg",
+    "bg_blue": "",
+    "fg": "Normal foreground",
+    "red": "ErrorMsg",
+    "yellow": "WarningMsg, Title",
+    "green": "Directory; lualine normal mode",
+    "blue": "MoreMsg, FloatTitle, Todo, link URLs",
+    "purple": "Special, link labels",
+    "grey": "= bg4"
+  },
+  "roles": {
+    "main_bg": "bg0",
+    "secondary_bg": "bg1",
+    "tertiary_bg": "black",
+    "floating_bg": "bg2",
+    "nested_floating_bg": "bg3",
+    "input_bg": "bg2",
+    "hover": "fg@14",
+    "active": "fg@1F",
+    "faint": "fg@0D",
+    "selected": "blue@33",
+    "text_strong": "bg_blue",
+    "text_normal": "fg",
+    "text_secondary": {
+      "mix": [
+        "fg",
+        "bg4",
+        0.25
+      ]
+    },
+    "text_muted": {
+      "mix": [
+        "fg",
+        "bg4",
+        0.5
+      ]
+    },
+    "interactive_muted": {
+      "mix": [
+        "fg",
+        "bg4",
+        0.7
+      ]
+    },
+    "brand": "blue",
+    "brand_bright": "bg_blue",
+    "text_on_brand": "bg0",
+    "link": "purple",
+    "danger": "red",
+    "positive": "green",
+    "warning": "yellow",
+    "mention": "blue@26",
+    "mention_hover": "blue@33",
+    "backdrop": "black@B3"
+  },
+  "raw": {
+    "BRAND_560": "diff_text",
+    "PRIMARY_630": "bg2",
+    "PRIMARY_660": "bg1",
+    "PRIMARY_700": "bg0",
+    "PRIMARY_800": "black"
+  },
+  "preview": {
+    "server_name": "Neon Alley",
+    "tagline": "Late-night Neovim",
+    "users": [
+      "bg0",
+      "night_owl",
+      "tiagovla",
+      "lualine_bot",
+      "shinjuku"
+    ],
+    "me": "emeet",
+    "msg5": "That purple link colour is so good.",
+    "embed_desc": "A clean dark theme written in lua for neovim"
+  },
+  "notes": [
+    "Variant: the plugin has one palette; default gamma 1.0 used.",
+    "Accent: blue (FloatTitle, MoreMsg, link URLs). Red is taken by TabLineSel but collides with danger; green (lualine/PmenuSel) collides with online. Links use purple, the documented link-label colour, to stay distinct from the blue accent.",
+    "Strong text uses bg_blue: the palette has a single foreground (fg), and bg_blue is its only lighter cool tone.",
+    "Derived: text_secondary / text_muted / interactive_muted are mixes of fg and bg4. bg4 (Comment) is ~2.3:1 on bg0, too dim for text.",
+    "Tertiary uses the palette's 'black' (#06080A), darker than bg0.",
+    "Author 'emeet' taken from git config."
+  ]
+}
