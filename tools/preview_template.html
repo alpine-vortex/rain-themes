@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+/* Generated from the theme JSON: one variable per theme key (PREVIEW_* are aliases to theme keys) */
+:root {
+__ROOT__
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--PRIMARY_800);
+  color: var(--TEXT_NORMAL);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 32px 16px;
+}
+h1 { color: var(--HEADER_PRIMARY); font-size: 22px; text-align: center; }
+.sub { color: var(--TEXT_MUTED); text-align: center; margin: 4px 0 24px; }
+.wrap { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: flex-start; }
+.phone {
+  width: 390px; height: 844px; max-width: 100%;
+  border-radius: 44px; overflow: hidden; position: relative;
+  border: 10px solid var(--PRIMARY_630);
+  display: flex; flex-direction: column;
+  background: var(--PREVIEW_PHONE_BASE);
+}
+.bgimg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; }
+.phone > :not(.bgimg) { position: relative; z-index: 1; }
+.status-bar { height: 34px; flex: none; display: flex; justify-content: space-between; align-items: center;
+  padding: 0 26px; font-size: 12px; font-weight: 600; color: var(--TEXT_STRONG); }
+.label { text-align: center; color: var(--TEXT_SECONDARY); font-size: 12px; margin-top: 8px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* ---------- Channel list ---------- */
+.cl { flex: 1; display: flex; min-height: 0; }
+.cl .status-bar { background: var(--BACKGROUND_TERTIARY); }
+.rail { width: 72px; flex: none; background: var(--BACKGROUND_TERTIARY); display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 10px; }
+.srv { width: 48px; height: 48px; border-radius: 24px; display: grid; place-items: center; font-weight: 700;
+  background: var(--BACKGROUND_SURFACE_HIGH); color: var(--TEXT_NORMAL); position: relative; }
+.srv.sel { border-radius: 16px; background: var(--BG_BRAND); color: var(--BADGE_TEXT_BRAND); }
+.srv.sel::before { content: ""; position: absolute; left: -12px; width: 4px; height: 40px; border-radius: 0 4px 4px 0; background: var(--TEXT_STRONG); }
+.srv .ping { position: absolute; right: -3px; bottom: -3px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px;
+  background: var(--STATUS_DANGER); color: var(--PREVIEW_ON_DANGER); font-size: 11px; display: grid; place-items: center; border: 3px solid var(--BACKGROUND_TERTIARY); }
+.rail hr { width: 32px; border: 0; border-top: 2px solid var(--BORDER_SUBTLE); }
+.panel { flex: 1; background: var(--BACKGROUND_SECONDARY); border-radius: 16px 0 0 0; display: flex; flex-direction: column; min-width: 0; }
+.srv-head { padding: 16px; font-weight: 700; font-size: 17px; color: var(--HEADER_PRIMARY); border-bottom: 1px solid var(--BORDER_SUBTLE); }
+.srv-head small { display: block; font-weight: 400; font-size: 12px; color: var(--TEXT_MUTED); }
+.chs { flex: 1; overflow: hidden; padding: 8px 8px; }
+.cat { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--CHANNELS_DEFAULT); padding: 14px 8px 4px; }
+.ch { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; color: var(--CHANNELS_DEFAULT); font-size: 15px; }
+.ch .h { color: var(--CHANNEL_ICON); font-weight: 700; width: 16px; text-align: center; }
+.ch.sel { background: var(--MOBILE_CHANNEL_ITEM_BACKGROUND_SELECTED); color: var(--TEXT_STRONG); }
+.ch.sel .h { color: var(--ICON_STRONG); }
+.ch.unread { color: var(--TEXT_STRONG); font-weight: 600; }
+.ch.unread .h { color: var(--ICON_STRONG); }
+.ch.muted, .ch.muted .h { color: var(--INTERACTIVE_MUTED); }
+.ch.hover { background: var(--BACKGROUND_MODIFIER_HOVER); }
+.ch .badge { margin-left: auto; }
+.badge { background: var(--BADGE_BACKGROUND_BRAND); color: var(--BADGE_TEXT_BRAND); font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 9px; }
+.userbar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--BACKGROUND_BASE_LOWEST); border-top: 1px solid var(--BORDER_SUBTLE); }
+.userbar .name { font-weight: 600; color: var(--TEXT_STRONG); font-size: 14px; }
+.userbar .st { font-size: 12px; color: var(--TEXT_STATUS_ONLINE); }
+.userbar .icons { margin-left: auto; display: flex; gap: 12px; }
+.ico { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--ICON_DEFAULT); }
+
+/* ---------- Avatars & status ---------- */
+.av { width: 36px; height: 36px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 15px; position: relative;
+  background: var(--BACKGROUND_NESTED_FLOATING); color: var(--TEXT_STRONG); }
+.dot { position: absolute; right: -2px; bottom: -2px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--BACKGROUND_PRIMARY); }
+.userbar .dot { border-color: var(--BACKGROUND_BASE_LOWEST); }
+.on  { background: var(--STATUS_ONLINE); }
+.idle{ background: var(--STATUS_IDLE); }
+.dnd { background: var(--STATUS_DND); }
+
+/* ---------- Chat ---------- */
+.chat-head { flex: none; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--CHAT_BANNER_BG); border-bottom: 1px solid var(--BORDER_SUBTLE); }
+.chat-head .t { font-weight: 700; color: var(--HEADER_PRIMARY); font-size: 16px; }
+.chat-head .t span { color: var(--ICON_MUTED); }
+.chat-head .d { color: var(--TEXT_MUTED); font-size: 12px; }
+.chat-head .ico { margin-left: auto; border-color: var(--INTERACTIVE_NORMAL); }
+.msgs { flex: 1; min-height: 0; overflow: hidden; padding: 8px 0; position: relative; background: var(--CHAT_BACKGROUND); }
+.msg { display: flex; gap: 12px; padding: 7px 16px; }
+.msg .who { font-weight: 600; color: var(--HEADER_PRIMARY); }
+.msg .ts { font-size: 11px; color: var(--TEXT_MUTED); margin-left: 6px; font-weight: 400; }
+.msg p { color: var(--TEXT_NORMAL); }
+.msg.mention { background: var(--MESSAGE_MENTIONED_BACKGROUND_DEFAULT); box-shadow: inset 3px 0 0 var(--BG_BRAND); }
+.msg.hovered { background: var(--BACKGROUND_MESSAGE_HOVER); }
+.ping-me { color: var(--TEXT_BRAND); background: var(--BACKGROUND_MODIFIER_SELECTED); border-radius: 4px; padding: 0 3px; font-weight: 600; }
+a { color: var(--TEXT_LINK); text-decoration: underline; }
+.embed { margin-top: 6px; background: var(--MOBILE_EMBED_BACKGROUND_DEFAULT); border-left: 4px solid var(--BG_BRAND); border-radius: 6px; padding: 10px 12px; }
+.embed .site { font-size: 11px; color: var(--TEXT_MUTED); }
+.embed .etitle { color: var(--TEXT_LINK); font-weight: 600; }
+.embed .edesc { color: var(--TEXT_SECONDARY); font-size: 13px; }
+.embed .img { margin-top: 8px; height: 56px; border-radius: 4px; background: var(--BACKGROUND_NESTED_FLOATING); }
+.reacts { display: flex; gap: 6px; margin-top: 6px; }
+.react { display: inline-flex; gap: 5px; align-items: center; padding: 2px 8px; border-radius: 8px; font-size: 12px;
+  background: var(--BACKGROUND_MOD_SUBTLE); border: 1px solid var(--BORDER_SUBTLE); color: var(--TEXT_SECONDARY); }
+.react.me { background: var(--BACKGROUND_MODIFIER_SELECTED); border-color: var(--BG_BRAND); color: var(--TEXT_BRAND); font-weight: 700; }
+.react i { width: 10px; height: 10px; border-radius: 50%; background: var(--STATUS_WARNING); display: inline-block; }
+.react.me i { background: var(--BG_BRAND); }
+.divider { display: flex; align-items: center; gap: 8px; padding: 4px 16px; color: var(--TEXT_DANGER); font-size: 11px; font-weight: 700; }
+.divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--STATUS_DANGER); }
+.input-wrap { flex: none; padding: 8px 12px 22px; background: var(--CHAT_INPUT_CONTAINER_BACKGROUND); display: flex; gap: 8px; align-items: center; position: relative; z-index: 3; }
+.plus { width: 36px; height: 36px; border-radius: 50%; background: var(--BACKGROUND_MOD_NORMAL); color: var(--INTERACTIVE_NORMAL); display: grid; place-items: center; font-size: 20px; flex: none; }
+.input { flex: 1; height: 40px; border-radius: 20px; background: var(--CHAT_INPUT_BACKGROUND); color: var(--CHANNEL_TEXT_AREA_PLACEHOLDER);
+  display: flex; align-items: center; padding: 0 14px; border: 2px solid var(--INPUT_BORDER_ACTIVE); font-size: 14px; }
+.send { width: 40px; height: 40px; border-radius: 50%; background: var(--CHAT_INPUT_SEND_BUTTON_ACTIVE_BACKGROUND); flex: none; display: grid; place-items: center; }
+.send::after { content: ""; width: 12px; height: 14px; background: var(--CHAT_INPUT_SEND_BUTTON_ICON_ACTIVE_TINT); clip-path: polygon(0 0, 100% 50%, 0 100%); margin-left: 3px; }
+
+/* ---------- Action sheet (floating surfaces) ---------- */
+.scrim { position: absolute; inset: 0; background: var(--MOBILE_BACKGROUND_SCRIM_OPAQUE); z-index: 1; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--MOBILE_ACTIONSHEET_BACKGROUND);
+  border-radius: 20px 20px 0 0; padding: 8px 16px 14px; border-top: 1px solid var(--BORDER_SUBTLE); }
+.grab { width: 40px; height: 4px; border-radius: 2px; background: var(--INTERACTIVE_MUTED); margin: 0 auto 10px; }
+.sheet h3 { color: var(--HEADER_PRIMARY); font-size: 14px; margin-bottom: 6px; }
+.emojis { display: flex; gap: 8px; margin-bottom: 10px; }
+.emojis span { width: 40px; height: 40px; border-radius: 50%; background: var(--BACKGROUND_NESTED_FLOATING); display: grid; place-items: center; color: var(--TEXT_SECONDARY); font-weight: 700; }
+.emojis span.pick { background: var(--BACKGROUND_MODIFIER_SELECTED); color: var(--TEXT_BRAND); box-shadow: inset 0 0 0 2px var(--FOCUS_PRIMARY); }
+.group { background: var(--BACKGROUND_SURFACE_HIGHEST); border-radius: 12px; overflow: hidden; }
+.item { padding: 9px 14px; color: var(--TEXT_NORMAL); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--BORDER_FAINT); }
+.item:last-child { border-bottom: 0; }
+.item .ico { width: 16px; height: 16px; border-color: var(--ICON_SUBTLE); }
+.item.warn { color: var(--TEXT_WARNING); } .item.warn .ico { border-color: var(--ICON_FEEDBACK_WARNING); }
+.item.danger { color: var(--TEXT_DANGER); } .item.danger .ico { border-color: var(--ICON_FEEDBACK_CRITICAL); }
+.btns { display: flex; gap: 8px; margin-top: 10px; }
+.btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font-weight: 700; }
+.btn.primary { background: var(--REDESIGN_BUTTON_PRIMARY_BACKGROUND); color: var(--REDESIGN_BUTTON_PRIMARY_TEXT); }
+.btn.pressed { background: var(--REDESIGN_BUTTON_PRIMARY_PRESSED_BACKGROUND); color: var(--REDESIGN_BUTTON_PRIMARY_TEXT); }
+.btn.danger { background: var(--REDESIGN_BUTTON_DANGER_BACKGROUND); color: var(--PREVIEW_ON_DANGER); }
+.toggle { display: none; }
+.toggle:checked ~ .wrap .scrim, .toggle:checked ~ .wrap .sheet { display: none; }
+.tlabel { display: block; text-align: center; margin-top: 6px; color: var(--TEXT_LINK); font-size: 12px; cursor: pointer; text-decoration: underline; }
+
+/* ---------- Legend ---------- */
+.legend { width: 380px; max-width: 100%; background: var(--BACKGROUND_SECONDARY); border: 1px solid var(--BORDER_SUBTLE); border-radius: 16px; padding: 16px; }
+.legend h2 { font-size: 15px; color: var(--HEADER_PRIMARY); margin-bottom: 10px; }
+.row { display: flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--BORDER_FAINT); }
+.row:last-child { border-bottom: 0; }
+.sw { width: 28px; height: 28px; border-radius: 6px; flex: none; border: 1px solid var(--BORDER_SUBTLE); background-color: var(--BACKGROUND_PRIMARY); position: relative; overflow: hidden; }
+.sw i { position: absolute; inset: 0; }
+.row b { display: block; font-size: 13px; color: var(--TEXT_STRONG); font-weight: 600; }
+.row small { color: var(--TEXT_SECONDARY); font-size: 12px; }
+.row code { color: var(--TEXT_MUTED); font-size: 12px; margin-left: auto; font-family: ui-monospace, monospace; white-space: nowrap; }
+.cmp { display: flex; gap: 8px; align-items: center; margin: 12px 0 4px; font-size: 12px; color: var(--TEXT_SECONDARY); flex-wrap: wrap; }
+.cmp .dot { position: static; border-color: var(--BACKGROUND_SECONDARY); }
+</style>
+</head>
+<body>
+<h1>{{NAME}} for Rain</h1>
+<p class="sub">{{SUBTITLE}} · colour preview only</p>
+<input type="checkbox" id="t" class="toggle">
+<div class="wrap">
+
+  <div>
+  <div class="phone">{{BG_LAYER}}
+    <div class="cl" style="flex-direction:column">
+      <div class="status-bar"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="cl">
+        <div class="rail">
+          <div class="srv">DM<span class="ping">3</span></div>
+          <hr>
+          <div class="srv sel">{{SERVER_INITIAL}}</div>
+          <div class="srv">R</div>
+          <div class="srv">V<span class="ping">1</span></div>
+          <div class="srv">K</div>
+          <div class="srv">+</div>
+        </div>
+        <div class="panel">
+          <div class="srv-head">{{SERVER_NAME}}<small>1,204 members · 312 online</small></div>
+          <div class="chs">
+            <div class="cat">⌄ Information</div>
+            <div class="ch"><span class="h">#</span>rules</div>
+            <div class="ch unread"><span class="h">#</span>announcements<span class="badge">2</span></div>
+            <div class="cat">⌄ Text channels</div>
+            <div class="ch sel"><span class="h">#</span>general</div>
+            <div class="ch unread"><span class="h">#</span>vim-configs</div>
+            <div class="ch hover"><span class="h">#</span>screenshots</div>
+            <div class="ch"><span class="h">#</span>fonts</div>
+            <div class="ch muted"><span class="h">#</span>off-topic (muted)</div>
+            <div class="cat">⌄ Voice</div>
+            <div class="ch"><span class="h">◖</span>Lounge</div>
+            <div class="ch muted"><span class="h">◖</span>AFK</div>
+          </div>
+          <div class="userbar">
+            <div class="av">{{ME_INITIAL}}<span class="dot on"></span></div>
+            <div><div class="name">{{ME}}</div><div class="st">Online</div></div>
+            <div class="icons"><span class="ico"></span><span class="ico"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Channel list</div>
+  </div>
+
+  <div>
+  <div class="phone">{{BG_LAYER}}
+    <div class="status-bar" style="background:var(--CHAT_BANNER_BG)"><span>9:41</span><span>●●● ▮</span></div>
+    <div class="chat-head">
+      <div><div class="t"><span>#</span> general</div><div class="d">{{TAGLINE}}</div></div>
+      <span class="ico"></span>
+    </div>
+    <div class="msgs">
+      <div class="msg"><div class="av">A<span class="dot on"></span></div><div>
+        <div class="who">{{USER1}}<span class="ts">Today 09:12</span></div>
+        <p>{{MSG1}}</p></div></div>
+      <div class="divider">NEW</div>
+      <div class="msg mention"><div class="av">C<span class="dot dnd"></span></div><div>
+        <div class="who">{{USER2}}<span class="ts">Today 09:13</span></div>
+        <p><span class="ping-me">@{{ME}}</span> {{MENTION_MSG}}</p>
+        <div class="reacts"><span class="react me"><i></i>4</span><span class="react"><i></i>1</span></div>
+      </div></div>
+      <div class="msg"><div class="av">B<span class="dot idle"></span></div><div>
+        <div class="who">{{USER3}}<span class="ts">Today 09:14</span></div>
+        <p>Palette reference is here: <a>{{LINK_TEXT}}</a></p>
+        <div class="embed"><div class="site">GitHub</div><div class="etitle">{{EMBED_TITLE}}</div>
+          <div class="edesc">{{EMBED_DESC}}</div></div>
+      </div></div>
+      <div class="msg hovered"><div class="av">D<span class="dot on"></span></div><div>
+        <div class="who">{{USER4}}<span class="ts">Today 09:22</span> <span class="badge">BOT</span></div>
+        <p>{{MSG4}}</p></div></div>
+      <div class="msg"><div class="av">F<span class="dot idle"></span></div><div>
+        <div class="who">{{USER5}}<span class="ts">Today 09:25</span></div>
+        <p>{{MSG5}}</p></div></div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="grab"></div>
+        <h3>Message actions</h3>
+        <div class="emojis"><span class="pick">+1</span><span>♥</span><span>☺</span><span>★</span><span>…</span></div>
+        <div class="group">
+          <div class="item"><span class="ico"></span>Reply</div>
+          <div class="item warn"><span class="ico"></span>Mark unread</div>
+          <div class="item danger"><span class="ico"></span>Delete message</div>
+        </div>
+        <div class="btns"><div class="btn primary">Save</div><div class="btn pressed">Pressed</div><div class="btn danger">Delete</div></div>
+      </div>
+    </div>
+    <div class="input-wrap">
+      <div class="plus">+</div>
+      <div class="input">Message #general</div>
+      <div class="send"></div>
+    </div>
+  </div>
+  <label for="t" class="tlabel">Toggle action sheet</label>
+  <div class="label">Chat view</div>
+  </div>
+
+  <div class="legend">
+    <h2>Key groups → {{NAME}} palette</h2>
+__LEGEND__
+    <div class="cmp">Accent vs status:
+      <span class="badge">accent</span><span class="dot dnd"></span>DND
+      <span class="dot idle"></span>idle <span class="dot on"></span>online</div>
+  </div>
+</div>
+</body>
+</html>
