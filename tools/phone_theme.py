@@ -13,13 +13,15 @@
   /sdcard/Download/rain-themes/<slug>/ so they can be picked on the phone. adb
   can't set the wallpaper or import into apps; those taps stay manual.
 
-The first run saves the phone's original setting to
-~/.local/state/rain-themes/phone-snapshot.json; --restore writes it back.
-Needs one adb device (e.g. over Wireless debugging).
+The first run on a phone that isn't already themed saves its original setting to
+~/.local/state/rain-themes/phone-snapshot.<ro.serialno>.json; --restore writes it back.
+Snapshots and phone-state.json are kept per device (ro.serialno, which unlike the
+Wireless debugging address doesn't change between pairings). Needs one adb device.
 """
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -27,14 +29,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
+from apply_theme import atomic_write  # noqa: E402
 from desktop_export import Colours  # noqa: E402
 
 KEY = "theme_customization_overlay_packages"
 P = "android.theme.customization."
 STYLES = ["TONAL_SPOT", "VIBRANT", "EXPRESSIVE", "SPRITZ", "RAINBOW", "FRUIT_SALAD",
           "CONTENT", "MONOCHROMATIC", "FIDELITY"]
-SNAPSHOT = Path.home() / ".local/state/rain-themes/phone-snapshot.json"
-STATE = Path.home() / ".local/state/rain-themes/phone-state.json"  # {"current": slug, "style": ...}
+STATE_DIR = Path.home() / ".local/state/rain-themes"
+LEGACY_SNAPSHOT = STATE_DIR / "phone-snapshot.json"  # before per-device keys: one flat snapshot
+STATE = STATE_DIR / "phone-state.json"  # {ro.serialno: {"current": slug, "style": ...}}
 REMOTE = "/sdcard/Download/rain-themes"
 FILES = ["wallpaper-phone.png", "sync-theme.json", "{slug}.app-theme.json",
          "{slug}.heliboard.json", "{slug}-light.heliboard.json",
@@ -78,17 +82,70 @@ def write_setting(value, dry):
     return value
 
 
+def legacy(st):
+    return "current" in st or "style" in st
+
+
 def load_state():
+    """{device id: {"current", "style"}}; a pre-per-device flat state shows up under "legacy"."""
     try:
-        return json.loads(STATE.read_text())
+        st = json.loads(STATE.read_text())
     except (OSError, ValueError):
         return {}
+    return {"legacy": st} if legacy(st) else st
 
 
-def save_state(st, dry):
-    if not dry:
-        STATE.parent.mkdir(parents=True, exist_ok=True)
-        STATE.write_text(json.dumps(st, indent=2) + "\n")
+def summary():
+    """For the GUI (no adb): slugs applied on any device, and the style of the last apply."""
+    devs = list(load_state().values())
+    return {d.get("current") for d in devs} - {None}, (devs[-1].get("style") if devs else None)
+
+
+def save_state(dev, entry, dry):
+    if dry:
+        return
+    st = load_state()
+    st.pop(dev, None)
+    if entry:
+        st[dev] = entry  # last applied device last, for summary()
+    STATE.parent.mkdir(parents=True, exist_ok=True)
+    atomic_write(STATE, json.dumps(st, indent=2) + "\n")
+
+
+def device_id():
+    """ro.serialno of the picked device, as used in file names."""
+    serial = adb("shell", "getprop", "ro.serialno")
+    if not serial:
+        sys.exit("adb: device reports no ro.serialno")
+    return re.sub(r"[^\w.-]", "_", serial)
+
+
+def snapshot_path(dev):
+    return STATE_DIR / f"phone-snapshot.{dev}.json"
+
+
+def migrate(dev, dry):
+    """Move the flat pre-per-device snapshot/state to this device, but never to an emulator."""
+    st = load_state()
+    if not LEGACY_SNAPSHOT.exists() and "legacy" not in st:
+        return
+    if os.environ["ANDROID_SERIAL"].startswith("emulator-"):
+        sys.exit(f"{LEGACY_SNAPSHOT.name} predates per-device snapshots and belongs to the phone; "
+                 "connect the phone once (rain phone <slug>) so it moves there, then retry the emulator")
+    print(f"migrate {LEGACY_SNAPSHOT.name} and {STATE.name} to device {dev}")
+    if dry:
+        return
+    if LEGACY_SNAPSHOT.exists() and not snapshot_path(dev).exists():
+        LEGACY_SNAPSHOT.rename(snapshot_path(dev))
+    if "legacy" in st:
+        save_state("legacy", None, dry)
+        if dev not in load_state():
+            save_state(dev, st["legacy"], dry)
+
+
+def rain_seeds():
+    return {seed(p.parent.name).lstrip("#").lower() for p in ROOT.glob("*/theme.spec.json")
+            if "ansi" in json.loads(p.read_text())}
 
 
 def seed(slug):
@@ -100,12 +157,20 @@ def seed(slug):
 
 def apply(slug, style, files, dry):
     check_device()
+    dev = device_id()
+    migrate(dev, dry)
+    snap = snapshot_path(dev)
     cur = read_setting()
-    if not SNAPSHOT.exists():
-        print(f"save original setting -> {SNAPSHOT}")
-        if not dry:
-            SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
-            SNAPSHOT.write_text(json.dumps(cur, indent=2) + "\n")
+    if not snap.exists():
+        if load_state().get(dev, {}).get("current") or \
+                str(cur.get(P + "system_palette", "")).lower() in rain_seeds():
+            print("warning: phone already themed and no snapshot: not snapshotting (it would capture Rain "
+                  "state); `rain phone --restore` stays unavailable for this device")
+        else:
+            print(f"save original setting -> {snap}")
+            if not dry:
+                snap.parent.mkdir(parents=True, exist_ok=True)
+                atomic_write(snap, json.dumps(cur, indent=2) + "\n")
     hexs = seed(slug).lstrip("#")
     new = {k: v for k, v in cur.items() if not k.startswith("_")}
     new.update({P + "color_source": "preset", P + "system_palette": hexs,
@@ -113,7 +178,7 @@ def apply(slug, style, files, dry):
     new.setdefault(P + "color_both", "1")
     print(f"system colours: seed #{hexs}, style {style}")
     write_setting(new, dry)
-    save_state({"current": slug, "style": style}, dry)
+    save_state(dev, {"current": slug, "style": style}, dry)
     if files:
         dest = f"{REMOTE}/{slug}"
         adb("shell", "mkdir", "-p", dest, dry=dry)
@@ -130,13 +195,15 @@ def apply(slug, style, files, dry):
 
 
 def restore(dry):
-    if not SNAPSHOT.exists():
-        sys.exit("no phone snapshot; nothing to restore")
     check_device()
-    snap = json.loads(SNAPSHOT.read_text())
+    dev = device_id()
+    migrate(dev, dry)
+    if not snapshot_path(dev).exists():
+        sys.exit(f"no phone snapshot for device {dev}; nothing to restore")
+    snap = json.loads(snapshot_path(dev).read_text())
     print("restore original system colour setting")
     write_setting({k: v for k, v in snap.items() if not k.startswith("_")}, dry)
-    save_state({}, dry)
+    save_state(dev, None, dry)
 
 
 def main():

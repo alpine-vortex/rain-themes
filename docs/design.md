@@ -17,7 +17,8 @@ the way, including the dead ends, so they don't get re-investigated. The Rain
   large, so it's built on the machine at apply time from a pinned upstream
   commit.
 - **Applying is reversible.** The first apply snapshots everything it will
-  touch. Nothing is deleted without a backup.
+  touch. Nothing is deleted without a backup, and restore only touches what
+  still holds Rain's value.
 - **Don't fight apps that own their config.** Apps that rewrite their config on
   exit are skipped while running rather than raced.
 
@@ -200,10 +201,16 @@ rewrites on exit. Hence the running check.
 - `tools/rain` wraps everything. `rain check` builds every palette into a temp
   dir (Rain + desktop, desktop reading the *fresh* Rain JSON) and compares
   bytes with the committed files. It also flags files in `desktop/` that
-  nothing generates, except hand-exported `.nlt` files. It's the git
-  pre-commit hook.
+  nothing generates, except hand-exported `.nlt` files. The git pre-commit
+  hook runs it on the *staged* tree: it exports the index (`git checkout-index
+  -a`, honouring `GIT_INDEX_FILE` for `commit -a` / `commit <paths>`) to a temp
+  dir and runs that copy's `tools/rain check`. One hook serves every worktree
+  and branch, so it calls no newer subcommand and exits 0 when the tree has no
+  `tools/rain`. Config writes go through `atomic_write` (same-dir temp file,
+  mode kept, symlinks followed, `os.replace`).
 - `~/.local/state/rain-themes/state.json` holds `current` (last palette applied
-  with at least gtk+terminal) and `pending` (`{target: slug | "restore"}`).
+  with at least gtk+terminal), `applied` (any apply since the last restore) and
+  `pending` (`{target: slug | "restore"}`).
   Geany and Brave go to `pending` when running; `rain pending` finishes them
   and runs from `~/.config/autostart/` at login, before those apps start.
 - `rain_gui.py` has no logic of its own: every button runs a `rain` subcommand
@@ -212,9 +219,12 @@ rewrites on exit. Hence the running check.
 
 ## Snapshot / restore
 
-The snapshot is taken on the first apply only, at
-`~/.local/state/rain-themes/snapshot.json`, with copies of replaced files under
-`files/`. It records:
+The snapshot is taken by an apply when none exists and the desktop isn't
+already themed (`current`, `applied` or `pending` set in state, a `Rain-*` GTK
+theme, or a `~/.config/gtk-4.0` link into `~/.themes/Rain-*`). If it is themed,
+apply goes ahead without a snapshot and warns, because one would capture Rain's
+own state. It lives at `~/.local/state/rain-themes/snapshot.json`, with copies
+of replaced files under `files/`. It records:
 - the 3 Cinnamon theme settings and the wallpaper
 - the terminal `list` and `default` keys (empty = unset)
 - `~/.config/gtk-4.0/{gtk.css,gtk-dark.css,assets}`
@@ -223,8 +233,29 @@ The snapshot is taken on the first apply only, at
 - Brave's `browser.theme`
 - Vesktop's `enabledThemes`
 
-To make a new baseline (e.g. after deliberately changing the "normal"
-desktop), delete the snapshot; the next apply takes a fresh one.
+Apps installed after the snapshot are added to it on a later apply, unless
+they already hold a Rain value.
+
+Restore touches a value or path only if it still holds what Rain wrote, and
+logs "left alone" otherwise: gsettings theme keys starting `'Rain-`, a
+wallpaper under `~/.local/share/backgrounds/rain-themes/`, a terminal default
+that is a Rain profile uuid, gtk-4.0 links into `~/.themes/Rain-*`, Firefox css
+equal to an export, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
+The terminal list loses only the Rain uuids (reset if it was unset and one
+profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
+(deleted if that leaves it empty); a backup never overwrites `user.js`.
+
+After a restore with nothing left pending, the snapshot and `files/` are
+renamed `snapshot.<UTC time>.json` / `files.<UTC time>` and kept; the next
+apply takes a fresh one. If Geany or Brave were queued, `rain pending`
+retires it after the last queued restore. `rain restore` without a snapshot
+says there is nothing to restore; it doesn't fall back to old ones.
+
+The phone snapshot (`phone-snapshot.<ro.serialno>.json`) and
+`phone-state.json` (`{serial: {current, style}}`) are per device; the
+transport name from Wireless debugging isn't stable, so it isn't the key. The
+old flat files move to the first non-emulator device seen, never to an
+emulator.
 
 The icon theme is never changed, so it isn't
 recorded. `~/.config/gtk-3.0/gtk.css` is never written; if one exists it

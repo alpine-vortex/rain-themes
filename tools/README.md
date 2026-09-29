@@ -6,13 +6,13 @@
 tools/rain list                       # palettes; * = applied, "desktop" = has desktop exports
 tools/rain build [slug ...]           # regenerate Rain + desktop outputs (all palettes by default)
 tools/rain build --gallery            # ...plus GALLERY.md / index.html / README table
-tools/rain check                      # fail if any committed generated file is stale (pre-commit hook)
+tools/rain check                      # fail if any generated file is stale (the pre-commit hook runs it on the staged tree)
 tools/rain apply <slug> [--only gtk,terminal] [--dry-run]
-tools/rain restore                    # back to the pre-first-apply desktop
+tools/rain restore                    # undo what rain still owns; changes made since are left alone
 tools/rain pending                    # finish apps that were open during apply (runs at login)
 tools/rain preview <slug>             # screenshots in throwaway windows
 tools/rain gui                        # the "Rain Themes" window
-tools/rain install                    # menu entry + login autostart + git pre-commit hook
+tools/rain install [--force]          # menu entry + login autostart + git pre-commit hook (main checkout only)
 ```
 
 | Script | Role |
@@ -23,6 +23,7 @@ tools/rain install                    # menu entry + login autostart + git pre-c
 | `rain_gui.py` | the GTK window (runs `rain` subcommands) |
 | `gallery.py` | Playwright screenshots → GALLERY.md, index.html |
 | `dev/preview_desktop.py` | screenshot a palette without applying it |
+| `dev/test_tooling.py` | acceptance tests for the hook, install, restore, snapshot guard, phone and atomic writes (scratch dirs, fake gsettings/dconf/adb) |
 
 # Rain theme builder
 
@@ -108,7 +109,7 @@ The same palette, applied to the desktop and the apps around it.
 ```sh
 python3 tools/desktop_export.py <theme-dir> ...   # writes <theme-dir>/desktop/
 tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,geany,firefox,brave,vesktop] [--dry-run]
-tools/apply_theme.py --restore                    # back to the settings saved on the first apply
+tools/apply_theme.py --restore                    # back to the settings in the snapshot
 ```
 
 A theme is exported only when its spec has three extra blocks; the others are
@@ -141,13 +142,14 @@ colour even where upstream uses a light one with dark selected text.
 | Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
 | Termius (phone) | `README.md` | Manual: pick the built-in named by the spec's `termius` block (`theme`, `match`: `same palette` or `closest`). Termius has no custom-theme import. |
 | Android apps (phone) | `<slug>.app-theme.json` | app-theme v1 ([docs/app-theme.md](../docs/app-theme.md)). Imported in apps such as redeye (file, clipboard, or the raw.githubusercontent.com URL in the palette README; URLs work once on `main`). Format `app-theme` v1, agreed with the redeye session 2026-09-29. `state` (NSFW/hidden/saved) comes from the spec's `app_state`; `tags` are 8 muted hues from ANSI/syntax, avoiding accent/state/danger, in stable order. |
-| Android system colours (phone) | `brave.json`'s seed, via `rain phone <slug>` | adb (Wireless debugging): writes the accent as the Material You seed into `secure theme_customization_overlay_packages` (`--style`, default TONAL_SPOT), copies wallpaper/Sync/redeye files to `/sdcard/Download/rain-themes/<slug>/`. `rain phone --restore` puts the original back. |
+| Android system colours (phone) | `brave.json`'s seed, via `rain phone <slug>` | adb (Wireless debugging): writes the accent as the Material You seed into `secure theme_customization_overlay_packages` (`--style`, default TONAL_SPOT), copies wallpaper/Sync/redeye files to `/sdcard/Download/rain-themes/<slug>/`. `rain phone --restore` puts the original back. Snapshots and `phone-state.json` are per device (`ro.serialno`). |
 | HeliBoard (phone) | `<slug>.heliboard.json`, `<slug>-light.heliboard.json` (+ `.heliboard-simple.json`) | Manual: HeliBoard → Appearance → Colors → Load (file or clipboard). The main files use its "all colors" format, setting all 44 `ColorType` slots (`HELIBOARD_ALL` in `desktop_export.py`; the name is stored as a base36 key with value 0). All-colors mode paints key backgrounds whatever the border setting, so keys use the keyboard background (the borderless look); the `-simple` files follow the border setting. The `-simple` files use the 10-colour format. Both match real HeliBoard exports; ints are signed ARGB. The light file exists only for palettes with a `light` block. |
 | Sync for Reddit (phone) | `sync-theme.json` | Manual: copy the JSON and paste it into Sync's Monet theme import (clipboard only; confirmed working 2026-09-29). Seed = accent; dark primary/secondary/link text overridden. Sync derives backgrounds from the seed, so they aren't the palette's exact background. |
 | Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
 
-The first apply saves the current state to
+The first apply on an unthemed desktop saves the current state to
 `~/.local/state/rain-themes/snapshot.json` (gsettings, terminal profile list,
 `~/.config/gtk-4.0`, Firefox files, Geany scheme, Brave colour, Vesktop enabled
-themes); `--restore` puts it back. The GTK2 widget PNGs are pre-rendered by
+themes); `--restore` puts back each part that still holds Rain's value, then
+retires the snapshot. The GTK2 widget PNGs are pre-rendered by
 Colloid and keep its stock colours.

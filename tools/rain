@@ -12,7 +12,8 @@
     rain phone --restore [--dry-run]
     rain preview <slug> [--out DIR]
     rain gui                       small GTK window: pick a palette, apply, restore
-    rain install                   menu entry, login autostart for `pending`, git pre-commit check
+    rain install [--force]         menu entry, login autostart for `pending`, git pre-commit check
+                                   (main checkout only; the hook checks the staged tree)
 
 Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
 """
@@ -149,8 +150,34 @@ def cmd_gui(a):
     rain_gui.main()
 
 
+HOOK_MARK = "# rain-themes:"
+# Shared by every worktree and branch, so it checks whatever the index holds (GIT_INDEX_FILE too,
+# for `commit -a`/`commit <paths>`) with that tree's own tools/rain, and calls no new subcommand.
+HOOK = """#!/bin/sh
+# rain-themes: refuse commits with stale generated files (checks the index, not the working tree)
+tmp=$(mktemp -d) || exit 1
+trap 'rm -rf "$tmp"' EXIT
+git checkout-index -a --prefix="$tmp/" || exit 1
+[ -x "$tmp/tools/rain" ] || exit 0
+"$tmp/tools/rain" check
+"""
+
+
+def git_path(*args):
+    out = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--path-format=absolute", *args],
+                         check=True, capture_output=True, text=True).stdout.strip()
+    return Path(out).resolve()
+
+
 def cmd_install(a):
     home = Path.home()
+    main = git_path("--git-common-dir").parent
+    if git_path("--show-toplevel") != main:
+        sys.exit(f"rain install: {ROOT} is a linked worktree, which gets deleted; "
+                 f"run it from the main checkout: {main}/tools/rain install")
+    hook = git_path("--git-path", "hooks/pre-commit")
+    if hook.exists() and HOOK_MARK not in hook.read_text(errors="replace") and not a.force:
+        sys.exit(f"rain install: {hook} is not a rain-themes hook; left alone (--force replaces it)")
     rain = TOOLS / "rain"
     icon = "rain-themes"  # assets/icon/, installed into the user hicolor theme below
     files = {
@@ -174,12 +201,12 @@ Terminal=false
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
 """,
+        hook: HOOK,
     }
-    hook = ROOT / ".git/hooks/pre-commit"
-    files[hook] = f"#!/bin/sh\n# rain-themes: refuse commits with stale generated files\nexec \"{rain}\" check\n"
     for p, text in files.items():
         if a.dry_run:
-            print(f"[dry-run] write {p}")
+            what = ("replace" if hook.exists() else "write") if p == hook else "write"
+            print(f"[dry-run] {what} {p}")
             continue
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text)
@@ -200,7 +227,7 @@ X-GNOME-Autostart-enabled=true
     # usually has no index.theme)
     if not a.dry_run and shutil.which("gtk-update-icon-cache") and (icons / "icon-theme.cache").exists():
         subprocess.run(["gtk-update-icon-cache", "-q", "-t", "-f", str(icons)], check=False)
-    print("\nUndo: delete those three files and ~/.local/share/icons/hicolor/*/apps/rain-themes.png.")
+    print("\nUndo: delete the three files above and ~/.local/share/icons/hicolor/*/apps/rain-themes.png.")
 
 
 def main():
@@ -237,6 +264,7 @@ def main():
     sub.add_parser("gui").set_defaults(fn=cmd_gui)
     p = sub.add_parser("install")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--force", action="store_true", help="replace a pre-commit hook rain didn't write")
     p.set_defaults(fn=cmd_install)
     a = ap.parse_args()
     a.fn(a)

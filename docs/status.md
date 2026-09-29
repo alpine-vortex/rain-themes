@@ -26,10 +26,10 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   which is checked on Android 17. It also copies the wallpaper, Sync and redeye
   files to `/sdcard/Download/rain-themes/<slug>/`.
   `rain phone --restore` puts back the original setting, saved on the first run
-  in `~/.local/state/rain-themes/phone-snapshot.json`. Checked end to end on
+  per device (by `ro.serialno`) in `~/.local/state/rain-themes/phone-snapshot.<serial>.json`. Checked end to end on
   2026-09-29: the system colours applied and the Sync import (paste JSON) worked.
 - GUI: every card has a **Phone** button, and there's a *Phone (adb)* row with a style picker and
-  *Restore phone*. The "phone" badge comes from `phone-state.json`. The Phone button
+  *Restore phone*. The "phone" badge comes from `phone-state.json` (any device). The Phone button
   hasn't been clicked yet.
 - Not yet: Redeye's importer isn't built yet (the
   redeye session is using the files as test data).
@@ -84,8 +84,14 @@ What's applied on the owner's machines is kept out of the repo, in the local
 - `tools/rain` (single CLI incl. `check`), pending queue + login autostart, the
   "Rain Themes" GUI (`tools/rain_gui.py`); `rain install` was run on the dev machine.
 - Exports committed for both palettes.
-- The first apply saves a snapshot of the original setup (themes, wallpaper,
-  terminal profile, Brave seed, Firefox/Geany state); `--restore` returns to it.
+- The first apply on an unthemed desktop saves a snapshot of the original setup
+  (themes, wallpaper, terminal profile, Brave seed, Firefox/Geany state);
+  `--restore` returns each part that still holds Rain's value to it, then
+  retires the snapshot.
+- The pre-commit hook checks the staged tree and is shared by all worktrees;
+  `rain install` refuses in a linked worktree. Acceptance tests for the hook,
+  install, restore, snapshot guard, phone and atomic writes:
+  `python3 tools/dev/test_tooling.py` (scratch dirs only).
 
 ## Verified (by screenshot, without touching the live desktop)
 

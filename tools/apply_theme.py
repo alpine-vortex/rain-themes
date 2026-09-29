@@ -5,23 +5,27 @@
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
-Run tools/desktop_export.py first. The first apply saves the current settings
-to ~/.local/state/rain-themes/snapshot.json; --restore puts them back. Apps
-that rewrite their config on exit (Geany, Firefox, Brave) are skipped while
-running, with a note.
+Run tools/desktop_export.py first. An apply on an unthemed desktop saves the
+current settings to ~/.local/state/rain-themes/snapshot.json; --restore puts
+back whatever rain still owns (anything changed since is left alone) and
+retires the snapshot. Apps that rewrite their config on exit (Geany, Brave)
+are skipped while running, with a note.
 
 The GTK/Cinnamon theme is Colloid (GPL-3, vinceliuice/Colloid-gtk-theme) at a
 pinned commit, cloned to ~/.cache/rain-themes and rebuilt with our palette.
 """
 import argparse
 import configparser
+import contextlib
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -63,9 +67,31 @@ def running(name):
     return subprocess.run(["pgrep", "-x", name], capture_output=True).returncode == 0
 
 
+def atomic_write(path, text):
+    """Replace path's content in one step: follows symlinks, keeps the file mode."""
+    path = Path(os.path.realpath(path))
+    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
+    try:
+        with os.fdopen(fd, "w") as f:
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        if path.exists():
+            shutil.copymode(path, tmp)
+        else:
+            mask = os.umask(0)
+            os.umask(mask)
+            os.chmod(tmp, 0o666 & ~mask)
+        os.replace(tmp, path)
+    except BaseException:
+        with contextlib.suppress(FileNotFoundError):
+            os.unlink(tmp)
+        raise
+
+
 def write(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text)
+    atomic_write(path, text)
 
 
 # ---------- Colloid build ----------
@@ -131,7 +157,6 @@ def build_gtk(slug, dest):
     return Path(dest) / f"{name}-Dark"
 
 
-# ---------- snapshot / restore ----------
 # ---------- state: current palette + targets skipped while their app ran ----------
 STATE_FILE = STATE / "state.json"
 
@@ -172,11 +197,63 @@ def firefox_profile():
     return None
 
 
+# ---------- what rain wrote: restore (and snapshot back-fill) only touch these ----------
+WALLPAPERS = HOME / ".local/share/backgrounds/rain-themes"
+
+
+def rain_uuids():
+    return {str(uuid.uuid5(uuid.NAMESPACE_URL, f"rain-themes/{s}")) for s in exportable()}
+
+
+def rain_gtk4(p):
+    return p.is_symlink() and os.readlink(p).startswith(str(THEMES_DIR / "Rain-"))
+
+
+def rain_css(p):
+    """A userChrome/userContent.css that is byte-for-byte one of our exports."""
+    if not p.is_file() or p.is_symlink():
+        return False
+    t = p.read_bytes()
+    return any(t == e.read_bytes() for e in ROOT.glob(f"*/desktop/{p.name}"))
+
+
+def rain_geany(scheme):
+    return scheme in {f"geany-{s}.conf" for s in exportable()}
+
+
+def rain_brave(theme):
+    seeds = {json.loads((ROOT / s / "desktop/brave.json").read_text())["user_color2"] for s in exportable()}
+    return (theme or {}).get("user_color2") in seeds
+
+
+def rain_vesktop(name):
+    f = VESKTOP / "themes" / name
+    return name in {f"{s}.theme.css" for s in exportable()} or (
+        f.is_file() and f.read_text(errors="replace").startswith("/**\n * @name Rain "))
+
+
+def rain_gsetting(schema, key, val):
+    if key == "picture-uri":
+        return val.strip("'").startswith(f"file://{WALLPAPERS}/")
+    return val.startswith("'Rain-")
+
+
+def themed():
+    """True if rain has already changed this desktop (a snapshot now would capture rain's own state)."""
+    st = load_state()
+    if st.get("current") or st.get("pending") or st.get("applied"):
+        return True
+    if run("gsettings", "get", "org.cinnamon.desktop.interface", "gtk-theme", check=False).startswith("'Rain-"):
+        return True
+    return any(rain_gtk4(GTK4 / f) for f in ("gtk.css", "gtk-dark.css", "assets"))
+
+
+# ---------- snapshot / restore ----------
 def backup_file(p, key, snap):
     if p.exists() and not p.is_symlink():
         b = STATE / "files" / key
-        b.parent.mkdir(parents=True, exist_ok=True)
         if not DRY:
+            b.parent.mkdir(parents=True, exist_ok=True)
             (shutil.copytree if p.is_dir() else shutil.copy2)(p, b)
         snap["files"][key] = {"path": str(p), "backup": str(b)}
     elif p.is_symlink():
@@ -185,14 +262,44 @@ def backup_file(p, key, snap):
         snap["files"][key] = {"path": str(p), "absent": True}
 
 
+def snapshot_apps(snap):
+    """Record apps missing from snap (all on a fresh snapshot; ones installed since, on a later apply),
+    unless they already hold rain's values. Returns the names added."""
+    added = []
+    if "geany_color_scheme" not in snap and GEANY_CONF.exists():
+        m = re.search(r"^color_scheme=(.*)$", GEANY_CONF.read_text(), re.M)
+        if not rain_geany(m.group(1) if m else ""):
+            snap["geany_color_scheme"] = m.group(1) if m else ""
+            added.append("Geany")
+    ff = firefox_profile()
+    if ff:
+        for f in ("user.js", "chrome/userChrome.css", "chrome/userContent.css"):
+            key = "firefox-" + f.replace("/", "-")
+            if key not in snap["files"] and not rain_css(ff / f):
+                backup_file(ff / f, key, snap)
+                added.append(f"Firefox {f}")
+    if "brave_theme" not in snap and BRAVE_PREFS.exists():
+        th = json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")
+        if not rain_brave(th):
+            snap["brave_theme"] = th
+            added.append("Brave")
+    vs = VESKTOP / "settings/settings.json"
+    if "vesktop_enabled" not in snap and vs.exists():
+        snap["vesktop_enabled"] = json.loads(vs.read_text()).get("enabledThemes", [])
+        added.append("Vesktop")
+    return added
+
+
 def take_snapshot():
     if SNAPSHOT.exists():
-        # Apps installed after the first snapshot: record their original state now.
         snap = json.loads(SNAPSHOT.read_text())
-        vs = VESKTOP / "settings/settings.json"
-        if "vesktop_enabled" not in snap and vs.exists():
-            snap["vesktop_enabled"] = json.loads(vs.read_text()).get("enabledThemes", [])
-            act("add Vesktop to snapshot", write, SNAPSHOT, json.dumps(snap, indent=2))
+        added = snapshot_apps(snap)
+        if added:
+            act(f"add {', '.join(added)} to snapshot", write, SNAPSHOT, json.dumps(snap, indent=2))
+        return
+    if themed():
+        log("warning: desktop already themed and no snapshot: not snapshotting (it would capture Rain "
+            "state); `rain restore` stays unavailable until a restore/fresh start")
         return
     snap = {"gsettings": {}, "dconf": {}, "files": {}}
     for schema, key in GSETTINGS:
@@ -201,20 +308,81 @@ def take_snapshot():
         snap["dconf"][TERM_BASE + k] = run("dconf", "read", TERM_BASE + k)
     for f in ("gtk.css", "gtk-dark.css", "assets"):
         backup_file(GTK4 / f, f"gtk4-{f}", snap)
-    if GEANY_CONF.exists():
-        m = re.search(r"^color_scheme=(.*)$", GEANY_CONF.read_text(), re.M)
-        snap["geany_color_scheme"] = m.group(1) if m else ""
-    ff = firefox_profile()
-    if ff:
-        for f in ("user.js", "chrome/userChrome.css", "chrome/userContent.css"):
-            backup_file(ff / f, "firefox-" + f.replace("/", "-"), snap)
-    if BRAVE_PREFS.exists():
-        p = json.loads(BRAVE_PREFS.read_text())
-        snap["brave_theme"] = p.get("browser", {}).get("theme")
-    vs = VESKTOP / "settings/settings.json"
-    if vs.exists():
-        snap["vesktop_enabled"] = json.loads(vs.read_text()).get("enabledThemes", [])
+    snapshot_apps(snap)
     act(f"save snapshot -> {SNAPSHOT}", write, SNAPSHOT, json.dumps(snap, indent=2))
+
+
+def retire_snapshot():
+    """Keep the used snapshot (and its file copies) under a timestamp; the next apply takes a fresh one."""
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    n = 0
+    while (STATE / f"snapshot.{ts}.json").exists() or (STATE / f"files.{ts}").exists():
+        n += 1
+        ts = ts.split("-")[0] + f"-{n}"
+    files = STATE / "files"
+
+    def go():
+        SNAPSHOT.rename(STATE / f"snapshot.{ts}.json")
+        if files.exists():
+            files.rename(STATE / f"files.{ts}")
+    act(f"retire snapshot -> snapshot.{ts}.json", go)
+
+
+def left_alone(what):
+    log(f"{what}: not what rain set (changed since apply?); left alone")
+
+
+def restore_file(key, f):
+    p = Path(f["path"])
+    if key == "firefox-user.js":
+        if not p.is_file():
+            return
+
+        def strip():
+            t = "".join(ln for ln in p.read_text().splitlines(True) if ln.rstrip("\n") != USERJS_LINE)
+            if t.strip():
+                atomic_write(p, t)
+            else:
+                p.unlink()
+        act(f"remove the rain-themes line from {p}", strip)
+        return
+    ours = rain_gtk4(p) if key.startswith("gtk4-") else rain_css(p)
+    if not ours:
+        if p.exists() or p.is_symlink():
+            left_alone(str(p))
+        return
+
+    def put():
+        if p.is_symlink() or p.is_file():
+            p.unlink()
+        else:
+            shutil.rmtree(p)
+        if "backup" in f:
+            (shutil.copytree if Path(f["backup"]).is_dir() else shutil.copy2)(f["backup"], p)
+        elif "link" in f:
+            p.symlink_to(f["link"])
+    act(f"restore {p}", put)
+
+
+def restore_terminal(snap):
+    lk, dk = TERM_BASE + "list", TERM_BASE + "default"
+    ours = rain_uuids()
+    cur = re.findall(r"'([^']+)'", run("dconf", "read", lk))
+    ids = [i for i in cur if i not in ours]
+    if ids != cur:
+        if not snap["dconf"].get(lk) and len(ids) <= 1:
+            act(f"dconf reset {lk}", run, "dconf", "reset", lk)
+        else:
+            val = "[" + ", ".join(f"'{i}'" for i in ids) + "]"
+            act(f"dconf {lk} = {val}", run, "dconf", "write", lk, val)
+    if run("dconf", "read", dk).strip("'") in ours:
+        v = snap["dconf"].get(dk)
+        if v:
+            act(f"dconf {dk} = {v}", run, "dconf", "write", dk, v)
+        else:
+            act(f"dconf reset {dk}", run, "dconf", "reset", dk)
+    else:
+        left_alone(dk)
 
 
 def restore():
@@ -223,35 +391,28 @@ def restore():
     snap = json.loads(SNAPSHOT.read_text())
     for sk, val in snap["gsettings"].items():
         schema, key = sk.split()
-        act(f"gsettings {schema} {key} = {val}", run, "gsettings", "set", schema, key, val)
-    for k, v in snap["dconf"].items():
-        if v:
-            act(f"dconf {k} = {v}", run, "dconf", "write", k, v)
+        if rain_gsetting(schema, key, run("gsettings", "get", schema, key)):
+            act(f"gsettings {schema} {key} = {val}", run, "gsettings", "set", schema, key, val)
         else:
-            act(f"dconf reset {k}", run, "dconf", "reset", k)
+            left_alone(f"gsettings {schema} {key}")
+    restore_terminal(snap)
     for key, f in snap["files"].items():
-        p = Path(f["path"])
-
-        def put(p=p, f=f):
-            if p.is_symlink() or p.is_file():
-                p.unlink()
-            elif p.is_dir():
-                shutil.rmtree(p)
-            if "backup" in f:
-                (shutil.copytree if Path(f["backup"]).is_dir() else shutil.copy2)(f["backup"], p)
-            elif "link" in f:
-                p.symlink_to(f["link"])
-            if key == "firefox-user.js" and "backup" not in f and p.exists():
-                p.unlink()
-        act(f"restore {p}", put)
+        restore_file(key, f)
     restore_geany(snap)
     restore_brave(snap)
     if "vesktop_enabled" in snap:
-        act("vesktop enabledThemes restore", set_vesktop_enabled, snap["vesktop_enabled"])
+        vs = VESKTOP / "settings/settings.json"
+        en = json.loads(vs.read_text()).get("enabledThemes", []) if vs.exists() else []
+        act("vesktop: disable rain themes", set_vesktop_enabled, [x for x in en if not rain_vesktop(x)])
     st = load_state()
     st["current"] = None
+    st.pop("applied", None)
     st["pending"] = {k: v for k, v in st.get("pending", {}).items() if v == "restore"}
     save_state(st)
+    if st["pending"]:
+        log(f"snapshot kept until `rain pending` restores {', '.join(st['pending'])}")
+    else:
+        retire_snapshot()
     log("restored. (Rain profiles/themes stay installed but unused; Firefox keeps the userChrome pref on.)")
 
 
@@ -262,7 +423,11 @@ def restore_geany(snap):
         log("Geany is running: queued, it will be restored by `rain pending` (runs at login)")
         mark_pending("geany", "restore")
         return
-    act("geany color_scheme restore", set_geany, snap["geany_color_scheme"])
+    m = re.search(r"^color_scheme=(.*)$", GEANY_CONF.read_text(), re.M) if GEANY_CONF.exists() else None
+    if m and rain_geany(m.group(1)):
+        act("geany color_scheme restore", set_geany, snap["geany_color_scheme"])
+    else:
+        left_alone("geany color_scheme")
     clear_pending("geany")
 
 
@@ -273,20 +438,23 @@ def restore_brave(snap):
         log("Brave is running: queued, it will be restored by `rain pending` (runs at login)")
         mark_pending("brave", "restore")
         return
-    act("brave theme restore", set_brave_theme, snap["brave_theme"])
+    if BRAVE_PREFS.exists() and rain_brave(json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")):
+        act("brave theme restore", set_brave_theme, snap["brave_theme"])
+    else:
+        left_alone("brave theme")
     clear_pending("brave")
 
 
 # ---------- targets ----------
 def set_geany(value):
     t = GEANY_CONF.read_text()
-    GEANY_CONF.write_text(re.sub(r"^color_scheme=.*$", f"color_scheme={value}", t, flags=re.M))
+    atomic_write(GEANY_CONF, re.sub(r"^color_scheme=.*$", f"color_scheme={value}", t, flags=re.M))
 
 
 def set_brave_theme(theme):
     p = json.loads(BRAVE_PREFS.read_text())
     p.setdefault("browser", {})["theme"] = theme
-    BRAVE_PREFS.write_text(json.dumps(p, separators=(",", ":")))
+    atomic_write(BRAVE_PREFS, json.dumps(p, separators=(",", ":")))
 
 
 def set_vesktop_enabled(names):
@@ -379,7 +547,7 @@ def apply_firefox(slug, exp):
         uj = ff / "user.js"
         t = uj.read_text() if uj.exists() else ""
         if USERJS_LINE not in t:
-            uj.write_text(t + ("" if t.endswith("\n") or not t else "\n") + USERJS_LINE + "\n")
+            atomic_write(uj, t + ("" if t.endswith("\n") or not t else "\n") + USERJS_LINE + "\n")
     act(f"firefox userChrome/userContent + user.js pref in {ff}", go)
 
 
@@ -398,7 +566,7 @@ def apply_brave(slug, exp):
         th = p.setdefault("browser", {}).setdefault("theme", {})
         th.update({"user_color2": seed["user_color2"], "color_scheme2": 2})
         p.setdefault("extensions", {}).setdefault("theme", {})["id"] = "user_color_theme_id"
-        BRAVE_PREFS.write_text(json.dumps(p, separators=(",", ":")))
+        atomic_write(BRAVE_PREFS, json.dumps(p, separators=(",", ":")))
     act(f"brave seed colour {seed['seed']} (dark)", go)
     clear_pending("brave")
 
@@ -452,9 +620,11 @@ def apply(slug, only=None, dry=False):
     for t in TARGETS:
         if t in only:
             FNS[t](slug, exp)
-    if not dry and set(only) >= {"gtk", "terminal"}:
+    if not dry:
         st = load_state()
-        st["current"] = slug
+        st["applied"] = True
+        if set(only) >= {"gtk", "terminal"}:
+            st["current"] = slug
         save_state(st)
     print("\nManual steps (Dark Reader, Niagara, Claude Code): " + str(exp / "README.md"))
 
@@ -467,15 +637,22 @@ def run_pending(dry=False):
     if not pending:
         log("nothing pending")
         return
-    snap = json.loads(SNAPSHOT.read_text()) if SNAPSHOT.exists() else {}
+    snap = json.loads(SNAPSHOT.read_text()) if SNAPSHOT.exists() else None
+    restored = False
     for target, what in pending.items():
-        if what == "restore":
+        if what == "restore" and snap is None:
+            log(f"dropping pending {target} restore: no snapshot")
+            clear_pending(target)
+        elif what == "restore":
             {"geany": restore_geany, "brave": restore_brave}[target](snap)
+            restored = True
         elif (ROOT / what / "desktop").exists():
             FNS[target](what, ROOT / what / "desktop")
         else:
             log(f"dropping pending {target}: {what} has no exports")
             clear_pending(target)
+    if restored and "restore" not in load_state().get("pending", {}).values() and not DRY:
+        retire_snapshot()
 
 
 def main():

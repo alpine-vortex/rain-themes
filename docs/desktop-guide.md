@@ -39,15 +39,24 @@ tools/rain apply catppuccin-mocha --only gtk,terminal
 ```
 
 `tools/rain install` sets up the menu entry, the login autostart, the app icon
-(in `~/.local/share/icons/hicolor`) and a git pre-commit hook that runs `rain
-check`. Undo: delete `~/.local/share/applications/rain-themes.desktop`,
-`~/.config/autostart/rain-themes-pending.desktop`, `.git/hooks/pre-commit` and
+(in `~/.local/share/icons/hicolor`) and a git pre-commit hook. The hook exports
+the staged tree and runs that tree's `rain check`, so it judges what is being
+committed, not unstaged work, and it works from every worktree and branch. Run
+`install` from the main checkout: it refuses in a linked worktree, since the menu
+entry would point at a path that gets deleted. It replaces a pre-commit hook only
+if rain wrote it (`--force` otherwise); after a change to the hook, re-run it from
+the main checkout. Undo: delete `~/.local/share/applications/rain-themes.desktop`,
+`~/.config/autostart/rain-themes-pending.desktop`, the hook (the path it printed,
+normally `.git/hooks/pre-commit`) and
 `~/.local/share/icons/hicolor/*/apps/rain-themes.png`.
 
 Targets: `gtk`, `wallpaper`, `terminal`, `geany`, `firefox`, `brave`, `vesktop`.
 
-Switching palettes is just another apply. The snapshot is only taken once, so
-`--restore` always goes back to the setup from before the *first* apply.
+Switching palettes is just another apply. The snapshot is taken by the first
+apply on an unthemed desktop and kept until a restore, so `--restore` goes back
+to the setup from before Rain themed it. If the desktop is already themed and no
+snapshot exists, apply still works but doesn't take one (it would capture Rain's
+own state) and says so.
 
 ## What each target does
 
@@ -88,9 +97,14 @@ tools/rain restore
 ```
 
 This restores the three Cinnamon theme settings, the wallpaper, the terminal
-profile list and default, `~/.config/gtk-4.0`, the Firefox files, Geany's scheme
-and Brave's colour, from `~/.local/state/rain-themes/snapshot.json`. Geany and
-Brave are queued if open, like on apply.
+default, `~/.config/gtk-4.0`, the Firefox files, Geany's scheme and Brave's
+colour, from `~/.local/state/rain-themes/snapshot.json`. It only touches what
+still holds Rain's value: anything you changed since the apply is left alone and
+logged. The Rain terminal profiles are dropped from the profile list (others you
+added stay), Vesktop keeps its non-Rain themes enabled, and `user.js` only loses
+Rain's line. Geany and Brave are queued if open, like on apply. Once everything
+is restored the snapshot is retired (renamed `snapshot.<time>.json`, with its
+`files.<time>` copies) and the next apply takes a fresh one.
 
 Things deliberately left behind: the `~/.themes/Rain-*` folders, the Rain
 terminal profiles and the Firefox pref `toolkit.legacyUserProfileCustomizations.stylesheets`.
@@ -118,7 +132,7 @@ Connect the phone with **Wireless debugging** (Developer options), then check th
 ```sh
 tools/rain phone librekai                  # Material You seed = the accent, and files copied over
 tools/rain phone librekai --style VIBRANT  # TONAL_SPOT (default), VIBRANT, EXPRESSIVE, SPRITZ, ...
-tools/rain phone --restore                 # the original setting (saved on the first run)
+tools/rain phone --restore                 # the original setting (saved per device on the first run)
 ```
 
 The GUI's **Phone** button does the same, using the style picked in its
