@@ -29,7 +29,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Phone | System colours (Material You) | `tools/rain phone <slug>` over adb: the accent becomes the system seed |
 | Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
 | Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
-| Phone | redeye | `redeye-theme.json` ([format](docs/redeye-theme.md)): file, clipboard or raw URL |
+| Phone | Android apps (e.g. redeye) | `<slug>.app-theme.json` ([format](docs/app-theme.md)): file, clipboard, raw URL or adb |
 | Phone | Termius | The matching built-in theme, named in the palette's README |
 | Phone | Firefox (web pages) | Dark Reader values in the palette's README |
 | Desktop | Cinnamon, GTK 2/3/4, window borders | A recoloured [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) build |
@@ -149,7 +149,7 @@ needed only for `rain build --gallery`.
 - [docs/desktop-guide.md](docs/desktop-guide.md): using it, undoing it, and
   troubleshooting.
 - [docs/design.md](docs/design.md): how each target works and why.
-- [docs/redeye-theme.md](docs/redeye-theme.md): the redeye theme format, which
+- [docs/app-theme.md](docs/app-theme.md): the app-theme format for Android apps, which
   this repo owns.
 - [docs/status.md](docs/status.md): what's verified, known issues and next
   steps.

@@ -12,7 +12,7 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
 - Generated for all 21 palettes:
   - `sync-theme.json` (Sync for Reddit Monet import)
   - a Termius built-in per palette (spec `termius`)
-  - `redeye-theme.json` (redeye v1; the raw URLs are live on `main`)
+  - `<slug>.app-theme.json` (app-theme v1, renamed from redeye-theme 2026-09-29; raw URLs live on `main`)
 - `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,
   which is checked on Android 17. It also copies the wallpaper, Sync and redeye
   files to `/sdcard/Download/rain-themes/<slug>/`.
@@ -36,7 +36,7 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
     an error string. Anything else means the receiver is missing or the build is old.
   - File drop name: `files/themes/<slug>.json`.
   - Plan for `rain phone`: if `pm path dev.redeye` finds the app, push
-    `redeye-theme.json` to `/sdcard/Android/data/dev.redeye/files/themes/` (the shell can
+    `<slug>.app-theme.json` to `/sdcard/Android/data/dev.redeye/files/themes/<slug>.json` (the shell can
     write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
     Keep `json_b64` as the fallback.
 

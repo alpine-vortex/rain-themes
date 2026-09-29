@@ -18,7 +18,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
-    redeye-theme.json        redeye (an Android Reddit client) theme, format redeye-theme v1
+    <slug>.app-theme.json    Android app theme, format app-theme v1 (docs/app-theme.md; e.g. redeye)
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
 See tools/README.md ("Desktop exports").
@@ -460,7 +460,7 @@ def _on(colour, dark, light):
     return dark if contrast(colour, dark) >= contrast(colour, light) else light
 
 
-def redeye_tags(c, avoid):
+def app_tags(c, avoid):
     """8 muted hues for subreddit dots / comment depth bars. Candidates in a fixed order
     (ANSI 1-6, ANSI 9-14, syntax colours), skipping greys, repeats and anything within
     12 degrees of hue of accent/state/danger; each blended 30% toward the background.
@@ -485,15 +485,15 @@ def redeye_tags(c, avoid):
     return tags
 
 
-def redeye_theme(c, spec):
-    """redeye-theme v1 (agreed with the redeye session 2026-09-29): flat JSON, #RRGGBB."""
+def app_theme(c, spec):
+    """app-theme v1 (docs/app-theme.md; agreed with the redeye session 2026-09-29): flat JSON, #RRGGBB."""
     r, R = c.role, c.R
     bg, text = r["main_bg"], r["text_normal"]
-    state = c.ref(spec["redeye_state"])
+    state = c.ref(spec["app_state"])
     if state == r["brand"]:
-        raise SpecError("redeye_state must differ from the accent")
+        raise SpecError("app_state must differ from the accent")
     t = {
-        "format": "redeye-theme", "version": 1,
+        "format": "app-theme", "version": 1,
         "name": spec["name"], "slug": spec["slug"], "source": spec.get("source", ""),
         "mode": "dark",
         "background": bg, "text": text, "accent": r["brand"],
@@ -512,14 +512,15 @@ def redeye_theme(c, spec):
         if contrast(inv, text) >= 4.5:
             t["accent_inverse"] = inv
     t.update({"link": r["link"], "positive": r["positive"], "warning": r["warning"],
-              "tags": redeye_tags(c, [r["brand"], state, r["danger"], bg, text])})
+              "tags": app_tags(c, [r["brand"], state, r["danger"], bg, text])})
     return t
 
 
-def redeye_section(spec):
-    return f"""## redeye (phone)
-Import `redeye-theme.json` (file, clipboard, or this URL):
-`{RAW_BASE}/{spec['slug']}/desktop/redeye-theme.json`
+def app_section(spec):
+    return f"""## Android apps (app-theme)
+Apps that read the app-theme format (such as redeye) import
+`{spec['slug']}.app-theme.json` by file, clipboard, or this URL:
+`{RAW_BASE}/{spec['slug']}/desktop/{spec['slug']}.app-theme.json`
 
 """
 
@@ -574,7 +575,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 {json.dumps(sync_theme(c), indent=2)}
 ```
 
-{termius_section(spec)}{redeye_section(spec)}## Firefox Color (other machines)
+{termius_section(spec)}{app_section(spec)}## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
@@ -625,7 +626,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / f"{slug}.theme.css").write_text(vesktop(theme_json, spec))
     fc_theme, fc_url = firefox_color(c, spec["name"])
     (out / "firefox-color.json").write_text(json.dumps({"url": fc_url, "theme": fc_theme}, indent=2) + "\n")
-    (out / "redeye-theme.json").write_text(json.dumps(redeye_theme(c, spec), indent=2) + "\n")
+    (out / f"{slug}.app-theme.json").write_text(json.dumps(app_theme(c, spec), indent=2) + "\n")
     (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)

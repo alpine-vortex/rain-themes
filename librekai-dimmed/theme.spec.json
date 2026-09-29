@@ -227,7 +227,7 @@
     "theme": "Monokai",
     "match": "closest"
   },
-  "redeye_state": "yellow",
+  "app_state": "yellow",
   "preview": {
     "server_name": "Dim Room",
     "tagline": "Low light, soft colours",

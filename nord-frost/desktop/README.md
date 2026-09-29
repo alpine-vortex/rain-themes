@@ -44,9 +44,10 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 Settings → Terminal theme & font → Pick **Nord Dark**; it's the same upstream palette. Claude Code over SSH then follows it
 (`/theme` → *ANSI colours only*).
 
-## redeye (phone)
-Import `redeye-theme.json` (file, clipboard, or this URL):
-`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/desktop/redeye-theme.json`
+## Android apps (app-theme)
+Apps that read the app-theme format (such as redeye) import
+`nord-frost.app-theme.json` by file, clipboard, or this URL:
+`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/desktop/nord-frost.app-theme.json`
 
 ## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install

@@ -180,7 +180,7 @@
     "theme": "Dracula",
     "match": "same palette"
   },
-  "redeye_state": "orange",
+  "app_state": "orange",
   "preview": {
     "server_name": "Transylvania",
     "tagline": "Dark theme for everything",

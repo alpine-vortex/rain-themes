@@ -44,9 +44,10 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 Settings → Terminal theme & font → Pick **Tokyo Night**, the closest built-in; Termius has no Tokyo Night Moon theme, so colours differ somewhat from the terminal palette below. Claude Code over SSH then follows it
 (`/theme` → *ANSI colours only*).
 
-## redeye (phone)
-Import `redeye-theme.json` (file, clipboard, or this URL):
-`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon/desktop/redeye-theme.json`
+## Android apps (app-theme)
+Apps that read the app-theme format (such as redeye) import
+`tokyonight-moon.app-theme.json` by file, clipboard, or this URL:
+`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon/desktop/tokyonight-moon.app-theme.json`
 
 ## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install

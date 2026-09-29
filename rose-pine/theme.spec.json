@@ -138,7 +138,7 @@
     "theme": "Rosé Pine",
     "match": "same palette"
   },
-  "redeye_state": "gold",
+  "app_state": "gold",
   "preview": {
     "server_name": "Soho Vibes",
     "tagline": "All natural pine, faux fur and a bit of soho vibes",

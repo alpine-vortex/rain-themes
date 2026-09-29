@@ -1,10 +1,11 @@
-# redeye-theme v1
+# app-theme v1
 
-The theme format for redeye (an Android Reddit client). rain-themes owns
-this format, and redeye's parser follows it. It was agreed with the redeye
-session on 2026-09-29. `tools/desktop_export.py` (`redeye_theme()`) writes one
-file per palette to `<slug>/desktop/redeye-theme.json`, which is served at
-`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/<slug>/desktop/redeye-theme.json`.
+The theme format for Android apps (redeye, an Android Reddit client, was the
+first). It was called `redeye-theme` until 2026-09-29. rain-themes owns this
+format, and apps' parsers follow it. It was agreed with the redeye
+session on 2026-09-29. `tools/desktop_export.py` (`app_theme()`) writes one
+file per palette to `<slug>/desktop/<slug>.app-theme.json`, which is served at
+`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/<slug>/desktop/<slug>.app-theme.json`.
 
 ## Syntax
 
@@ -17,7 +18,7 @@ file per palette to `<slug>/desktop/redeye-theme.json`, which is served at
 
 | Key | |
 |---|---|
-| `format` | `"redeye-theme"` (required) |
+| `format` | `"app-theme"` (required) |
 | `version` | `1` (required) |
 | `name`, `slug` | required |
 | `source` | optional URL; `""` = absent |
@@ -78,7 +79,7 @@ without a nested variant).
 
 - `panel` = secondary_bg; `raised` = `line` = floating_bg; `selected` =
   nested_floating_bg; `on_selected` = text; `border` = interactive_muted.
-- `state` = spec `redeye_state`: the palette's orange, or yellow/gold where
+- `state` = spec `app_state`: the palette's orange, or yellow/gold where
   orange is the accent or has none.
 - `tags` = ANSI 1–6, 9–14 and syntax colours, skipping greys and hues within
   12° of accent/state/danger. They are blended 30% toward the background and

@@ -44,9 +44,10 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 Settings → Terminal theme & font → Pick **Kanagawa Dragon**; it's the same upstream palette. Claude Code over SSH then follows it
 (`/theme` → *ANSI colours only*).
 
-## redeye (phone)
-Import `redeye-theme.json` (file, clipboard, or this URL):
-`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/desktop/redeye-theme.json`
+## Android apps (app-theme)
+Apps that read the app-theme format (such as redeye) import
+`kanagawa-dragon.app-theme.json` by file, clipboard, or this URL:
+`https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/desktop/kanagawa-dragon.app-theme.json`
 
 ## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install

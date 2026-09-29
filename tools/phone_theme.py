@@ -8,7 +8,7 @@
   `secure theme_customization_overlay_packages` (what Settings -> Wallpaper & style
   writes). SystemUI re-derives the system/app palettes from it. Checked on a
   stock Android 17 (2026-09-29).
-- Files: copies wallpaper-phone.png, sync-theme.json and redeye-theme.json to
+- Files: copies wallpaper-phone.png, sync-theme.json and <slug>.app-theme.json to
   /sdcard/Download/rain-themes/<slug>/ so they can be picked on the phone. adb
   can't set the wallpaper or import into apps; those taps stay manual.
 
@@ -34,7 +34,7 @@ STYLES = ["TONAL_SPOT", "VIBRANT", "EXPRESSIVE", "SPRITZ", "RAINBOW", "FRUIT_SAL
 SNAPSHOT = Path.home() / ".local/state/rain-themes/phone-snapshot.json"
 STATE = Path.home() / ".local/state/rain-themes/phone-state.json"  # {"current": slug, "style": ...}
 REMOTE = "/sdcard/Download/rain-themes"
-FILES = ["wallpaper-phone.png", "sync-theme.json", "redeye-theme.json"]
+FILES = ["wallpaper-phone.png", "sync-theme.json", "{slug}.app-theme.json"]
 
 
 def adb(*args, dry=False, capture=True):
@@ -106,6 +106,7 @@ def apply(slug, style, files, dry):
         dest = f"{REMOTE}/{slug}"
         adb("shell", "mkdir", "-p", dest, dry=dry)
         for f in FILES:
+            f = f.format(slug=slug)
             src = ROOT / slug / "desktop" / f
             if src.exists():
                 adb("push", str(src), f"{dest}/{f}", dry=dry)

@@ -154,7 +154,7 @@
     "theme": "Monokai",
     "match": "closest"
   },
-  "redeye_state": "orange",
+  "app_state": "orange",
   "preview": {
     "server_name": "Refinery",
     "tagline": "Monokai, refined",

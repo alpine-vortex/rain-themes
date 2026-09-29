@@ -156,7 +156,7 @@
     "theme": "Tokyo Night",
     "match": "closest"
   },
-  "redeye_state": "orange",
+  "app_state": "orange",
   "preview": {
     "server_name": "Neon Alley",
     "tagline": "Late-night Neovim",
