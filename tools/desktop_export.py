@@ -18,7 +18,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-desktop.png    2560x1600
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
-    <slug>.heliboard.json    HeliBoard keyboard colours (+ <slug>-light.heliboard.json)
+    <slug>.heliboard.json    HeliBoard "all colors" theme (+ -light; .heliboard-simple.json = 10-colour mode)
     <slug>.app-theme.json    Android app theme, format app-theme v1 (docs/app-theme.md; e.g. redeye)
     README.md                manual steps: Dark Reader, Niagara, Claude Code
 
@@ -588,15 +588,68 @@ def heliboard(name, bg, keys, fn_keys, text, hint, secondary, accent):
             "colors": {k: {"first": _argb(v), "second": False} for k, v in c.items()}}
 
 
+# HeliBoard's ColorType enum (latin/common/Colors.kt, commit 5bfd34f) -> app-theme role.
+HELIBOARD_ALL = {
+    "MAIN_BACKGROUND": "panel", "STRIP_BACKGROUND": "panel", "NAVIGATION_BAR": "panel",
+    "KEY_BACKGROUND": "raised", "SPACE_BAR_BACKGROUND": "raised", "FUNCTIONAL_KEY_BACKGROUND": "selected",
+    "KEY_TEXT": "text", "KEY_ICON": "text", "FUNCTIONAL_KEY_TEXT": "text", "SHIFT_KEY_ICON": "text",
+    "KEY_HINT_TEXT": "text_muted", "SPACE_BAR_TEXT": "text_secondary",
+    "ACTION_KEY_BACKGROUND": "accent", "ACTION_KEY_ICON": "on_accent", "ACTION_KEY_POPUP_KEYS_BACKGROUND": "accent",
+    "POPUP_KEYS_BACKGROUND": "selected", "POPUP_KEY_TEXT": "text", "POPUP_KEY_ICON": "text",
+    "KEY_PREVIEW_BACKGROUND": "selected", "KEY_PREVIEW_TEXT": "text",
+    "MORE_SUGGESTIONS_BACKGROUND": "raised", "MORE_SUGGESTIONS_WORD_BACKGROUND": "selected",
+    "MORE_SUGGESTIONS_HINT": "text_muted",
+    "SUGGESTED_WORD": "text", "SUGGESTION_AUTO_CORRECT": "accent", "SUGGESTION_TYPED_WORD": "text_secondary",
+    "SUGGESTION_VALID_WORD": "text", "REMOVE_SUGGESTION_ICON": "text_muted",
+    "GESTURE_TRAIL": "accent", "GESTURE_PREVIEW": "raised",
+    "EMOJI_CATEGORY": "text_muted", "EMOJI_CATEGORY_SELECTED": "accent", "EMOJI_KEY_TEXT": "text",
+    "EMOJI_SEARCH_TEXT": "text", "EMOJI_SEARCH_BACKGROUND": "raised",
+    "CLIPBOARD_PIN": "state", "CLIPBOARD_SUGGESTION_BACKGROUND": "raised", "CLIPBOARD_SUGGESTION_ICON": "text_secondary",
+    "AUTOFILL_BACKGROUND_CHIP": "raised",
+    "TOOL_BAR_KEY": "text_secondary", "TOOL_BAR_EXPAND_KEY": "text_secondary",
+    "TOOL_BAR_EXPAND_KEY_BACKGROUND": "raised", "TOOL_BAR_KEY_ENABLED_BACKGROUND": "selected",
+    "ONE_HANDED_MODE_BUTTON": "text_secondary",
+}
+
+
+def _base36(name):
+    """HeliBoard's encodeBase36: BigInteger(utf8 bytes).toString(36) (signed, lowercase)."""
+    v = int.from_bytes(name.encode(), "big", signed=True)
+    digits, n, out = "0123456789abcdefghijklmnopqrstuvwxyz", abs(v), ""
+    while n:
+        n, r = divmod(n, 36)
+        out = digits[r] + out
+    return ("-" if v < 0 else "") + (out or "0")
+
+
+def heliboard_all(name, t):
+    """HeliBoard's "all colors" export (moreColors 2): {ColorType: argb, base36(name): 0}.
+    Every one of the 43 slots is set, so HeliBoard derives nothing."""
+    d = {k: _argb(t[role]) for k, role in HELIBOARD_ALL.items()}
+    d[_base36(name)] = 0
+    return d
+
+
+def _filled(t):
+    """app-theme dict (dark or nested light) with optional roles filled the way apps derive them."""
+    f = dict(t)
+    f.setdefault("panel", t["background"])
+    f.setdefault("raised", f["panel"])
+    f.setdefault("selected", f["raised"])
+    f.setdefault("text_secondary", t["text"])
+    f.setdefault("text_muted", f["text_secondary"])
+    f.setdefault("on_accent", _on(t["accent"], t["background"], t["text"]))
+    return f
+
+
 def heliboard_themes(t):
-    """From the app-theme dict: dark, plus light when the palette has an official light flavour."""
-    out = {"": heliboard(t["name"], t["panel"], t["raised"], t["selected"], t["text"],
-                         t["text_muted"], t["text_secondary"], t["accent"])}
-    l = t.get("light")
-    if l:
-        out["-light"] = heliboard(l["flavour"], l.get("panel", l["background"]), l.get("raised", l["background"]),
-                                  l.get("selected", l.get("raised", l["background"])), l["text"],
-                                  l.get("text_muted", l["text"]), l.get("text_secondary", l["text"]), l["accent"])
+    """{file suffix: json} from the app-theme dict: all-colors and simple, dark and (official) light."""
+    out = {}
+    for sfx, name, v in [("", t["name"], t)] + ([("-light", t["light"]["flavour"], t["light"])] if "light" in t else []):
+        f = _filled(v)
+        out[f"{sfx}.heliboard.json"] = heliboard_all(name, f)
+        out[f"{sfx}.heliboard-simple.json"] = heliboard(name, f["panel"], f["raised"], f["selected"], f["text"],
+                                                       f["text_muted"], f["text_secondary"], f["accent"])
     return out
 
 
@@ -606,7 +659,9 @@ def heliboard_section(spec, has_light):
     return f"""## HeliBoard (phone)
 HeliBoard → Settings → Appearance → Colors → **Load**, then pick
 `{spec['slug']}.heliboard.json`{light}. It can also be pasted from the clipboard.
-Choose the theme for night (and day) in the same screen.
+These are "all colors" themes (every keyboard element set exactly); the
+`.heliboard-simple.json` files are the 10-colour version. Choose the theme for
+night (and day) in the same screen.
 
 """
 
@@ -724,7 +779,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     at = app_theme(c, spec)
     (out / f"{slug}.app-theme.json").write_text(json.dumps(at, indent=2) + "\n")
     for suffix, hb in heliboard_themes(at).items():
-        (out / f"{slug}{suffix}.heliboard.json").write_text(json.dumps(hb, ensure_ascii=False) + "\n")
+        (out / f"{slug}{suffix}").write_text(json.dumps(hb, ensure_ascii=False) + "\n")
     (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)

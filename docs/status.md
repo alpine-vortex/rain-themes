@@ -13,8 +13,9 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   - `sync-theme.json` (Sync for Reddit Monet import)
   - a Termius built-in per palette (spec `termius`)
   - `<slug>.app-theme.json` (app-theme v1, renamed from redeye-theme 2026-09-29; raw URLs live on `main`)
-  - `<slug>.heliboard.json` (+ `-light`), HeliBoard's own colour-theme JSON. It's
-    matched to a real export; importing it on the phone isn't confirmed yet.
+  - `<slug>.heliboard.json` (+ `-light`): HeliBoard "all colors" (all 44 slots).
+    `.heliboard-simple.json` is the 10-colour version. Both are matched to real exports;
+    importing one on the phone isn't confirmed yet.
   - Nested `light` variants (official upstream light flavours) for 15 of the 21; see
     `docs/app-theme.md`. The merge is held until redeye accepts the app-theme names.
 - `rain phone <slug>` (`tools/phone_theme.py`) sets the Material You seed over adb,

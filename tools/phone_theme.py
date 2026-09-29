@@ -36,7 +36,8 @@ SNAPSHOT = Path.home() / ".local/state/rain-themes/phone-snapshot.json"
 STATE = Path.home() / ".local/state/rain-themes/phone-state.json"  # {"current": slug, "style": ...}
 REMOTE = "/sdcard/Download/rain-themes"
 FILES = ["wallpaper-phone.png", "sync-theme.json", "{slug}.app-theme.json",
-         "{slug}.heliboard.json", "{slug}-light.heliboard.json"]  # missing files are skipped
+         "{slug}.heliboard.json", "{slug}-light.heliboard.json",
+         "{slug}.heliboard-simple.json", "{slug}-light.heliboard-simple.json"]  # missing files are skipped
 
 
 def adb(*args, dry=False, capture=True):

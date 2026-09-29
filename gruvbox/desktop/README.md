@@ -47,7 +47,9 @@ Settings → Terminal theme & font → Pick **Gruvbox Dark**; it's the same upst
 ## HeliBoard (phone)
 HeliBoard → Settings → Appearance → Colors → **Load**, then pick
 `gruvbox.heliboard.json` and `gruvbox-light.heliboard.json` (Gruvbox Light, for day mode). It can also be pasted from the clipboard.
-Choose the theme for night (and day) in the same screen.
+These are "all colors" themes (every keyboard element set exactly); the
+`.heliboard-simple.json` files are the 10-colour version. Choose the theme for
+night (and day) in the same screen.
 
 ## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
