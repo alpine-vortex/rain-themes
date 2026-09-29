@@ -588,10 +588,15 @@ def heliboard(name, bg, keys, fn_keys, text, hint, secondary, accent):
             "colors": {k: {"first": _argb(v), "second": False} for k, v in c.items()}}
 
 
-# HeliBoard's ColorType enum (latin/common/Colors.kt, commit 5bfd34f) -> app-theme role.
+# HeliBoard's ColorType enum (latin/common/Colors.kt, commit 5bfd34f / v4.1) -> app-theme role.
+# All-colors mode (AllColors) always paints key backgrounds, ignoring the "key borders" setting,
+# so key and functional-key backgrounds are the keyboard background: that reproduces the
+# borderless look (DefaultColors draws those keys transparent when borders are off). The
+# spacebar and action key stay filled, as they are in borderless mode. The -simple file
+# follows the user's border setting instead.
 HELIBOARD_ALL = {
     "MAIN_BACKGROUND": "panel", "STRIP_BACKGROUND": "panel", "NAVIGATION_BAR": "panel",
-    "KEY_BACKGROUND": "raised", "SPACE_BAR_BACKGROUND": "raised", "FUNCTIONAL_KEY_BACKGROUND": "selected",
+    "KEY_BACKGROUND": "panel", "SPACE_BAR_BACKGROUND": "raised", "FUNCTIONAL_KEY_BACKGROUND": "panel",
     "KEY_TEXT": "text", "KEY_ICON": "text", "FUNCTIONAL_KEY_TEXT": "text", "SHIFT_KEY_ICON": "text",
     "KEY_HINT_TEXT": "text_muted", "SPACE_BAR_TEXT": "text_secondary",
     "ACTION_KEY_BACKGROUND": "accent", "ACTION_KEY_ICON": "on_accent", "ACTION_KEY_POPUP_KEYS_BACKGROUND": "accent",
