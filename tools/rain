@@ -11,6 +11,7 @@
     rain phone <slug> [--style S] [--no-files] [--dry-run]   Android system colours + files over adb
     rain phone --restore [--dry-run]
     rain preview <slug> [--out DIR]
+    rain degoog [--out DIR] [--check]   the degoog theme store repo (default ../degoog-rain)
     rain gui                       small GTK window: pick a palette, apply, restore
     rain install [--force]         menu entry, login autostart for `pending`, git hooks that check
                                    commits, merge commits and pushes to main (main checkout only)
@@ -142,6 +143,15 @@ def cmd_preview(a):
     args = [sys.executable, str(TOOLS / "dev/preview_desktop.py"), a.slug]
     if a.out:
         args += ["--out", a.out]
+    sys.exit(subprocess.run(args).returncode)
+
+
+def cmd_degoog(a):
+    args = [sys.executable, str(TOOLS / "degoog_export.py")]
+    if a.out:
+        args += ["--out", a.out]
+    if a.check:
+        args.append("--check")
     sys.exit(subprocess.run(args).returncode)
 
 
@@ -283,6 +293,10 @@ def main():
     p.add_argument("slug")
     p.add_argument("--out")
     p.set_defaults(fn=cmd_preview)
+    p = sub.add_parser("degoog")
+    p.add_argument("--out")
+    p.add_argument("--check", action="store_true")
+    p.set_defaults(fn=cmd_degoog)
     sub.add_parser("gui").set_defaults(fn=cmd_gui)
     p = sub.add_parser("install")
     p.add_argument("--dry-run", action="store_true")

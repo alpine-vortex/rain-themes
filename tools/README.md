@@ -11,6 +11,7 @@ tools/rain apply <slug> [--only gtk,terminal] [--dry-run]
 tools/rain restore                    # undo what rain still owns; changes made since are left alone
 tools/rain pending                    # finish apps that were open during apply (runs at login)
 tools/rain preview <slug>             # screenshots in throwaway windows
+tools/rain degoog [--check]           # the degoog theme store repo (../degoog-rain)
 tools/rain gui                        # the "Rain Themes" window
 tools/rain install [--force]          # menu entry + login autostart + git commit/merge/push-to-main hooks (main checkout only)
 ```
@@ -21,8 +22,10 @@ tools/rain install [--force]          # menu entry + login autostart + git commi
 | `desktop_export.py` | spec → `<slug>/desktop/*` |
 | `apply_theme.py` | apply / restore / pending on this machine |
 | `rain_gui.py` | the GTK window (runs `rain` subcommands) |
+| `degoog_export.py` | app-theme exports → the degoog store repo (`rain degoog`) |
 | `gallery.py` | Playwright screenshots → GALLERY.md, index.html |
 | `dev/preview_desktop.py` | screenshot a palette without applying it |
+| `dev/degoog_preview.py` | store screenshots from a throwaway degoog |
 | `dev/test_tooling.py` | acceptance tests for the hooks, install, restore, snapshot guard, phone and atomic writes (scratch dirs, fake gsettings/dconf/adb) |
 
 # Rain theme builder
@@ -153,3 +156,37 @@ The first apply on an unthemed desktop saves the current state to
 themes); `--restore` puts back each part that still holds Rain's value, then
 retires the snapshot. The GTK2 widget PNGs are pre-rendered by
 Colloid and keep its stock colours.
+
+## degoog
+
+All palettes as one theme for [degoog](https://github.com/degoog-org/degoog),
+published as the store repo
+[degoog-rain](https://github.com/alpine-vortex/degoog-rain). That repo is
+generated: change the specs or `degoog_export.py` here, then export and commit there.
+
+```sh
+tools/rain degoog [--out ../degoog-rain]   # write package.json, logo.png, README.md, themes/rain/*
+tools/rain degoog --check                  # exit 1 if the store checkout is stale
+python3 tools/dev/degoog_preview.py --url http://127.0.0.1:4455 --out ../degoog-rain/themes/rain/screenshots
+```
+
+The source is each palette's `desktop/<slug>.app-theme.json`, so run
+`rain build` first. `style.css` has one block per palette keyed on
+`html[data-rain-palette]`. degoog sets that attribute from the theme's
+**Palette** select (`dataAttrsFromSettings`). The 15 palettes whose spec has a
+`light` block also get `[data-theme="light"]` and `prefers-color-scheme: light`
+blocks; the other six stay dark in light mode. The theme's `version` is
+`1.0.0+<hash of the CSS and theme.json>`, so any colour change shows as an
+update in the store. Low-contrast pairs in upstream light flavours are printed
+as notes, not changed.
+
+Screenshots need a throwaway degoog with the theme active and a search engine
+installed (never a live instance):
+
+```sh
+docker run -d --name degoog-rain-test -e DEGOOG_SETTINGS_PASSWORDS=<random> \
+  -p 127.0.0.1:4455:4444 -v <scratch>/data:/app/data ghcr.io/degoog-org/degoog:latest
+# POST /api/settings/auth {password} (keep the cookie), then
+# POST /api/store/repos {url}, /api/store/install {repoUrl, itemPath, type},
+# /api/theme/active {id}; install engines/wikipedia + engines/duckduckgo the same way.
+```

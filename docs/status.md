@@ -94,6 +94,13 @@ What's applied on the owner's machines is kept out of the repo, in the local
   install, restore, snapshot guard, phone and atomic writes:
   `python3 tools/dev/test_tooling.py` (scratch dirs only).
 
+- **degoog** (2026-10-24): `tools/rain degoog` exports all 21 palettes as
+  one degoog theme with a palette picker. It's published as the
+  `degoog-rain` store repo. 15 palettes switch to their official light
+  flavour in degoog's light mode. Tested in a throwaway degoog 1.1.0
+  container: add the repo, install, activate, change the palette. See
+  `tools/README.md` ("degoog").
+
 ## Verified (by screenshot, without touching the live desktop)
 
 | Target | Librekai | Mocha |
