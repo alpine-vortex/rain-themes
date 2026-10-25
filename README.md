@@ -9,9 +9,11 @@ spec into matching themes for:
 
 - **Discord on Android**: a [Rain](#discord-on-android-rain) theme (Bunny theme
   format, spec 2). This is where the repo started.
-- **The Linux Mint desktop**: Cinnamon/GTK, wallpaper, terminal, editor,
-  browsers and Discord, applied and undone with one command or the
-  **Rain Themes** app.
+- **The Linux Mint desktop**: Cinnamon/GTK, wallpaper, terminal, tmux, Claude
+  Code, editor, browsers and Discord, applied and undone with one command or
+  the **Rain Themes** app.
+- **Self-hosted web apps**: Forgejo (a theme per palette, light flavour
+  included where upstream has one) and degoog.
 - **The Android phone**: system colours (Material You), Sync for Reddit,
   Termius, redeye and Niagara Launcher.
 
@@ -35,12 +37,16 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Phone | Firefox (web pages) | Dark Reader values in the palette's README |
 | Desktop | Cinnamon, GTK 2/3/4, window borders | A recoloured [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) build |
 | Desktop | Wallpaper | `wallpaper-desktop.png` |
-| Desktop | GNOME Terminal (and Claude Code) | A "Rain <Name>" profile; Claude Code follows it via `/theme` → ANSI colours only |
+| Desktop | GNOME Terminal | A "Rain <Name>" profile |
+| Desktop | tmux | `<slug>.tmux.conf` → `~/.config/tmux/rain.conf`: status bar, borders, copy mode (styles only; your formats stay) |
+| Desktop | Claude Code (terminal) | `<slug>.claude-theme.json` → `~/.claude/themes/rain.json`, picked once with `/theme`. The Claude app and claude.ai/code don't take themes; the README names the closest `/color` |
 | Desktop | Geany | Editor colour scheme |
 | Desktop | Firefox | `userChrome.css` / `userContent.css`, plus a Firefox Color link for other machines |
 | Desktop | Brave | Theme seed colour |
 | Desktop | Vesktop (Discord) | A Vencord theme reusing the Rain mapping |
 | Desktop | ChatGPT and other sites | Dark Reader values in the palette's README |
+| Server | Forgejo | `theme-rain-<slug>.css` (+ `-auto`, `-light`): `tools/rain forgejo` gathers them for `custom/public/assets/css` |
+| Server | degoog | One theme with a palette picker: `tools/rain degoog` |
 
 Per palette, `<slug>/` holds the Rain theme (`<slug>.json`), a colour mockup
 (`<slug>-preview.html`) and notes (`<slug>-notes.md`: mapping and contrast
@@ -99,6 +105,7 @@ tools/rain apply librekai --only gtk,terminal
 tools/rain restore                       # back to the setup before the first apply
 tools/rain pending                       # finish apps that were open (Geany, Brave); also runs at login
 tools/rain preview librekai              # screenshots only
+tools/rain apply dracula --only tmux,claude   # just the terminal side
 ```
 
 The first apply saves a snapshot of the original setup, and `restore` always

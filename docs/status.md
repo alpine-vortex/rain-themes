@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
+Last updated 2026-10-25 (tmux, Claude Code and Forgejo targets).
 
 - Everything is on `main`: desktop exports, docs, Firefox Color links,
   `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
@@ -94,6 +94,15 @@ What's applied on the owner's machines is kept out of the repo, in the local
   install, restore, snapshot guard, phone and atomic writes:
   `python3 tools/dev/test_tooling.py` (scratch dirs only).
 
+- **tmux, Claude Code, Forgejo** (2026-10-25), for all 21 palettes:
+  - `rain apply` targets `tmux` (`~/.config/tmux/rain.conf`, reloaded live) and
+    `claude` (`~/.claude/themes/rain.json`, a Claude Code custom theme). Both are
+    covered by `test_16b` (apply, palette switch, restore, a user's own file left
+    alone). The tmux file was loaded into a real tmux 3.4 server without errors.
+  - Forgejo: `theme-rain-<slug>.css` (+ `-light`/`-auto` for 15) and
+    `tools/rain forgejo`. Screenshotted in a throwaway Forgejo 17.0.0.
+  - The Claude app (Android) and claude.ai/code can't be themed; only `/color`
+    syncs there, so each README names the closest one.
 - **degoog** (2026-10-24): `tools/rain degoog` exports all 21 palettes as
   one degoog theme with a palette picker. It's published as the
   `degoog-rain` store repo. 15 palettes switch to their official light
@@ -168,6 +177,13 @@ Keyword, function and type colours were not on screen. The rest are covered by
 6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
    optional Stylus user style for chatgpt.com if Dark Reader isn't precise
    enough.
+
+7. tmux on the owner's machines: add the `source-file` line to tmux.conf, and
+   copy `rain.conf` to the other hosts where tmux runs. Check that the
+   status bar reads well with the owner's own status formats.
+8. Forgejo: install on the real server and pick a theme.
+9. Claude Code theme: look at it for real (`/theme` → Rain <Name>) and tune
+   `subtle`/`promptBorder` if they're too faint.
 
 ## Open questions
 

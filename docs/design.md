@@ -103,7 +103,21 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
   empty values.
 - The uuid is `uuid5(NAMESPACE_URL, "rain-themes/<slug>")`, so re-applying
   updates the same profile instead of adding duplicates.
-- Claude Code needs no export. Its ANSI-only theme uses the terminal palette.
+- Claude Code gets its own export, a custom theme (`<slug>.claude-theme.json`,
+  installed as `~/.claude/themes/rain.json`). It sets hex colours for the accent,
+  status, mode, diff and subagent tokens, so it no longer depends on the ANSI
+  palette. The terminal still draws the background. The Claude mobile app and
+  claude.ai/code have no theme setting; only `/color` (eight named colours)
+  syncs there, so each README names the closest one to the accent.
+
+## tmux
+
+`rain.conf` sets styles only, never `status-left`/`status-right`/window formats,
+so the user's own bar layout survives.
+It always goes to `~/.config/tmux/rain.conf` and the user sources it once from
+tmux.conf, so apply never edits a dotfile that lives in another repo. tmux keeps
+options set at runtime after the file is gone, which is why restore `set -gu`s each
+option it finds in the file before deleting it, then re-reads tmux.conf.
 
 ## Geany
 

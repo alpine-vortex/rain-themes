@@ -81,6 +81,8 @@ own state) and says so.
 | `firefox` | Writes `chrome/userChrome.css` + `userContent.css` into the default profile and enables them in `user.js`. | Next Firefox start |
 | `brave` | Sets Brave's "Customize Brave → colour" seed to the palette accent, dark mode. | Next Brave start |
 | `vesktop` | Copies the Discord theme CSS into Vesktop's `themes/` folder and enables it. Skipped if Vesktop has never run. | Live reload |
+| `tmux` | Writes `~/.config/tmux/rain.conf` (status bar, borders, copy mode; your formats stay) and reloads a running tmux. Skipped if that file exists and isn't Rain's. | Immediately, in every session of the running server |
+| `claude` | Writes the Claude Code theme to `~/.claude/themes/rain.json`. Skipped if that file exists and isn't Rain's. | Live (after the one-time `/theme` pick) |
 
 Firefox's default theme follows the GTK theme on Linux, so it roughly matches
 after `gtk` alone. The userChrome files make it exact.
@@ -89,8 +91,16 @@ after `gtk` alone. The userChrome files make it exact.
 
 Each palette's `desktop/README.md` has the exact values.
 
-- **Claude Code**: `/theme` → the dark *ANSI colours only* option. From then on
-  it uses the terminal's palette, so it follows every apply.
+- **Claude Code**: `/theme` → **Rain <Name>**. The file name never changes, so it
+  follows every apply. (If `~/.claude/themes/` didn't exist before, restart Claude
+  Code once first.) In the Claude app or on claude.ai/code nothing changes; the
+  README names a `/color` for Remote Control sessions.
+- **tmux**: add `source-file -q ~/.config/tmux/rain.conf` to `~/.tmux.conf` (or
+  `~/.config/tmux/tmux.conf`) so new tmux servers load it. Apply reminds you while
+  it's missing. On another host where you use tmux, copy
+  `<slug>/desktop/<slug>.tmux.conf` there as `~/.config/tmux/rain.conf`.
+- **Forgejo**: server-side, once per palette set: `tools/rain forgejo`, then the
+  steps in [tools/README.md](../tools/README.md#forgejo).
 - **Dark Reader** (ChatGPT and other sites): on the site, open the Dark Reader
   popup → Theme → Colors, and enter the background/text values from the README.
   Import is avoided on purpose: it replaces all of Dark Reader's settings.
