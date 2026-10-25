@@ -19,7 +19,9 @@ spec into matching themes for:
 
 All 21 palettes have every target. Colours come from each palette's official
 upstream files (terminal and editor themes, style guides), never invented;
-each spec records its sources.
+each spec records its sources. 15 palettes also carry their official light
+flavour (Catppuccin Latte, Rosé Pine Dawn, …), used where a target follows
+light mode: HeliBoard, Forgejo and degoog.
 
 See the **[gallery](GALLERY.md)** for previews of every Discord theme side by side.
 
@@ -39,14 +41,14 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Desktop | Wallpaper | `wallpaper-desktop.png` |
 | Desktop | GNOME Terminal | A "Rain <Name>" profile |
 | Desktop | tmux | `<slug>.tmux.conf` → `~/.config/tmux/rain.conf`: status bar, borders, copy mode (styles only; your formats stay) |
-| Desktop | Claude Code (terminal) | `<slug>.claude-theme.json` → `~/.claude/themes/rain.json`, picked once with `/theme`. The Claude app and claude.ai/code don't take themes; the README names the closest `/color` |
+| Desktop | Claude Code (terminal) | `<slug>.claude-theme.json` → `~/.claude/themes/rain.json`, picked once with `/theme` ([below](#tmux-and-claude-code)) |
 | Desktop | Geany | Editor colour scheme |
 | Desktop | Firefox | `userChrome.css` / `userContent.css`, plus a Firefox Color link for other machines |
 | Desktop | Brave | Theme seed colour |
 | Desktop | Vesktop (Discord) | A Vencord theme reusing the Rain mapping |
 | Desktop | ChatGPT and other sites | Dark Reader values in the palette's README |
-| Server | Forgejo | `theme-rain-<slug>.css` (+ `-auto`, `-light`): `tools/rain forgejo` gathers them for `custom/public/assets/css` |
-| Server | degoog | One theme with a palette picker: `tools/rain degoog` |
+| Server | Forgejo | `theme-rain-<slug>.css` (+ `-auto`, `-light`), gathered by `tools/rain forgejo` ([below](#self-hosted-forgejo-and-degoog)) |
+| Server | degoog | All palettes as one theme with a palette picker: `tools/rain degoog` |
 
 Per palette, `<slug>/` holds the Rain theme (`<slug>.json`), a colour mockup
 (`<slug>-preview.html`) and notes (`<slug>-notes.md`: mapping and contrast
@@ -105,12 +107,53 @@ tools/rain apply librekai --only gtk,terminal
 tools/rain restore                       # back to the setup before the first apply
 tools/rain pending                       # finish apps that were open (Geany, Brave); also runs at login
 tools/rain preview librekai              # screenshots only
-tools/rain apply dracula --only tmux,claude   # just the terminal side
 ```
 
 The first apply saves a snapshot of the original setup, and `restore` always
 returns to it. Details, manual steps and troubleshooting are in the
 [desktop guide](docs/desktop-guide.md).
+
+## tmux and Claude Code
+
+`rain apply` covers both (targets `tmux` and `claude`), or on their own:
+
+```sh
+tools/rain apply dracula --only tmux,claude
+```
+
+- **tmux**: writes `~/.config/tmux/rain.conf` and reloads a running tmux, so
+  every open session changes at once. It sets colours only (status bar, pane
+  borders, messages, copy-mode search, menus); your status layout stays yours,
+  and `#{@rain_accent}`, `#{@rain_bg}` … are there for your own formats. Once,
+  add `source-file -q ~/.config/tmux/rain.conf` to your tmux.conf. On another
+  machine, copy `<slug>/desktop/<slug>.tmux.conf` there under that name.
+- **Claude Code**: writes a [custom theme](https://code.claude.com/docs/en/terminal-config)
+  to `~/.claude/themes/rain.json` (accent, text, status, plan/auto mode, diffs,
+  subagent colours). Once, pick it with `/theme` → **Rain <Name>**; later applies
+  just swap the file and Claude Code reloads it live. It works wherever Claude
+  Code runs in a terminal, over SSH too. The Claude app and claude.ai/code have no
+  theme setting; the closest you get there is `/color`, and each palette's README
+  names the one nearest its accent.
+
+`rain restore` removes both files, and unsets the tmux colours in a running tmux.
+
+## Self-hosted: Forgejo and degoog
+
+**Forgejo** gets one theme per palette: dark, plus `-light` and `-auto` (follows
+the browser) for the 15 with a light flavour. Dark themes also recolour code
+with the palette's syntax colours.
+
+```sh
+tools/rain forgejo --out forgejo-themes   # every palette's CSS + the app.ini line to add
+```
+
+Copy the files into the server's `$FORGEJO_CUSTOM/public/assets/css/` (in the
+Docker image, `/data/gitea/public/assets/css/`), add the printed names to
+`[ui] THEMES` in `app.ini`, restart Forgejo, and pick a theme in Settings →
+Appearance. Tested with Forgejo 17. Details: [tools/README.md](tools/README.md#forgejo).
+
+**degoog** gets all palettes as one theme with a palette picker, published as a
+store repo: `tools/rain degoog` ([details](tools/README.md#degoog)).
 
 ## Phone (Android)
 
@@ -136,29 +179,34 @@ Dark Reader values.
          └────────── desktop_export.py ◀──────────┘
                             │
                             ▼
-                    <slug>/desktop/* ── rain apply ──▶ Mint desktop and apps
-                                     ── rain phone ──▶ Android (adb)
+                    <slug>/desktop/* ── rain apply ───▶ Mint desktop, tmux, Claude Code
+                                     ── rain phone ───▶ Android (adb)
+                                     ── rain forgejo ─▶ Forgejo server (copy the CSS)
+                                     ── rain degoog ──▶ degoog store repo
 ```
 
 - **Spec:** one `theme.spec.json` per palette is the single source of truth:
   official colours, a role mapping, and terminal/syntax colours with their
   upstream source.
 - **`tools/rain`** is the one entry point: `build`, `check`, `apply`,
-  `restore`, `pending`, `preview`, `phone`, `gui`, `install`.
+  `restore`, `pending`, `preview`, `phone`, `forgejo`, `degoog`, `gui`, `install`.
 - **Generated files are never hand-edited.** `rain check` (also run by the
   commit, merge and push-to-main hooks) fails if any output is stale.
 
 Requirements: Python 3 with PyGObject/GTK 3 and Pillow, `sassc` (Colloid
-build), `dconf`/`gsettings` (Cinnamon), and `adb` for the phone. Playwright is
+build), `dconf`/`gsettings` (Cinnamon), and `adb` for the phone. The tmux and
+Claude Code targets need only the apps themselves (tmux 3.4 for every style; older
+versions skip what they lack). Playwright is
 needed only for `rain build --gallery`.
 
 ## Documentation
 
 - [docs/desktop-guide.md](docs/desktop-guide.md): using it, undoing it, and
-  troubleshooting.
+  troubleshooting (desktop, tmux, Claude Code).
 - [docs/design.md](docs/design.md): how each target works and why.
 - [docs/app-theme.md](docs/app-theme.md): the app-theme format for Android apps, which
   this repo owns.
 - [docs/status.md](docs/status.md): what's verified, known issues and next
   steps.
-- [tools/README.md](tools/README.md): spec format and script reference.
+- [tools/README.md](tools/README.md): spec format and script reference, plus the
+  Forgejo and degoog setup.
