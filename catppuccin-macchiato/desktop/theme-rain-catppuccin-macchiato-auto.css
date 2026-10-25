@@ -1,0 +1,3 @@
+/* Rain Catppuccin Macchiato, following the browser: Catppuccin Latte when light. */
+@import "./theme-rain-catppuccin-macchiato-light.css";
+@import "./theme-rain-catppuccin-macchiato.css" (prefers-color-scheme: dark);

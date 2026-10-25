@@ -12,11 +12,12 @@
     rain phone --restore [--dry-run]
     rain preview <slug> [--out DIR]
     rain degoog [--out DIR] [--check]   the degoog theme store repo (default ../degoog-rain)
+    rain forgejo [--out DIR] [--check]  every palette's Forgejo themes in one folder + the app.ini line
     rain gui                       small GTK window: pick a palette, apply, restore
     rain install [--force]         menu entry, login autostart for `pending`, git hooks that check
                                    commits, merge commits and pushes to main (main checkout only)
 
-Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
+Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop, tmux, claude.
 """
 import argparse
 import contextlib
@@ -148,6 +149,15 @@ def cmd_preview(a):
 
 def cmd_degoog(a):
     args = [sys.executable, str(TOOLS / "degoog_export.py")]
+    if a.out:
+        args += ["--out", a.out]
+    if a.check:
+        args.append("--check")
+    sys.exit(subprocess.run(args).returncode)
+
+
+def cmd_forgejo(a):
+    args = [sys.executable, str(TOOLS / "forgejo_export.py")]
     if a.out:
         args += ["--out", a.out]
     if a.check:
@@ -297,6 +307,10 @@ def main():
     p.add_argument("--out")
     p.add_argument("--check", action="store_true")
     p.set_defaults(fn=cmd_degoog)
+    p = sub.add_parser("forgejo")
+    p.add_argument("--out")
+    p.add_argument("--check", action="store_true")
+    p.set_defaults(fn=cmd_forgejo)
     sub.add_parser("gui").set_defaults(fn=cmd_gui)
     p = sub.add_parser("install")
     p.add_argument("--dry-run", action="store_true")

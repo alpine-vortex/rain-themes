@@ -1,0 +1,3 @@
+/* Rain Tokyo Night Storm, following the browser: Tokyo Night Day when light. */
+@import "./theme-rain-tokyonight-storm-light.css";
+@import "./theme-rain-tokyonight-storm.css" (prefers-color-scheme: dark);

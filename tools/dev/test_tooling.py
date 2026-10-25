@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Acceptance tests for the tooling: pre-commit/merge/push hooks, install, restore, snapshot guard, phone, atomic writes.
+"""Acceptance tests for the tooling: pre-commit/merge/push hooks, install, restore, snapshot guard, phone, atomic writes,
+tmux and Claude Code files.
 
     python3 tools/dev/test_tooling.py [-v] [-k pattern]
 
@@ -378,6 +379,7 @@ G = {"org.cinnamon.theme name": "'Mint-Y-Dark'", "org.cinnamon.desktop.interface
      "org.cinnamon.desktop.background picture-uri": "'file:///orig.png'"}
 D = {B + ":orig/visible-name": "'Default'"}
 RUNNING = set()
+TMUX = []  # tmux commands sent to the (fake) running server
 
 
 def run(*cmd, check=True):
@@ -397,6 +399,8 @@ def run(*cmd, check=True):
         elif op == "list":
             return "\n".join(sorted({k[len(cmd[2]):].split("/")[0] + ("/" if "/" in k[len(cmd[2]):] else "")
                                      for k in D if k.startswith(cmd[2])}))
+    elif cmd[0] == "tmux":
+        TMUX.append(cmd[1:])
     else:
         raise AssertionError(cmd)
     return ""
@@ -411,6 +415,7 @@ def build_gtk(slug, dest):
 
 
 A.run, A.build_gtk, A.running = run, build_gtk, lambda n: n in RUNNING
+A.tmux_running = lambda: "tmux" in RUNNING
 FF = H / ".mozilla/firefox/p.default"
 UJ = FF / "user.js"
 GTK4 = H / ".config/gtk-4.0"
@@ -531,6 +536,41 @@ class DesktopTests(unittest.TestCase):
             A.restore()
             assert rd(VS)["enabledThemes"] == [], rd(VS)
         """)
+
+    def test_16b_tmux_and_claude_code_files(self):
+        out = self.child("""
+            RUNNING.add("tmux")
+            main = H / ".tmux.conf"
+            main.write_text("set -g mouse on\\n")
+            A.apply("librekai", ["tmux", "claude"])
+            assert A.TMUX_CONF.read_bytes() == (A.ROOT / "librekai/desktop/librekai.tmux.conf").read_bytes()
+            assert TMUX == [("source-file", str(A.TMUX_CONF))], TMUX
+            assert rd(A.CLAUDE_THEME)["name"] == "Rain Librekai"
+            A.apply("dracula", ["tmux", "claude"])  # a palette switch replaces rain's own files
+            assert rd(A.CLAUDE_THEME)["name"] == "Rain Dracula"
+            TMUX.clear()
+            A.restore()
+            assert not A.TMUX_CONF.exists() and not A.CLAUDE_THEME.exists()
+            unset = [c for c in TMUX if c[:2] == ("set", "-gqu")]
+            assert ("set", "-gqu", "status-style") in unset and ("set", "-gqu", "@rain_accent") in unset, TMUX
+            assert TMUX[-1] == ("source-file", "-q", str(main)), TMUX
+        """)
+        self.assertIn("note: add once to your tmux.conf", out)
+        shutil.rmtree(self.h)
+        self.h.mkdir()
+        out = self.child("""
+            A.TMUX_CONF.parent.mkdir(parents=True)
+            A.TMUX_CONF.write_text("# mine\\n")
+            A.CLAUDE_THEME.parent.mkdir(parents=True)
+            A.CLAUDE_THEME.write_text("{}")
+            A.apply("librekai", ["tmux", "claude"])
+            assert A.TMUX_CONF.read_text() == "# mine\\n" and A.CLAUDE_THEME.read_text() == "{}"
+            A.restore()
+            assert A.TMUX_CONF.read_text() == "# mine\\n" and A.CLAUDE_THEME.read_text() == "{}"
+            assert TMUX == [], TMUX
+        """)
+        self.assertIn("skip tmux", out)
+        self.assertIn("skip Claude Code", out)
 
     def test_17_gsettings_and_dconf_user_changes_survive(self):
         self.child("""

@@ -62,7 +62,24 @@ the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
 
 ## Claude Code
-Once: `/theme` → the *ANSI colours only* dark option. It then follows the terminal palette.
+`rain apply` (target `claude`) writes `kanagawa-wave.claude-theme.json` to
+`~/.claude/themes/rain.json`, which Claude Code reloads live. Once: `/theme` →
+**Rain Kanagawa Wave**; later applies just swap the file. Elsewhere, copy the file there
+yourself. It colours the terminal app only (with the Rain terminal profile behind it):
+the Claude app and claude.ai/code don't take custom themes. What does reach them is
+`/color blue` (the closest of its eight colours to the accent), which
+syncs to claude.ai/code for a Remote Control session.
+
+## tmux
+`rain apply` (target `tmux`) writes `kanagawa-wave.tmux.conf` to `~/.config/tmux/rain.conf` and
+reloads running servers. Add once to your tmux.conf:
+`source-file -q ~/.config/tmux/rain.conf`. Elsewhere (another host), copy the file there.
+Only styles are set; formats stay yours, and `#{@rain_accent}` and friends are there to use.
+
+## Forgejo
+Copy `theme-rain-kanagawa-wave.css` (dark), `theme-rain-kanagawa-wave-auto.css` (follows the browser; Kanagawa Lotus when light) and `theme-rain-kanagawa-wave-light.css` into the server's
+`$FORGEJO_CUSTOM/public/assets/css/`, or let `tools/rain forgejo` gather every palette's
+files and print the `[ui] THEMES` line for `app.ini`.
 
 ## Colours
 | Role | Hex |

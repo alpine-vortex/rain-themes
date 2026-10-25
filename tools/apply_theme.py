@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Apply a theme's desktop exports to this machine (Linux Mint / Cinnamon).
 
-    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,geany,firefox,brave,vesktop] [--dry-run]
+    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,geany,firefox,brave,vesktop,tmux,claude] [--dry-run]
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
@@ -44,7 +44,10 @@ VESKTOP = next((d for d in (HOME / ".config/vesktop", HOME / ".var/app/dev.venco
 TERM_BASE = "/org/gnome/terminal/legacy/profiles:/"
 GSETTINGS = [("org.cinnamon.theme", "name"), ("org.cinnamon.desktop.interface", "gtk-theme"),
              ("org.cinnamon.desktop.wm.preferences", "theme"), ("org.cinnamon.desktop.background", "picture-uri")]
-TARGETS = ["gtk", "wallpaper", "terminal", "geany", "firefox", "brave", "vesktop"]
+TMUX_CONF = HOME / ".config/tmux/rain.conf"
+TMUX_MAIN = [HOME / ".tmux.conf", HOME / ".config/tmux/tmux.conf"]
+CLAUDE_THEME = HOME / ".claude/themes/rain.json"
+TARGETS = ["gtk", "wallpaper", "terminal", "geany", "firefox", "brave", "vesktop", "tmux", "claude"]
 USERJS_LINE = 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // rain-themes'
 DRY = False
 
@@ -232,6 +235,14 @@ def rain_vesktop(name):
         f.is_file() and f.read_text(errors="replace").startswith("/**\n * @name Rain "))
 
 
+def rain_export(p, pattern):
+    """p is byte-for-byte one of our <slug>/desktop/<pattern> exports (tmux, Claude Code: fixed file names)."""
+    if not p.is_file() or p.is_symlink():
+        return False
+    t = p.read_bytes()
+    return any(t == e.read_bytes() for e in ROOT.glob(f"*/desktop/{pattern}"))
+
+
 def rain_gsetting(schema, key, val):
     if key == "picture-uri":
         return val.strip("'").startswith(f"file://{WALLPAPERS}/")
@@ -404,6 +415,8 @@ def restore():
         vs = VESKTOP / "settings/settings.json"
         en = json.loads(vs.read_text()).get("enabledThemes", []) if vs.exists() else []
         act("vesktop: disable rain themes", set_vesktop_enabled, [x for x in en if not rain_vesktop(x)])
+    restore_tmux()
+    restore_claude()
     st = load_state()
     st["current"] = None
     st.pop("applied", None)
@@ -414,6 +427,41 @@ def restore():
     else:
         retire_snapshot()
     log("restored. (Rain profiles/themes stay installed but unused; Firefox keeps the userChrome pref on.)")
+
+
+def tmux_running():
+    return shutil.which("tmux") is not None and subprocess.run(
+        ["tmux", "list-sessions"], capture_output=True).returncode == 0
+
+
+def restore_tmux():
+    """Remove rain.conf and unset what it set on a running server, then re-read the user's tmux.conf."""
+    if not TMUX_CONF.exists():
+        return
+    if not rain_export(TMUX_CONF, "*.tmux.conf"):
+        left_alone(str(TMUX_CONF))
+        return
+    opts = re.findall(r"^set -gq? (\S+) ", TMUX_CONF.read_text(), re.M)
+    act(f"remove {TMUX_CONF}", TMUX_CONF.unlink)
+    if tmux_running():
+        main = [str(p) for p in TMUX_MAIN if p.exists()]
+
+        def go():
+            for o in opts:
+                run("tmux", "set", "-gqu", o, check=False)
+            for m in main:
+                run("tmux", "source-file", "-q", m, check=False)
+        act(f"tmux: unset {len(opts)} rain options" + (f", re-read {', '.join(main)}" if main else ""), go)
+
+
+def restore_claude():
+    if not CLAUDE_THEME.exists():
+        return
+    if not rain_export(CLAUDE_THEME, "*.claude-theme.json"):
+        left_alone(str(CLAUDE_THEME))
+        return
+    act(f"remove {CLAUDE_THEME} (Claude Code falls back to a built-in theme; /theme to pick one)",
+        CLAUDE_THEME.unlink)
 
 
 def restore_geany(snap):
@@ -597,8 +645,31 @@ def apply_vesktop(slug, exp):
     act(f"vesktop theme -> {dst} (enabled)", go)
 
 
+def apply_tmux(slug, exp):
+    if TMUX_CONF.exists() and not rain_export(TMUX_CONF, "*.tmux.conf"):
+        log(f"skip tmux: {TMUX_CONF} exists and isn't one of ours; left alone")
+        return
+    act(f"tmux styles -> {TMUX_CONF}", write, TMUX_CONF, (exp / f"{slug}.tmux.conf").read_text())
+    if tmux_running():
+        act("tmux: reload the styles in the running server",
+            lambda: run("tmux", "source-file", str(TMUX_CONF), check=False))
+    if not any(p.exists() and "rain.conf" in p.read_text(errors="replace") for p in TMUX_MAIN):
+        log(f"note: add once to your tmux.conf so new servers load it: source-file -q {TMUX_CONF}")
+
+
+def apply_claude(slug, exp):
+    if CLAUDE_THEME.exists() and not rain_export(CLAUDE_THEME, "*.claude-theme.json"):
+        log(f"skip Claude Code: {CLAUDE_THEME} exists and isn't one of ours; left alone")
+        return
+    fresh = not CLAUDE_THEME.parent.exists()
+    act(f"Claude Code theme -> {CLAUDE_THEME}", write, CLAUDE_THEME, (exp / f"{slug}.claude-theme.json").read_text())
+    log("note: once, in Claude Code: /theme -> " + json.loads((exp / f"{slug}.claude-theme.json").read_text())["name"]
+        + " (it then follows every apply)" + ("; restart running sessions first, the themes folder is new" if fresh else ""))
+
+
 FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "geany": apply_geany,
-       "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop}
+       "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop, "tmux": apply_tmux,
+       "claude": apply_claude}
 
 
 def exportable():

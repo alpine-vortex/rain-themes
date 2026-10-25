@@ -1,0 +1,3 @@
+/* Rain Rosé Pine, following the browser: Rosé Pine Dawn when light. */
+@import "./theme-rain-rose-pine-light.css";
+@import "./theme-rain-rose-pine.css" (prefers-color-scheme: dark);

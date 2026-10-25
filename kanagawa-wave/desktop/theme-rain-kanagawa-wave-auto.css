@@ -1,0 +1,3 @@
+/* Rain Kanagawa Wave, following the browser: Kanagawa Lotus when light. */
+@import "./theme-rain-kanagawa-wave-light.css";
+@import "./theme-rain-kanagawa-wave.css" (prefers-color-scheme: dark);

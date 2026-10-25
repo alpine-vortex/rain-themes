@@ -1,0 +1,3 @@
+/* Rain Catppuccin Mocha, following the browser: Catppuccin Latte when light. */
+@import "./theme-rain-catppuccin-mocha-light.css";
+@import "./theme-rain-catppuccin-mocha.css" (prefers-color-scheme: dark);

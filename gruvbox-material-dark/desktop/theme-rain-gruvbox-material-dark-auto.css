@@ -1,0 +1,3 @@
+/* Rain Gruvbox Material Dark, following the browser: Gruvbox Material Light when light. */
+@import "./theme-rain-gruvbox-material-dark-light.css";
+@import "./theme-rain-gruvbox-material-dark.css" (prefers-color-scheme: dark);
