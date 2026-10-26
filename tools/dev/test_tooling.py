@@ -415,7 +415,7 @@ def build_gtk(slug, dest):
 
 
 A.run, A.build_gtk, A.running = run, build_gtk, lambda n: n in RUNNING
-A.tmux_running = lambda: "tmux" in RUNNING
+A.tmux_servers = lambda: ["/fake/tmux-sock"] if "tmux" in RUNNING else []
 FF = H / ".mozilla/firefox/p.default"
 UJ = FF / "user.js"
 GTK4 = H / ".config/gtk-4.0"
@@ -542,18 +542,22 @@ class DesktopTests(unittest.TestCase):
             RUNNING.add("tmux")
             main = H / ".tmux.conf"
             main.write_text("set -g mouse on\\n")
+            A.CLAUDE_SETTINGS.parent.mkdir(parents=True)
+            A.CLAUDE_SETTINGS.write_text('{"model": "x", "theme": "dark"}')
             A.apply("librekai", ["tmux", "claude"])
             assert A.TMUX_CONF.read_bytes() == (A.ROOT / "librekai/desktop/librekai.tmux.conf").read_bytes()
-            assert TMUX == [("source-file", str(A.TMUX_CONF))], TMUX
+            assert TMUX == [("-S", "/fake/tmux-sock", "source-file", str(A.TMUX_CONF))], TMUX
             assert rd(A.CLAUDE_THEME)["name"] == "Rain Librekai"
+            assert rd(A.CLAUDE_SETTINGS) == {"model": "x", "theme": "custom:rain"}, rd(A.CLAUDE_SETTINGS)
             A.apply("dracula", ["tmux", "claude"])  # a palette switch replaces rain's own files
             assert rd(A.CLAUDE_THEME)["name"] == "Rain Dracula"
             TMUX.clear()
             A.restore()
             assert not A.TMUX_CONF.exists() and not A.CLAUDE_THEME.exists()
-            unset = [c for c in TMUX if c[:2] == ("set", "-gqu")]
+            unset = [c[2:] for c in TMUX if c[2:4] == ("set", "-gqu")]
             assert ("set", "-gqu", "status-style") in unset and ("set", "-gqu", "@rain_accent") in unset, TMUX
-            assert TMUX[-1] == ("source-file", "-q", str(main)), TMUX
+            assert TMUX[-1] == ("-S", "/fake/tmux-sock", "source-file", "-q", str(main)), TMUX
+            assert rd(A.CLAUDE_SETTINGS) == {"model": "x", "theme": "dark"}, rd(A.CLAUDE_SETTINGS)
         """)
         self.assertIn("note: add once to your tmux.conf", out)
         shutil.rmtree(self.h)
@@ -565,12 +569,31 @@ class DesktopTests(unittest.TestCase):
             A.CLAUDE_THEME.write_text("{}")
             A.apply("librekai", ["tmux", "claude"])
             assert A.TMUX_CONF.read_text() == "# mine\\n" and A.CLAUDE_THEME.read_text() == "{}"
+            assert not A.CLAUDE_SETTINGS.exists()
             A.restore()
             assert A.TMUX_CONF.read_text() == "# mine\\n" and A.CLAUDE_THEME.read_text() == "{}"
             assert TMUX == [], TMUX
         """)
         self.assertIn("skip tmux", out)
         self.assertIn("skip Claude Code", out)
+        shutil.rmtree(self.h)
+        self.h.mkdir()
+        out = self.child("""
+            A.CLAUDE_SETTINGS.parent.mkdir(parents=True)
+            A.CLAUDE_SETTINGS.write_text('{"permissions": {}}')
+            A.apply("librekai", ["claude"])  # no theme set before: restore removes the key again
+            assert rd(A.CLAUDE_SETTINGS) == {"permissions": {}, "theme": "custom:rain"}
+            A.restore()
+            assert rd(A.CLAUDE_SETTINGS) == {"permissions": {}}, rd(A.CLAUDE_SETTINGS)
+            A.apply("librekai", ["claude"])
+            A.set_claude_theme("light")  # changed by the user since: left alone
+            A.restore()
+            assert rd(A.CLAUDE_SETTINGS)["theme"] == "light"
+            A.CLAUDE_SETTINGS.write_text("{oops")
+            A.apply("librekai", ["claude"])
+            assert A.CLAUDE_SETTINGS.read_text() == "{oops"
+        """)
+        self.assertIn("isn't valid JSON, left alone", out)
 
     def test_17_gsettings_and_dconf_user_changes_survive(self):
         self.child("""

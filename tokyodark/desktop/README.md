@@ -63,16 +63,16 @@ Firefox for Android doesn't support themes; use Dark Reader there (values above)
 
 ## Claude Code
 `rain apply` (target `claude`) writes `tokyodark.claude-theme.json` to
-`~/.claude/themes/rain.json`, which Claude Code reloads live. Once: `/theme` →
-**Rain Tokyo Dark**; later applies just swap the file. Elsewhere, copy the file there
-yourself. It colours the terminal app only (with the Rain terminal profile behind it):
+`~/.claude/themes/rain.json` and sets `"theme": "custom:rain"` in
+`~/.claude/settings.json`; running sessions switch live. Elsewhere, copy the file there
+and pick **Rain Tokyo Dark** with `/theme`. It colours the terminal app only (with the Rain terminal profile behind it):
 the Claude app and claude.ai/code don't take custom themes. What does reach them is
 `/color blue` (the closest of its eight colours to the accent), which
 syncs to claude.ai/code for a Remote Control session.
 
 ## tmux
 `rain apply` (target `tmux`) writes `tokyodark.tmux.conf` to `~/.config/tmux/rain.conf` and
-reloads running servers. Add once to your tmux.conf:
+reloads every running tmux server, so open sessions change too. Add once to your tmux.conf:
 `source-file -q ~/.config/tmux/rain.conf`. Elsewhere (another host), copy the file there.
 Only styles are set; formats stay yours, and `#{@rain_accent}` and friends are there to use.
 

@@ -47,6 +47,8 @@ GSETTINGS = [("org.cinnamon.theme", "name"), ("org.cinnamon.desktop.interface", 
 TMUX_CONF = HOME / ".config/tmux/rain.conf"
 TMUX_MAIN = [HOME / ".tmux.conf", HOME / ".config/tmux/tmux.conf"]
 CLAUDE_THEME = HOME / ".claude/themes/rain.json"
+CLAUDE_SETTINGS = HOME / ".claude/settings.json"
+RAIN_CLAUDE = "custom:rain"  # the `theme` value that selects CLAUDE_THEME
 TARGETS = ["gtk", "wallpaper", "terminal", "geany", "firefox", "brave", "vesktop", "tmux", "claude"]
 USERJS_LINE = 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // rain-themes'
 DRY = False
@@ -294,6 +296,11 @@ def snapshot_apps(snap):
         if not rain_brave(th):
             snap["brave_theme"] = th
             added.append("Brave")
+    if "claude_theme" not in snap and CLAUDE_SETTINGS.parent.exists():
+        cs = claude_settings()
+        if cs is not None and cs.get("theme") != RAIN_CLAUDE:
+            snap["claude_theme"] = cs.get("theme")  # None: unset (Claude Code's default, or ~/.claude.json's)
+            added.append("Claude Code")
     vs = VESKTOP / "settings/settings.json"
     if "vesktop_enabled" not in snap and vs.exists():
         snap["vesktop_enabled"] = json.loads(vs.read_text()).get("enabledThemes", [])
@@ -416,7 +423,7 @@ def restore():
         en = json.loads(vs.read_text()).get("enabledThemes", []) if vs.exists() else []
         act("vesktop: disable rain themes", set_vesktop_enabled, [x for x in en if not rain_vesktop(x)])
     restore_tmux()
-    restore_claude()
+    restore_claude(snap)
     st = load_state()
     st["current"] = None
     st.pop("applied", None)
@@ -429,9 +436,15 @@ def restore():
     log("restored. (Rain profiles/themes stay installed but unused; Firefox keeps the userChrome pref on.)")
 
 
-def tmux_running():
-    return shutil.which("tmux") is not None and subprocess.run(
-        ["tmux", "list-sessions"], capture_output=True).returncode == 0
+def tmux_servers():
+    """Sockets of this user's running tmux servers (the default one and any -L name), so a reload reaches
+    every open session without restarting tmux."""
+    if not shutil.which("tmux"):
+        return []
+    d = Path(os.environ.get("TMUX_TMPDIR") or "/tmp") / f"tmux-{os.getuid()}"
+    socks = sorted(p for p in d.glob("*") if p.is_socket()) if d.is_dir() else []
+    return [str(p) for p in socks
+            if subprocess.run(["tmux", "-S", str(p), "list-sessions"], capture_output=True).returncode == 0]
 
 
 def restore_tmux():
@@ -443,25 +456,51 @@ def restore_tmux():
         return
     opts = re.findall(r"^set -gq? (\S+) ", TMUX_CONF.read_text(), re.M)
     act(f"remove {TMUX_CONF}", TMUX_CONF.unlink)
-    if tmux_running():
-        main = [str(p) for p in TMUX_MAIN if p.exists()]
-
-        def go():
+    main = [str(p) for p in TMUX_MAIN if p.exists()]
+    for sock in tmux_servers():
+        def go(sock=sock):
             for o in opts:
-                run("tmux", "set", "-gqu", o, check=False)
+                run("tmux", "-S", sock, "set", "-gqu", o, check=False)
             for m in main:
-                run("tmux", "source-file", "-q", m, check=False)
-        act(f"tmux: unset {len(opts)} rain options" + (f", re-read {', '.join(main)}" if main else ""), go)
+                run("tmux", "-S", sock, "source-file", "-q", m, check=False)
+        act(f"tmux {sock}: unset {len(opts)} rain options" + (f", re-read {', '.join(main)}" if main else ""), go)
 
 
-def restore_claude():
+def claude_settings():
+    """~/.claude/settings.json as a dict ({} if absent), or None if it isn't valid JSON (then left alone)."""
+    try:
+        d = json.loads(CLAUDE_SETTINGS.read_text())
+    except FileNotFoundError:
+        return {}
+    except ValueError:
+        return None
+    return d if isinstance(d, dict) else None
+
+
+def set_claude_theme(value):
+    """Set (or, for None, remove) `theme` in ~/.claude/settings.json; running sessions reload the file."""
+    d = claude_settings()
+    if value is None:
+        d.pop("theme", None)
+    else:
+        d["theme"] = value
+    write(CLAUDE_SETTINGS, json.dumps(d, indent=2) + "\n")
+
+
+def restore_claude(snap):
+    cs = claude_settings()
+    if cs is not None and cs.get("theme") == RAIN_CLAUDE and "claude_theme" in snap:
+        old = snap["claude_theme"]
+        act(f"Claude Code: theme = {old}" if old else "Claude Code: remove theme from settings.json",
+            set_claude_theme, old)
+    elif "claude_theme" in snap and cs is not None and cs.get("theme") not in (None, snap["claude_theme"]):
+        left_alone("Claude Code theme setting")
     if not CLAUDE_THEME.exists():
         return
     if not rain_export(CLAUDE_THEME, "*.claude-theme.json"):
         left_alone(str(CLAUDE_THEME))
         return
-    act(f"remove {CLAUDE_THEME} (Claude Code falls back to a built-in theme; /theme to pick one)",
-        CLAUDE_THEME.unlink)
+    act(f"remove {CLAUDE_THEME}", CLAUDE_THEME.unlink)
 
 
 def restore_geany(snap):
@@ -650,9 +689,9 @@ def apply_tmux(slug, exp):
         log(f"skip tmux: {TMUX_CONF} exists and isn't one of ours; left alone")
         return
     act(f"tmux styles -> {TMUX_CONF}", write, TMUX_CONF, (exp / f"{slug}.tmux.conf").read_text())
-    if tmux_running():
-        act("tmux: reload the styles in the running server",
-            lambda: run("tmux", "source-file", str(TMUX_CONF), check=False))
+    for sock in tmux_servers():
+        act(f"tmux {sock}: reload the styles (every open session)",
+            lambda sock=sock: run("tmux", "-S", sock, "source-file", str(TMUX_CONF), check=False))
     if not any(p.exists() and "rain.conf" in p.read_text(errors="replace") for p in TMUX_MAIN):
         log(f"note: add once to your tmux.conf so new servers load it: source-file -q {TMUX_CONF}")
 
@@ -663,8 +702,14 @@ def apply_claude(slug, exp):
         return
     fresh = not CLAUDE_THEME.parent.exists()
     act(f"Claude Code theme -> {CLAUDE_THEME}", write, CLAUDE_THEME, (exp / f"{slug}.claude-theme.json").read_text())
-    log("note: once, in Claude Code: /theme -> " + json.loads((exp / f"{slug}.claude-theme.json").read_text())["name"]
-        + " (it then follows every apply)" + ("; restart running sessions first, the themes folder is new" if fresh else ""))
+    cs = claude_settings()
+    if cs is None:
+        log(f"note: {CLAUDE_SETTINGS} isn't valid JSON, left alone; pick the theme with /theme -> Rain")
+    elif cs.get("theme") != RAIN_CLAUDE:
+        act(f"Claude Code: theme = {RAIN_CLAUDE} in {CLAUDE_SETTINGS} (running sessions switch live)",
+            set_claude_theme, RAIN_CLAUDE)
+    if fresh:
+        log("note: ~/.claude/themes/ is new; sessions started before it existed show the theme after a restart")
 
 
 FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "geany": apply_geany,

@@ -41,7 +41,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Desktop | Wallpaper | `wallpaper-desktop.png` |
 | Desktop | GNOME Terminal | A "Rain <Name>" profile |
 | Desktop | tmux | `<slug>.tmux.conf` → `~/.config/tmux/rain.conf`: status bar, borders, copy mode (styles only; your formats stay) |
-| Desktop | Claude Code (terminal) | `<slug>.claude-theme.json` → `~/.claude/themes/rain.json`, picked once with `/theme` ([below](#tmux-and-claude-code)) |
+| Desktop | Claude Code (terminal) | `<slug>.claude-theme.json` → `~/.claude/themes/rain.json`, selected in `settings.json`; switches live ([below](#tmux-and-claude-code)) |
 | Desktop | Geany | Editor colour scheme |
 | Desktop | Firefox | `userChrome.css` / `userContent.css`, plus a Firefox Color link for other machines |
 | Desktop | Brave | Theme seed colour |
@@ -121,21 +121,24 @@ returns to it. Details, manual steps and troubleshooting are in the
 tools/rain apply dracula --only tmux,claude
 ```
 
-- **tmux**: writes `~/.config/tmux/rain.conf` and reloads a running tmux, so
-  every open session changes at once. It sets colours only (status bar, pane
+- **tmux**: writes `~/.config/tmux/rain.conf` and reloads every running tmux
+  server (the default one and any `-L` ones), so open sessions change at once,
+  with no restart. It sets colours only (status bar, pane
   borders, messages, copy-mode search, menus); your status layout stays yours,
   and `#{@rain_accent}`, `#{@rain_bg}` … are there for your own formats. Once,
   add `source-file -q ~/.config/tmux/rain.conf` to your tmux.conf. On another
   machine, copy `<slug>/desktop/<slug>.tmux.conf` there under that name.
 - **Claude Code**: writes a [custom theme](https://code.claude.com/docs/en/terminal-config)
   to `~/.claude/themes/rain.json` (accent, text, status, plan/auto mode, diffs,
-  subagent colours). Once, pick it with `/theme` → **Rain <Name>**; later applies
-  just swap the file and Claude Code reloads it live. It works wherever Claude
+  subagent colours) and sets `"theme": "custom:rain"` in `~/.claude/settings.json`.
+  Claude Code reloads both, so running sessions switch with no restart (except
+  sessions started before `~/.claude/themes/` first existed). It works wherever Claude
   Code runs in a terminal, over SSH too. The Claude app and claude.ai/code have no
   theme setting; the closest you get there is `/color`, and each palette's README
   names the one nearest its accent.
 
-`rain restore` removes both files, and unsets the tmux colours in a running tmux.
+`rain restore` removes both files, puts your previous Claude Code `theme` back,
+and unsets the tmux colours in every running tmux.
 
 ## Self-hosted: Forgejo and degoog
 

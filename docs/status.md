@@ -96,7 +96,9 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 - **tmux, Claude Code, Forgejo** (2026-10-25), for all 21 palettes:
   - `rain apply` targets `tmux` (`~/.config/tmux/rain.conf`, reloaded live) and
-    `claude` (`~/.claude/themes/rain.json`, a Claude Code custom theme). Both are
+    `claude` (`~/.claude/themes/rain.json`, a Claude Code custom theme, selected
+    via `theme` in `~/.claude/settings.json`). Both switch running apps live: every
+    tmux server is reloaded, and Claude Code hot-reloads settings and themes. Both are
     covered by `test_16b` (apply, palette switch, restore, a user's own file left
     alone). The tmux file was loaded into a real tmux 3.4 server without errors.
   - Forgejo: `theme-rain-<slug>.css` (+ `-light`/`-auto` for 15) and
@@ -182,7 +184,7 @@ Keyword, function and type colours were not on screen. The rest are covered by
    copy `rain.conf` to the other hosts where tmux runs. Check that the
    status bar reads well with the owner's own status formats.
 8. Forgejo: install on the real server and pick a theme.
-9. Claude Code theme: look at it for real (`/theme` → Rain <Name>) and tune
+9. Claude Code theme: look at it for real (`rain apply <slug> --only claude`) and tune
    `subtle`/`promptBorder` if they're too faint.
 
 ## Open questions

@@ -81,8 +81,8 @@ own state) and says so.
 | `firefox` | Writes `chrome/userChrome.css` + `userContent.css` into the default profile and enables them in `user.js`. | Next Firefox start |
 | `brave` | Sets Brave's "Customize Brave → colour" seed to the palette accent, dark mode. | Next Brave start |
 | `vesktop` | Copies the Discord theme CSS into Vesktop's `themes/` folder and enables it. Skipped if Vesktop has never run. | Live reload |
-| `tmux` | Writes `~/.config/tmux/rain.conf` (status bar, borders, copy mode; your formats stay) and reloads a running tmux. Skipped if that file exists and isn't Rain's. | Immediately, in every session of the running server |
-| `claude` | Writes the Claude Code theme to `~/.claude/themes/rain.json`. Skipped if that file exists and isn't Rain's. | Live (after the one-time `/theme` pick) |
+| `tmux` | Writes `~/.config/tmux/rain.conf` (status bar, borders, copy mode; your formats stay) and reloads every running tmux server. Skipped if that file exists and isn't Rain's. | Immediately, in every open session |
+| `claude` | Writes the Claude Code theme to `~/.claude/themes/rain.json` and sets `"theme": "custom:rain"` in `~/.claude/settings.json` (the old value is saved for restore). Skipped if the theme file exists and isn't Rain's; the setting is left alone if settings.json isn't valid JSON. | Immediately, in running sessions |
 
 Firefox's default theme follows the GTK theme on Linux, so it roughly matches
 after `gtk` alone. The userChrome files make it exact.
@@ -91,10 +91,10 @@ after `gtk` alone. The userChrome files make it exact.
 
 Each palette's `desktop/README.md` has the exact values.
 
-- **Claude Code**: `/theme` → **Rain <Name>**. The file name never changes, so it
-  follows every apply. (If `~/.claude/themes/` didn't exist before, restart Claude
-  Code once first.) In the Claude app or on claude.ai/code nothing changes; the
-  README names a `/color` for Remote Control sessions.
+- **Claude Code**: nothing to do; apply selects the theme. Sessions started
+  before `~/.claude/themes/` first existed need one restart. In the Claude app or
+  on claude.ai/code nothing changes; the README names a `/color` for Remote
+  Control sessions.
 - **tmux**: add `source-file -q ~/.config/tmux/rain.conf` to `~/.tmux.conf` (or
   `~/.config/tmux/tmux.conf`) so new tmux servers load it. Apply reminds you while
   it's missing. On another host where you use tmux, copy
