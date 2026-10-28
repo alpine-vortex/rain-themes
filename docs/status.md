@@ -49,6 +49,18 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
     write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
     Keep `json_b64` as the fallback.
 
+## Valenced (2026-10-27)
+
+- Valenced (Rain + Revenge) loads the existing Rain JSONs unchanged via its Legacy
+  Themes plugin (`valenced.themes.legacy`, community repo). All 21 pass its parser.
+  Imports don't update, and Discord's Light mode stays uncoloured.
+- `tools/rain valenced` exports a native theme plugin (`rain-themes.palettes`) into
+  the public `valenced-rain` plugin repo: 21 palettes in two groups (plain, with
+  wallpaper), and the official light flavour in Light mode for 15 of them. See `tools/README.md` ("Valenced").
+- Checked: the registration code runs against a fake themes API (42 themes, 130 tokens
+  per mode, all valid hex; dark colours equal the Rain JSON). Not yet checked: the
+  template's Bun/Gradle build and a device install.
+
 ## Live state
 
 What's applied on the owner's machines is kept out of the repo, in the local

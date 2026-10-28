@@ -26,6 +26,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Where | Target | How it's applied |
 |---|---|---|
 | Phone | Discord (Rain) | Add the install URL below in Rain's Themes settings |
+| Phone | Discord (Valenced) | Add the Rain Themes plugin repository (below), or import the Rain URL with Legacy Themes |
 | Phone | System colours (Material You) | `tools/rain phone <slug>` over adb: the accent becomes the system seed |
 | Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
 | Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
@@ -80,6 +81,20 @@ checks). `<slug>/desktop/` holds every desktop and phone export plus a
 Copy an install URL from the table above, then add it by URL in Rain's Themes
 settings. Rain needs the `raw.githubusercontent.com` URL; `github.com/.../blob/`
 links fail with "Failed to fetch theme".
+
+### Valenced
+
+[Valenced](https://github.com/Valenced/valenced) (Rain + Revenge) has two routes:
+
+- **Rain Themes plugin (recommended).** In **Settings → Valenced → Plugins**, add the
+  repository `https://alpine-vortex.github.io/valenced-rain/index.json`, then install
+  **Rain Themes**. Every palette appears in the theme picker, under *Rain Themes* or
+  *Rain Themes with wallpaper*, and updates arrive on their own. Discord's Light mode
+  uses the palette's official light flavour where it has one.
+- **Legacy Themes.** Install **Legacy Themes** from the preinstalled community
+  repository and import a raw install URL from the table above. All 21 pass its
+  parser. An import is a one-time copy that doesn't update, and it only colours
+  Dark, Darker and Midnight, so keep Discord on a dark appearance.
 
 ## Desktop (Linux Mint / Cinnamon)
 
