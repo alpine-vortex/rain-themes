@@ -58,8 +58,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   the public `valenced-rain` plugin repo: 21 palettes in two groups (plain, with
   wallpaper), and the official light flavour in Light mode for 15 of them. See `tools/README.md` ("Valenced").
 - Checked: the registration code runs against a fake themes API (42 themes, 130 tokens
-  per mode, all valid hex; dark colours equal the Rain JSON). Not yet checked: the
-  template's Bun/Gradle build and a device install.
+  per mode, all valid hex; dark colours equal the Rain JSON). The repo's CI build
+  published 1.0.0, and it was installed and confirmed working on a device (2026-10-27).
 
 ## Live state
 
