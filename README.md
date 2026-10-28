@@ -26,7 +26,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Where | Target | How it's applied |
 |---|---|---|
 | Phone | Discord (Rain) | Add the install URL below in Rain's Themes settings |
-| Phone | Discord (Valenced) | Import the same install URL with the Legacy Themes plugin |
+| Phone | Discord (Valenced) | Add the Rain Themes plugin repository (below), or import the Rain URL with Legacy Themes |
 | Phone | System colours (Material You) | `tools/rain phone <slug>` over adb: the accent becomes the system seed |
 | Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
 | Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
@@ -84,16 +84,17 @@ links fail with "Failed to fetch theme".
 
 ### Valenced
 
-[Valenced](https://github.com/Valenced/valenced) (Rain + Revenge) imports Rain
-themes unchanged through **Legacy Themes** (`valenced.themes.legacy`), which ships
-in its preinstalled community plugin repository. Install that plugin from
-**Settings → Valenced → Plugins → [+]**, then import the same raw install URL
-from its settings. The themes appear under the *Imported* group in the theme picker.
+[Valenced](https://github.com/Valenced/valenced) (Rain + Revenge) has two routes:
 
-All 21 themes pass its parser, which accepts spec 2 with 3-, 6- or 8-digit hex only.
-Each `semanticColors` entry holds one value, which Valenced applies to the Dark,
-Darker and Midnight bases. Light gets only the raw colours, so keep Discord on a
-dark appearance.
+- **Rain Themes plugin (recommended).** In **Settings → Valenced → Plugins**, add the
+  repository `https://alpine-vortex.github.io/valenced-rain/index.json`, then install
+  **Rain Themes**. Every palette appears in the theme picker, under *Rain Themes* or
+  *Rain Themes with wallpaper*, and updates arrive on their own. Discord's Light mode
+  uses the palette's official light flavour where it has one.
+- **Legacy Themes.** Install **Legacy Themes** from the preinstalled community
+  repository and import a raw install URL from the table above. All 21 pass its
+  parser. An import is a one-time copy that doesn't update, and it only colours
+  Dark, Darker and Midnight, so keep Discord on a dark appearance.
 
 ## Desktop (Linux Mint / Cinnamon)
 

@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+"""Export every palette as one Valenced theme plugin, laid out as a Valenced plugin repo.
+
+    python3 tools/valenced_export.py [--out DIR] [--check]
+
+Reads <slug>/<slug>.json (the Rain theme) and <slug>/desktop/<slug>.app-theme.json (for the
+light flavour and wallpaper), so run `rain build` first. Writes, under DIR:
+
+    README.md
+    repo.config.json                       repository name shown in Valenced
+    export.lock                            plugin version + hash of the plugin files (see below)
+    themes/rain/manifest.json
+    themes/rain/tsconfig.json
+    themes/rain/js/index.ts                registers two groups: plain and with wallpaper
+    themes/rain/js/palettes.json           per palette: dark and light role colours, raw colours
+    themes/rain/assets/wallpapers/<slug>.png
+
+DIR defaults to ../valenced-rain, a repo seeded once from Valenced/valenced-plugin-template
+(its workflows build and publish on push to main). The export owns only the paths above.
+
+Valenced only publishes a version that isn't in the pool yet, so a change to the plugin
+files needs a new version: bump VERSION below. Export refuses to write changed plugin
+files under the version recorded in export.lock.
+--check writes nothing and exits 1 if DIR differs from what the export would write.
+See tools/README.md ("Valenced").
+"""
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_theme import GROUPS, contrast, mix  # noqa: E402
+
+ROOT = Path(__file__).resolve().parent.parent
+PLUGIN = "themes/rain"
+PLUGIN_ID = "rain-themes.palettes"
+VERSION = "1.0.0"
+REPO_URL = "https://github.com/alpine-vortex/rain-themes"
+INDEX_URL = "https://alpine-vortex.github.io/valenced-rain/index.json"
+
+
+def palettes():
+    """(slug, Rain theme, app-theme) for every palette, sorted by name."""
+    out = []
+    for f in sorted(ROOT.glob("*/theme.spec.json")):
+        slug = json.loads(f.read_text())["slug"]
+        at = f.parent / "desktop" / f"{slug}.app-theme.json"
+        if not at.exists():
+            sys.exit(f"{at} missing; run `tools/rain build` first")
+        out.append((slug, json.loads((f.parent / f"{slug}.json").read_text()), json.loads(at.read_text())))
+    return sorted(out, key=lambda p: p[1]["name"].lower())
+
+
+def dark_roles(slug, rain):
+    """Role colours read back from the Rain theme. Every token in a role holds one value."""
+    sem = rain["semanticColors"]
+    roles = {}
+    for rid, _, keys in GROUPS:
+        vals = {sem[k][0] for k in keys.split()}
+        if len(vals) != 1:
+            sys.exit(f"{slug}: role {rid} has several values {sorted(vals)}")
+        roles[rid] = vals.pop()
+    return roles
+
+
+def light_roles(L):
+    """Rain roles from an app-theme light block, mirroring how the dark specs use their palettes:
+    floating surfaces on `raised`, nested ones on `selected`, translucent overlays off text/accent."""
+    text, accent = L["text"], L["accent"]
+    return {
+        "main_bg": L["background"], "secondary_bg": L["panel"], "tertiary_bg": mix(L["panel"], text, 0.05),
+        "floating_bg": L["raised"], "nested_floating_bg": L["selected"], "input_bg": L["raised"],
+        "hover": text + "1A", "active": L["text_muted"] + "40", "faint": text + "0D", "selected": accent + "33",
+        "text_strong": text, "text_normal": text, "text_secondary": L["text_secondary"],
+        "text_muted": L["text_muted"], "interactive_muted": L["border"],
+        "brand": accent, "brand_bright": mix(accent, text, 0.2), "text_on_brand": L["on_accent"],
+        "link": L["link"], "danger": L["danger"], "positive": L["positive"], "warning": L["warning"],
+        "mention": accent + "26", "mention_hover": accent + "33", "backdrop": text + "99",
+    }
+
+
+def check_contrast(pals):
+    """Low-contrast pairs in the light mapping, reported but not changed (upstream colours)."""
+    bad = []
+    for p in pals:
+        L = p["colors"]["light"]
+        if not L:
+            continue
+        for fg, bgk, need in (("text_normal", "main_bg", 4.5), ("text_normal", "floating_bg", 4.5),
+                              ("text_muted", "main_bg", 3.0), ("link", "main_bg", 3.0),
+                              ("text_on_brand", "brand", 3.0)):
+            c = contrast(L[fg], L[bgk])
+            if c < need:
+                bad.append(f"{p['id']} light: {fg} on {bgk} {c:.1f} < {need}")
+    return bad
+
+
+def data(pals):
+    return {
+        "tokens": {rid: keys.split() for rid, _, keys in GROUPS},
+        "palettes": [{
+            "id": slug,
+            "name": rain["name"],
+            "description": rain["description"],
+            "light": at["light"]["flavour"] if "light" in at else None,
+            "colors": {"dark": dark_roles(slug, rain), "light": light_roles(at["light"]) if "light" in at else None},
+            "raw": rain["rawColors"],
+        } for slug, rain, at in pals],
+    }
+
+
+INDEX_TS = """\
+/**
+ * Rain palettes for Valenced: generated by rain-themes tools/valenced_export.py. Do not edit.
+ * REPO_URL
+ */
+
+/// <reference types="@valenced/themes-api" />
+
+import type { ThemeColors } from '@valenced/themes-api/types'
+import data from './palettes.json'
+
+type Roles = Record<string, string>
+
+interface Palette {
+\tid: string
+\tname: string
+\tdescription: string
+\tlight: string | null
+\tcolors: { dark: Roles; light: Roles | null }
+\traw: Record<string, string>
+}
+
+const tokens = data.tokens as Record<string, string[]>
+
+function expand(roles: Roles) {
+\tconst out: Record<string, string> = {}
+\tfor (const [role, names] of Object.entries(tokens))
+\t\tfor (const name of names) out[name] = roles[role]!
+\treturn out
+}
+
+// Dark, Darker and Midnight get the palette; Light gets its official light flavour, or the dark one.
+function colorsOf(p: Palette): ThemeColors {
+\tconst dark = expand(p.colors.dark)
+\tconst light = p.colors.light ? expand(p.colors.light) : dark
+\treturn {
+\t\tsemantic: { dark, darker: dark, midnight: dark, light },
+\t\traw: { ...p.raw },
+\t}
+}
+
+function describe(p: Palette) {
+\treturn p.light ? `${p.description} Light mode: ${p.light}.` : p.description
+}
+
+export default plugin({
+\tpreInit({ themes }) {
+\t\tthemes.registerGroup('rain', {
+\t\t\tname: 'Rain Themes',
+\t\t\tdescription: 'COUNT palettes from rain-themes',
+\t\t})
+\t\tthemes.registerGroup('rain-wallpaper', {
+\t\t\tname: 'Rain Themes with wallpaper',
+\t\t\tdescription: 'The same palettes over their matching wallpaper',
+\t\t})
+
+\t\tfor (const p of data.palettes as Palette[]) {
+\t\t\tthemes.registerTheme('rain', p.id, {
+\t\t\t\tname: p.name,
+\t\t\t\tdescription: describe(p),
+\t\t\t\tgetColors: () => colorsOf(p),
+\t\t\t})
+\t\t\tthemes.registerTheme('rain-wallpaper', p.id, {
+\t\t\t\tname: p.name,
+\t\t\t\tdescription: describe(p),
+\t\t\t\tgetColors: () => colorsOf(p),
+\t\t\t\tbackground: { path: `assets/wallpapers/${p.id}.png` },
+\t\t\t})
+\t\t}
+\t},
+})
+"""
+
+
+def readme(pals):
+    rows = "\n".join(f"| {rain['name']} | {at['light']['flavour'] if 'light' in at else 'dark only'} | "
+                     f"`{at['background']}` | `{at['accent']}` |" for _, rain, at in pals)
+    return f"""# valenced-rain
+
+The [rain-themes]({REPO_URL}) palettes as a theme plugin for
+[Valenced](https://github.com/Valenced/valenced), the Discord mobile client mod.
+
+This repo is generated by `tools/rain valenced` in rain-themes. Don't edit the
+plugin by hand: change the palette spec or the exporter there and export again.
+The build and publish setup comes from
+[valenced-plugin-template](https://github.com/Valenced/valenced-plugin-template).
+
+## Install
+
+1. In Valenced, open **Settings → Valenced → Plugins**, add a repository and paste
+   `{INDEX_URL}`.
+2. Install **Rain Themes** from that repository.
+3. Pick a palette in the theme picker, under **Rain Themes** or **Rain Themes
+   with wallpaper**.
+
+Valenced checks the repository for updates, so colour fixes arrive on their own.
+
+## Palettes
+
+Discord's Dark, Darker and Midnight modes use the palette. Light mode uses the
+palette's official light flavour where it has one, and the dark colours otherwise.
+
+| Palette | Light mode | Background | Accent |
+|---|---|---|---|
+{rows}
+
+## Without this plugin
+
+Each palette is also a Bunny-format theme (`<slug>.json` in rain-themes), which
+Valenced's **Legacy Themes** plugin can import by URL. Imports don't update, and
+they leave Discord's Light mode uncoloured.
+
+## Licence
+
+GPL-3.0, as the plugin template it is built from (see `LICENSE`).
+"""
+
+
+def plugin_files(pals):
+    """{relative path: bytes} for the files that go into the plugin ZIP."""
+    dump = lambda o: (json.dumps(o, indent="\t", ensure_ascii=False) + "\n").encode()  # noqa: E731
+    manifest = {
+        "format": 1,
+        "id": PLUGIN_ID,
+        "name": "Rain Themes",
+        "description": f"{len(pals)} colour palettes (Catppuccin, Tokyo Night, Rosé Pine, Gruvbox and more), "
+                       "with light flavours and matching wallpapers.",
+        "author": f'rain-themes ({REPO_URL} "GitHub")',
+        "icon": "PaintPaletteIcon",
+        "version": VERSION,
+        "dependencies": {
+            "valenced.api": {"version": ">=1 <2"},
+            "discord": {"version": "*"},
+            "valenced.api.themes": {"version": ">=1 <2"},
+        },
+        "dist": {"script": "index.js"},
+    }
+    files = {
+        f"{PLUGIN}/manifest.json": dump(manifest),
+        f"{PLUGIN}/tsconfig.json": dump({"extends": "../../tsconfig.base.json"}),
+        f"{PLUGIN}/js/index.ts": INDEX_TS.replace("REPO_URL", REPO_URL).replace("COUNT", str(len(pals))).encode(),
+        f"{PLUGIN}/js/palettes.json": dump(data(pals)),
+    }
+    for slug, _, _ in pals:
+        files[f"{PLUGIN}/assets/wallpapers/{slug}.png"] = (ROOT / slug / "desktop/wallpaper-phone.png").read_bytes()
+    return files
+
+
+def digest(files):
+    h = hashlib.sha256()
+    for p in sorted(files):
+        h.update(p.encode() + b"\0" + hashlib.sha256(files[p]).digest())
+    return h.hexdigest()
+
+
+def outputs(pals):
+    files = plugin_files(pals)
+    lock = {"version": VERSION, "sha256": digest(files)}
+    files["export.lock"] = (json.dumps(lock, indent="\t") + "\n").encode()
+    files["README.md"] = readme(pals).encode()
+    files["repo.config.json"] = (json.dumps({
+        "name": "Rain Themes",
+        "description": "rain-themes palettes for Valenced.",
+        "channels": {},
+    }, indent="\t", ensure_ascii=False) + "\n").encode()
+    return files, lock
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--out", default=str(ROOT.parent / "valenced-rain"))
+    ap.add_argument("--check", action="store_true", help="exit 1 if --out is stale; write nothing")
+    a = ap.parse_args()
+    raw = palettes()
+    files, lock = outputs(raw)
+    if not a.check:
+        for w in check_contrast(data(raw)["palettes"]):
+            print(f"note: {w} (upstream colours, kept)")
+    out = Path(a.out)
+    stale = [p for p, b in files.items() if not (out / p).exists() or (out / p).read_bytes() != b]
+    if a.check:
+        for p in stale:
+            print(f"stale: {out / p}")
+        sys.exit(1 if stale else 0)
+    old = out / "export.lock"
+    if old.exists():
+        prev = json.loads(old.read_text())
+        if prev["version"] == lock["version"] and prev["sha256"] != lock["sha256"]:
+            sys.exit(f"plugin files changed but VERSION is still {VERSION}: bump VERSION in {Path(__file__).name}")
+    for p in stale:
+        (out / p).parent.mkdir(parents=True, exist_ok=True)
+        (out / p).write_bytes(files[p])
+    print(f"valenced: {len(raw)} palettes, plugin {PLUGIN_ID}@{VERSION}, {len(stale)} file(s) written to {out}")
+
+
+if __name__ == "__main__":
+    main()

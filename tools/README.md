@@ -12,6 +12,7 @@ tools/rain restore                    # undo what rain still owns; changes made 
 tools/rain pending                    # finish apps that were open during apply (runs at login)
 tools/rain preview <slug>             # screenshots in throwaway windows
 tools/rain degoog [--check]           # the degoog theme store repo (../degoog-rain)
+tools/rain valenced [--check]         # the Valenced theme plugin repo (../valenced-rain)
 tools/rain gui                        # the "Rain Themes" window
 tools/rain install [--force]          # menu entry + login autostart + git commit/merge/push-to-main hooks (main checkout only)
 ```
@@ -23,6 +24,7 @@ tools/rain install [--force]          # menu entry + login autostart + git commi
 | `apply_theme.py` | apply / restore / pending on this machine |
 | `rain_gui.py` | the GTK window (runs `rain` subcommands) |
 | `degoog_export.py` | app-theme exports → the degoog store repo (`rain degoog`) |
+| `valenced_export.py` | Rain + app-theme exports → the Valenced plugin repo (`rain valenced`) |
 | `gallery.py` | Playwright screenshots → GALLERY.md, index.html |
 | `dev/preview_desktop.py` | screenshot a palette without applying it |
 | `dev/degoog_preview.py` | store screenshots from a throwaway degoog |
@@ -156,6 +158,37 @@ The first apply on an unthemed desktop saves the current state to
 themes); `--restore` puts back each part that still holds Rain's value, then
 retires the snapshot. The GTK2 widget PNGs are pre-rendered by
 Colloid and keep its stock colours.
+
+## Valenced
+
+All palettes as one theme plugin for [Valenced](https://github.com/Valenced/valenced),
+published from the plugin repo
+[valenced-rain](https://github.com/alpine-vortex/valenced-rain). Users add
+`https://alpine-vortex.github.io/valenced-rain/index.json` as a repository in
+Valenced. That repo is generated: change the specs or `valenced_export.py`
+here, then export and commit there.
+
+```sh
+tools/rain valenced [--out ../valenced-rain]   # README.md, repo.config.json, export.lock, themes/rain/*
+tools/rain valenced --check                    # exit 1 if the checkout is stale
+```
+
+- **Inputs.** Dark colours are read back from each `<slug>.json` (Rain stays the source of
+  truth); the light flavour comes from `desktop/<slug>.app-theme.json`, mapped onto the
+  same 25 roles (`light_roles()`), and the wallpaper is `desktop/wallpaper-phone.png`.
+- **Modes.** Dark, Darker and Midnight get the palette. Light gets the light flavour, or
+  the dark colours for the six palettes without one.
+- **Groups.** *Rain Themes* is opaque; *Rain Themes with wallpaper* is the same palettes
+  over their wallpaper.
+- **Versions.** Valenced publishes a plugin version once, so a changed plugin needs
+  a new `VERSION` in the exporter. `export.lock` records the version and a hash of the
+  plugin files, and the export refuses to change them under the same version.
+- **Publishing.** Pushing to `main` there runs the template's release workflow: Bun + Gradle
+  build the ZIP into the `gh-pages` pool and regenerate `index.json`. It needs the
+  `READ_PACKAGES_TOKEN` secret (a GitHub token with `read:packages`) and GitHub Pages on `gh-pages`.
+- The rest of that repo (workflows, Gradle, `package.json`) was copied once from
+  `Valenced/valenced-plugin-template` at `9a4f918` without its examples; `plan-releases`
+  and `lint:types` point at `themes/` only.
 
 ## degoog
 
