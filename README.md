@@ -26,6 +26,7 @@ See the **[gallery](GALLERY.md)** for previews of every Discord theme side by si
 | Where | Target | How it's applied |
 |---|---|---|
 | Phone | Discord (Rain) | Add the install URL below in Rain's Themes settings |
+| Phone | Discord (Valenced) | Import the same install URL with the Legacy Themes plugin |
 | Phone | System colours (Material You) | `tools/rain phone <slug>` over adb: the accent becomes the system seed |
 | Phone | Wallpaper, Niagara Launcher | `wallpaper-phone.png` (pushed by `rain phone`), plus a Niagara swatch hint |
 | Phone | Sync for Reddit | Paste `sync-theme.json` into Sync's Monet theme import |
@@ -80,6 +81,19 @@ checks). `<slug>/desktop/` holds every desktop and phone export plus a
 Copy an install URL from the table above, then add it by URL in Rain's Themes
 settings. Rain needs the `raw.githubusercontent.com` URL; `github.com/.../blob/`
 links fail with "Failed to fetch theme".
+
+### Valenced
+
+[Valenced](https://github.com/Valenced/valenced) (Rain + Revenge) imports Rain
+themes unchanged through **Legacy Themes** (`valenced.themes.legacy`), which ships
+in its preinstalled community plugin repository. Install that plugin from
+**Settings → Valenced → Plugins → [+]**, then import the same raw install URL
+from its settings. The themes appear under the *Imported* group in the theme picker.
+
+All 21 themes pass its parser, which accepts spec 2 with 3-, 6- or 8-digit hex only.
+Each `semanticColors` entry holds one value, which Valenced applies to the Dark,
+Darker and Midnight bases. Light gets only the raw colours, so keep Discord on a
+dark appearance.
 
 ## Desktop (Linux Mint / Cinnamon)
 

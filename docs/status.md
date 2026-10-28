@@ -49,6 +49,14 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
     write there on Android 17), then send `SET_THEME --es slug`. Never send `mode`.
     Keep `json_b64` as the fallback.
 
+## Valenced (checked 2026-10-27)
+
+- Valenced (Rain + Revenge) loads the existing Rain JSONs unchanged via its Legacy
+  Themes plugin (`valenced.themes.legacy`, community repo). All 21 pass its parser;
+  install steps are in the README. Not yet tried on a device.
+- Light base gets no semantic overrides (single-value arrays), same as before.
+- A native Valenced theme plugin (one group, all palettes) is possible but not built.
+
 ## Live state
 
 What's applied on the owner's machines is kept out of the repo, in the local
