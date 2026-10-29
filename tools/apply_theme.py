@@ -312,6 +312,8 @@ def snapshot_apps(snap):
             added.append("kitty")
         if "kitty-kitty.conf" not in snap["files"]:  # restore only strips our include block, if we added it
             snap["files"]["kitty-kitty.conf"] = {"path": str(KITTY / "kitty.conf")}
+            if "kitty" not in added:
+                added.append("kitty")
     if "ghostty_theme" not in snap and ghostty_installed():
         conf = ghostty_conf()
         line = ghostty_theme_line(conf)
