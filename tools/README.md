@@ -113,7 +113,7 @@ The same palette, applied to the desktop and the apps around it.
 
 ```sh
 python3 tools/desktop_export.py <theme-dir> ...   # writes <theme-dir>/desktop/
-tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,geany,firefox,brave,vesktop] [--dry-run]
+tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,gnome-text-editor,geany,firefox,brave,vesktop] [--dry-run]
 tools/apply_theme.py --restore                    # back to the settings in the snapshot
 ```
 
@@ -143,6 +143,7 @@ colour even where upstream uses a light one with dark selected text.
 | GNOME Terminal (and Claude Code via `/theme` → ANSI) | `gnome-terminal.json` | Profile "Rain <Name>" written with dconf (stable uuid5 id) and made default. |
 | kitty | `kitty-theme.conf` | Written as `~/.config/kitty/current-theme.conf` (the file `kitten themes` writes); `include current-theme.conf` appended to `kitty.conf` in a `BEGIN/END_KITTY_THEME` block only if it isn't there. Running kitty reloads (SIGUSR1). Skipped without `~/.config/kitty`. |
 | Ghostty | `ghostty-theme` | Written as `~/.config/ghostty/themes/rain-themes`; the last `theme =` line in `config.ghostty` (or the older `config`) becomes `theme = rain-themes`, or one is appended. Running Ghostty reloads (SIGUSR2). |
+| GNOME Text Editor | `gtksourceview-<slug>.xml` | GtkSourceView 5 scheme (id `rain-<slug>`) into `~/.local/share/gtksourceview-5/styles/`, selected with gsettings `org.gnome.TextEditor style-scheme`. Text Editor must be closed (it loads schemes only at startup); skipped if its schema isn't installed. |
 | Geany editor | `geany-<slug>.conf` | Into `~/.config/geany/colorschemes/`, `color_scheme=` in `geany.conf`. Geany must be closed. |
 | Firefox | `userChrome.css`, `userContent.css` | Into the default profile's `chrome/`, plus the `toolkit.legacyUserProfileCustomizations.stylesheets` pref in `user.js`. Takes effect on the next Firefox start. Firefox's default theme also follows the GTK theme on Linux, so it matches even without these files. |
 | Brave | `brave.json` | Sets the "Customize → colour" seed (`browser.theme.user_color2`), dark mode. Brave must be closed. |

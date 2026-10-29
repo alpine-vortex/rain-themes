@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Apply a theme's desktop exports to this machine (Linux Mint / Cinnamon).
 
-    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,geany,firefox,brave,vesktop] [--dry-run]
+    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,gnome-text-editor,geany,firefox,brave,vesktop] [--dry-run]
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
@@ -49,9 +49,14 @@ KITTY_INCLUDE = re.compile(r"^\s*include\s+current-theme\.conf\s*$", re.M)
 GHOSTTY = HOME / ".config/ghostty"
 GHOSTTY_LINE = "theme = rain-themes"
 GHOSTTY_THEME = re.compile(r"^[ \t]*theme[ \t]*=.*$", re.M)
+# GNOME Text Editor 46 reads ~/.local/share/gtksourceview-5/styles only at startup
+GTE_STYLES = HOME / ".local/share/gtksourceview-5/styles"
+GTE_KEY = ("org.gnome.TextEditor", "style-scheme")
+GTE_PROC = "gnome-text-edit"  # pgrep -x matches the 15-char comm, not "gnome-text-editor"
 GSETTINGS = [("org.cinnamon.theme", "name"), ("org.cinnamon.desktop.interface", "gtk-theme"),
              ("org.cinnamon.desktop.wm.preferences", "theme"), ("org.cinnamon.desktop.background", "picture-uri")]
-TARGETS = ["gtk", "wallpaper", "terminal", "kitty", "ghostty", "geany", "firefox", "brave", "vesktop"]
+TARGETS = ["gtk", "wallpaper", "terminal", "kitty", "ghostty", "gnome-text-editor", "geany", "firefox", "brave",
+           "vesktop"]
 USERJS_LINE = 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // rain-themes'
 DRY = False
 
@@ -245,6 +250,15 @@ def ghostty_theme_line(conf):
     return m[-1] if m else None
 
 
+def gte_scheme():
+    """Text Editor's style-scheme as gsettings prints it ('cobalt'), or "" when it isn't installed."""
+    return run("gsettings", "get", *GTE_KEY, check=False)
+
+
+def rain_gte(val):
+    return val in {f"'rain-{s}'" for s in exportable()}
+
+
 def rain_geany(scheme):
     return scheme in {f"geany-{s}.conf" for s in exportable()}
 
@@ -320,6 +334,11 @@ def snapshot_apps(snap):
         if line != GHOSTTY_LINE:
             snap["ghostty_theme"] = {"path": str(conf), "line": line}
             added.append("Ghostty")
+    if "gte_style_scheme" not in snap:
+        val = gte_scheme()
+        if val and not rain_gte(val):
+            snap["gte_style_scheme"] = val
+            added.append("Text Editor")
     if "brave_theme" not in snap and BRAVE_PREFS.exists():
         th = json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")
         if not rain_brave(th):
@@ -453,6 +472,7 @@ def restore():
     if "kitty-current-theme.conf" in snap["files"]:
         reload_kitty()
     restore_ghostty(snap)
+    restore_gte(snap)
     restore_geany(snap)
     restore_brave(snap)
     if "vesktop_enabled" in snap:
@@ -494,6 +514,16 @@ def restore_ghostty(snap):
             conf.unlink()
     act(f"ghostty: {g['line'] or 'no theme'} in {conf}", put)
     reload_ghostty()
+
+
+def restore_gte(snap):
+    val = snap.get("gte_style_scheme")
+    if not val:
+        return
+    if rain_gte(gte_scheme()):  # a running Text Editor switches live to an already-loaded scheme
+        act(f"gsettings {' '.join(GTE_KEY)} = {val}", run, "gsettings", "set", *GTE_KEY, val)
+    else:
+        left_alone(f"gsettings {' '.join(GTE_KEY)}")
 
 
 def restore_geany(snap):
@@ -650,6 +680,21 @@ def apply_ghostty(slug, exp):
     reload_ghostty()
 
 
+def apply_gte(slug, exp):
+    if not gte_scheme():
+        log("skip GNOME Text Editor: not installed")
+        return
+    if running(GTE_PROC):  # it wouldn't see the new scheme file and would fall back to Adwaita
+        log("GNOME Text Editor is running: queued, it will be applied by `rain pending` (runs at login)")
+        mark_pending("gnome-text-editor", slug)
+        return
+    src = exp / f"gtksourceview-{slug}.xml"
+    dst = GTE_STYLES / src.name
+    act(f"text editor scheme -> {dst}", write, dst, src.read_text())
+    act(f"gsettings {' '.join(GTE_KEY)} rain-{slug}", run, "gsettings", "set", *GTE_KEY, f"rain-{slug}")
+    clear_pending("gnome-text-editor")
+
+
 def apply_geany(slug, exp):
     if running("geany"):
         log("Geany is running: queued, it will be applied by `rain pending` (runs at login)")
@@ -728,7 +773,7 @@ def apply_vesktop(slug, exp):
 
 
 FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "kitty": apply_kitty,
-       "ghostty": apply_ghostty, "geany": apply_geany, "firefox": apply_firefox, "brave": apply_brave,
+       "ghostty": apply_ghostty, "gnome-text-editor": apply_gte, "geany": apply_geany, "firefox": apply_firefox, "brave": apply_brave,
        "vesktop": apply_vesktop}
 
 

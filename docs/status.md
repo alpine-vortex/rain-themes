@@ -68,6 +68,10 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 ## Done
 
+- **GNOME Text Editor** target (2026-10-29): every palette exports a
+  GtkSourceView 5 scheme `gtksourceview-<slug>.xml`; `rain apply --only
+  gnome-text-editor` installs and selects it (queued while the editor is open),
+  and `rain restore` puts the previous scheme back.
 - **kitty and Ghostty** targets (2026-10-28): every palette exports
   `kitty-theme.conf` and `ghostty-theme`; `rain apply` installs them, reloads
   running terminals, and `rain restore` puts the previous theme back.

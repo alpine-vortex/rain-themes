@@ -116,6 +116,24 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
   user themes live in `themes/`, and a theme file can't set `theme` itself, so
   apply has to edit the config's `theme` line. Reload is `SIGUSR2`.
 
+## GNOME Text Editor
+
+- A GtkSourceView 5 style scheme (`gtksourceview-<slug>.xml`, id
+  `rain-<slug>`) shaped like the shipped `Adwaita-dark.xml`, installed into
+  `~/.local/share/gtksourceview-5/styles/` and selected with the
+  `org.gnome.TextEditor style-scheme` key. Other GtkSourceView 5 apps see it too.
+- Text Editor 46 reads that folder only at startup and falls back to Adwaita
+  for an unknown id, so apply queues it while `gnome-text-edit` (the 15-char
+  process name) runs. Restore doesn't queue: the old scheme is already loaded,
+  and the key change applies live.
+- `variant=dark` metadata makes it count as dark even when the desktop isn't
+  (Cinnamon leaves `color-scheme` at default, so Text Editor runs light). With
+  no light variant it is still used, and with `recolor-window` on the window is
+  recoloured from it; the `accent_*` metadata sets the accent to the brand
+  colour instead of the selection colour.
+- The shipped `styles.rng` predates `<metadata>` and `underline-color`, so it
+  rejects the stock schemes too. Check by loading with libgtksourceview instead.
+
 ## Geany
 
 A standard `.conf` scheme generated from the shape of the shipped
@@ -246,6 +264,7 @@ of replaced files under `files/`. It records:
 - `~/.config/gtk-4.0/{gtk.css,gtk-dark.css,assets}`
 - kitty's `current-theme.conf` (and whether `kitty.conf` needed Rain's include)
 - Ghostty's effective (last) `theme =` line and which config file holds it
+- GNOME Text Editor's `style-scheme`
 - Firefox `user.js` and the `chrome/` files
 - Geany's `color_scheme`
 - Brave's `browser.theme`
@@ -259,7 +278,7 @@ logs "left alone" otherwise: gsettings theme keys starting `'Rain-`, a
 wallpaper under `~/.local/share/backgrounds/rain-themes/`, a terminal default
 that is a Rain profile uuid, gtk-4.0 links into `~/.themes/Rain-*`, Firefox css
 equal to an export, a kitty `current-theme.conf` equal to a `kitty-theme.conf`
-export, a Ghostty `theme = rain-themes` line, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
+export, a Ghostty `theme = rain-themes` line, a Text Editor scheme `rain-<slug>`, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
 The terminal list loses only the Rain uuids (reset if it was unset and one
 profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
 (deleted if that leaves it empty); a backup never overwrites `user.js`.
