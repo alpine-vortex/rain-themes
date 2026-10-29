@@ -60,7 +60,8 @@ def bins(d, fakes):
 
 def env_for(home, bin_dir, **extra):
     env = {k: v for k, v in os.environ.items()
-           if not k.startswith(("GIT_", "ANDROID_", "XDG_", "DBUS_")) and k not in ("DISPLAY", "WAYLAND_DISPLAY")}
+           if not k.startswith(("GIT_", "ANDROID_", "XDG_", "DBUS_"))
+           and k not in ("DISPLAY", "WAYLAND_DISPLAY", "CLAUDE_CONFIG_DIR")}
     env.update(HOME=str(home), PATH=f"{bin_dir}:{os.environ['PATH']}", GSETTINGS_BACKEND="memory",
                DBUS_SESSION_BUS_ADDRESS="unix:path=/nonexistent", PYTHONDONTWRITEBYTECODE="1")
     env.update(extra)
@@ -423,6 +424,7 @@ KT = H / ".config/kitty/current-theme.conf"
 KC = H / ".config/kitty/kitty.conf"
 GC = H / ".config/ghostty/config.ghostty"
 TE = "org.gnome.TextEditor style-scheme"
+CS = H / ".claude/settings.json"
 BRAVE = A.BRAVE_PREFS
 ORIG_BRAVE = {"user_color2": -14244198, "color_scheme2": 1}
 
@@ -447,6 +449,8 @@ def make_home(h, gtk4_assets=True):
     (h / ".config/kitty").mkdir(parents=True)
     (h / ".config/kitty/kitty.conf").write_text("font_size 11\ninclude current-theme.conf\n")
     (h / ".config/kitty/current-theme.conf").write_text("## name: Gruvbox Dark\nbackground #282828\n")
+    (h / ".claude").mkdir()
+    (h / ".claude/settings.json").write_text('{\n  "model": "opus",\n  "theme": "light-ansi",\n  "x": "é"\n}\n')
     (h / ".config/ghostty").mkdir(parents=True)
     (h / ".config/ghostty/config.ghostty").write_text("font-size = 11\ntheme = Gruvbox Dark\nwindow-decoration = auto\n")
     if gtk4_assets:
@@ -631,6 +635,41 @@ class DesktopTests(unittest.TestCase):
             assert not GC.parent.exists()
         """)
         self.assertIn("skip Ghostty", out)
+
+    def test_16f_claude_code_theme_installed_and_restored(self):
+        self.child("""
+            orig = CS.read_text()
+            A.apply("librekai", ["claude-code"])
+            th = H / ".claude/themes/rain-themes.json"
+            assert th.read_text() == (A.ROOT / "librekai/desktop/claude-code-theme.json").read_text()
+            assert CS.read_text() == orig.replace('"light-ansi"', '"custom:rain-themes"'), CS.read_text()
+            A.apply("dracula", ["claude-code"])  # switching palettes only rewrites the theme file
+            assert rd(th)["name"] == "Rain Dracula" and rd(A.SNAPSHOT)["claude_theme"] == {"value": "light-ansi"}
+            A.restore()
+            assert CS.read_text() == orig, CS.read_text()
+        """)
+        self.child("""
+            A.apply("librekai", ["claude-code"])
+            s = rd(CS)
+            s["theme"] = "dark"  # picked in /theme after the apply
+            CS.write_text(json.dumps(s))
+            A.restore()
+            assert rd(CS)["theme"] == "dark"
+        """)
+        self.child("""
+            CS.write_text('{"model": "opus"}')  # no theme: Claude Code's default
+            A.apply("librekai", ["claude-code"])
+            assert rd(CS) == {"model": "opus", "theme": "custom:rain-themes"}
+            A.restore()
+            assert rd(CS) == {"model": "opus"}, rd(CS)
+        """)
+        import shutil
+        shutil.rmtree(self.h / ".claude")
+        out = self.child("""
+            A.apply("librekai", ["claude-code"])
+            assert not CS.parent.exists()
+        """)
+        self.assertIn("skip Claude Code", out)
 
     def test_16e_text_editor_scheme_installed_and_restored(self):
         self.child("""

@@ -103,7 +103,25 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
   empty values.
 - The uuid is `uuid5(NAMESPACE_URL, "rain-themes/<slug>")`, so re-applying
   updates the same profile instead of adding duplicates.
-- Claude Code needs no export. Its ANSI-only theme uses the terminal palette.
+
+## Claude Code
+
+- Claude Code (2.1.3xx) loads custom themes from `~/.claude/themes/<name>.json`
+  (`$CLAUDE_CONFIG_DIR` if set): `{"name", "base", "overrides"}`, selected with
+  `"theme": "custom:<name>"` in `settings.json`. It keeps only override keys the
+  base theme has and colours it can parse (`#RRGGBB`, `rgb()`, `ansi256()`,
+  `ansi:`), and falls back to `dark` for an unknown base. Read from the 2.1.312
+  binary; there is no published schema.
+- The export, `claude-code-theme.json`, is `dark` with its colour keys taken
+  from the roles (accent = `claude`, backgrounds of user/bash/memory messages
+  from the panel colours), the bright ANSI colours (permission, auto-accept,
+  subagents) and the syntax diff colours mixed into the background. Keys left
+  out (rainbow, fast mode, Chrome yellow) keep the dark theme's values.
+- Apply installs one file, `rain-themes.json`, so switching palettes only
+  rewrites it; `settings.json` is rewritten only when `theme` isn't already
+  `custom:rain-themes` (key order kept, `indent=2`).
+- The ANSI-only themes (`dark-ansi`) remain the other route: they follow the
+  terminal palette, so GNOME Terminal / kitty / Ghostty themes cover them.
 
 ## kitty and Ghostty
 
@@ -265,6 +283,7 @@ of replaced files under `files/`. It records:
 - kitty's `current-theme.conf` (and whether `kitty.conf` needed Rain's include)
 - Ghostty's effective (last) `theme =` line and which config file holds it
 - GNOME Text Editor's `style-scheme`
+- Claude Code's `theme` in `settings.json` (`null` = unset)
 - Firefox `user.js` and the `chrome/` files
 - Geany's `color_scheme`
 - Brave's `browser.theme`
@@ -278,7 +297,7 @@ logs "left alone" otherwise: gsettings theme keys starting `'Rain-`, a
 wallpaper under `~/.local/share/backgrounds/rain-themes/`, a terminal default
 that is a Rain profile uuid, gtk-4.0 links into `~/.themes/Rain-*`, Firefox css
 equal to an export, a kitty `current-theme.conf` equal to a `kitty-theme.conf`
-export, a Ghostty `theme = rain-themes` line, a Text Editor scheme `rain-<slug>`, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
+export, a Ghostty `theme = rain-themes` line, a Text Editor scheme `rain-<slug>`, a Claude Code theme `custom:rain-themes`, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
 The terminal list loses only the Rain uuids (reset if it was unset and one
 profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
 (deleted if that leaves it empty); a backup never overwrites `user.js`.

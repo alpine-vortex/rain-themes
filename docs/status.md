@@ -68,6 +68,10 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 ## Done
 
+- **Claude Code** target (2026-10-29): every palette exports
+  `claude-code-theme.json`, a Claude Code custom theme; `rain apply --only
+  claude-code` installs it as `~/.claude/themes/rain-themes.json` and selects it,
+  and `rain restore` puts the previous `theme` back.
 - **GNOME Text Editor** target (2026-10-29): every palette exports a
   GtkSourceView 5 scheme `gtksourceview-<slug>.xml`; `rain apply --only
   gnome-text-editor` installs and selects it (queued while the editor is open),
