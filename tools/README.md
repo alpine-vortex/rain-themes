@@ -113,7 +113,7 @@ The same palette, applied to the desktop and the apps around it.
 
 ```sh
 python3 tools/desktop_export.py <theme-dir> ...   # writes <theme-dir>/desktop/
-tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,claude-code,kitty,ghostty,gnome-text-editor,geany,firefox,brave,vesktop] [--dry-run]
+tools/apply_theme.py <slug> [--only gtk,icons,flatpak,wallpaper,terminal,claude-code,kitty,ghostty,gnome-text-editor,xed,geany,firefox,librewolf,brave,vesktop] [--dry-run]
 tools/apply_theme.py --restore                    # back to the settings in the snapshot
 ```
 
@@ -145,8 +145,12 @@ colour even where upstream uses a light one with dark selected text.
 | kitty | `kitty-theme.conf` | Written as `~/.config/kitty/current-theme.conf` (the file `kitten themes` writes); `include current-theme.conf` appended to `kitty.conf` in a `BEGIN/END_KITTY_THEME` block only if it isn't there. Running kitty reloads (SIGUSR1). Skipped without `~/.config/kitty`. |
 | Ghostty | `ghostty-theme` | Written as `~/.config/ghostty/themes/rain-themes`; the last `theme =` line in `config.ghostty` (or the older `config`) becomes `theme = rain-themes`, or one is appended. Running Ghostty reloads (SIGUSR2). |
 | GNOME Text Editor | `gtksourceview-<slug>.xml` | GtkSourceView 5 scheme (id `rain-<slug>`) into `~/.local/share/gtksourceview-5/styles/`, selected with gsettings `org.gnome.TextEditor style-scheme`. Text Editor must be closed (it loads schemes only at startup); skipped if its schema isn't installed. |
+| Xed | `xed-<slug>.xml` | GtkSourceView 4 scheme (the Text Editor one without `<metadata>`) into `~/.local/share/xed/styles/`, gsettings `org.x.editor.preferences.editor scheme`. Xed must be closed. |
+| Icon theme | `colloid.json` (`accent`) | The Yaru or Mint-Y colour variant nearest the accent, set in `org.cinnamon.desktop.interface icon-theme`; other icon themes are skipped. |
+| Flatpak apps | none | `~/.themes:ro` and `xdg-config/gtk-4.0:ro` added to the user-wide override `~/.local/share/flatpak/overrides/global`. |
 | Geany editor | `geany-<slug>.conf` | Into `~/.config/geany/colorschemes/`, `color_scheme=` in `geany.conf`. Geany must be closed. |
 | Firefox | `userChrome.css`, `userContent.css` | Into the default profile's `chrome/`, plus the `toolkit.legacyUserProfileCustomizations.stylesheets` pref in `user.js`. Takes effect on the next Firefox start. Firefox's default theme also follows the GTK theme on Linux, so it matches even without these files. |
+| LibreWolf | `userChrome.css`, `userContent.css` | The same, in the Flatpak's profile (`~/.var/app/io.gitlab.librewolf-community/.librewolf`). |
 | Brave | `brave.json` | Sets the "Customize → colour" seed (`browser.theme.user_color2`), dark mode. Brave must be closed. |
 | Vesktop | `<slug>.theme.css` | Into Vesktop's `themes/`, enabled in its settings. |
 | Termius (phone) | `README.md` | Manual: pick the built-in named by the spec's `termius` block (`theme`, `match`: `same palette` or `closest`). Termius has no custom-theme import. |

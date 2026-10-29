@@ -152,6 +152,40 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
 - The shipped `styles.rng` predates `<metadata>` and `underline-color`, so it
   rejects the stock schemes too. Check by loading with libgtksourceview instead.
 
+## Xed
+
+Xed (Mint's editor) uses GtkSourceView 4, which rejects a whole scheme file over
+the `<metadata>` node GtkSourceView 5 accepts ("unknown node 'metadata'"), so it
+gets its own export, `xed-<slug>.xml`: the Text Editor scheme without metadata.
+User schemes live in `~/.local/share/xed/styles/`; the key is
+`org.x.editor.preferences.editor scheme`. Like Text Editor, it loads schemes at
+startup, hence the queue while `xed` runs.
+
+## Icons
+
+- No export: apply picks, from the variants of the current icon family that are
+  installed, the one whose folder colour is nearest the accent (`colloid.json`
+  `accent`). Nearest = smallest OKLab hue angle, plus half the chroma
+  difference; an accent with chroma under 0.04 takes the greyest variant.
+- Yaru's colours are Ubuntu's accent colours (its GTK theme is a compiled
+  resource, so they can't be read from CSS); the folder icons' hues agree.
+  Mint-Y's are the most saturated 5% of each `places/64/folder.png`, since an
+  average is washed out by the folder's light body (Navy averaged to `#8AB4D2`).
+- Papirus isn't offered: its folder colours are changed by `papirus-folders`,
+  which rewrites the system icon theme with sudo.
+- The snapshot keeps the original theme and the name apply last set; restore
+  only acts if the current theme is still that name.
+
+## Flatpak
+
+Flatpak apps don't see `~/.themes`. With Cinnamon on X11, GTK3 Flatpaks already
+get the theme name over XSETTINGS, so read access is all they need:
+`filesystems=~/.themes:ro;xdg-config/gtk-4.0:ro;` in the `[Context]` group of
+`~/.local/share/flatpak/overrides/global` (what `flatpak override --user`
+writes). Apply edits only that line; the snapshot records which of the two
+entries were already there, and restore removes only the others. No
+`GTK_THEME` override, so a theme picked outside Rain is still followed.
+
 ## Geany
 
 A standard `.conf` scheme generated from the shape of the shipped
@@ -284,6 +318,9 @@ of replaced files under `files/`. It records:
 - Ghostty's effective (last) `theme =` line and which config file holds it
 - GNOME Text Editor's `style-scheme`
 - Claude Code's `theme` in `settings.json` (`null` = unset)
+- Xed's `scheme`, the icon theme (and the variant Rain last set), and which of
+  the Flatpak entries already existed
+- LibreWolf's `user.js` and `chrome/` files, like Firefox's
 - Firefox `user.js` and the `chrome/` files
 - Geany's `color_scheme`
 - Brave's `browser.theme`
@@ -297,7 +334,7 @@ logs "left alone" otherwise: gsettings theme keys starting `'Rain-`, a
 wallpaper under `~/.local/share/backgrounds/rain-themes/`, a terminal default
 that is a Rain profile uuid, gtk-4.0 links into `~/.themes/Rain-*`, Firefox css
 equal to an export, a kitty `current-theme.conf` equal to a `kitty-theme.conf`
-export, a Ghostty `theme = rain-themes` line, a Text Editor scheme `rain-<slug>`, a Claude Code theme `custom:rain-themes`, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
+export, a Ghostty `theme = rain-themes` line, a Text Editor scheme `rain-<slug>`, a Claude Code theme `custom:rain-themes`, an Xed scheme `rain-<slug>`, the icon variant Rain set, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
 The terminal list loses only the Rain uuids (reset if it was unset and one
 profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
 (deleted if that leaves it empty); a backup never overwrites `user.js`.

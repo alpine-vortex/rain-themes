@@ -17,7 +17,8 @@
     rain install [--force]         menu entry, login autostart for `pending`, git hooks that check
                                    commits, merge commits and pushes to main (main checkout only)
 
-Targets for --only: gtk, wallpaper, terminal, claude-code, kitty, ghostty, gnome-text-editor, geany, firefox, brave, vesktop.
+Targets for --only: gtk, icons, flatpak, wallpaper, terminal, claude-code, kitty, ghostty,
+                   gnome-text-editor, xed, geany, firefox, librewolf, brave, vesktop.
 """
 import argparse
 import contextlib

@@ -15,6 +15,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     ghostty-theme            Ghostty theme (installed as ~/.config/ghostty/themes/rain-themes)
     geany-<slug>.conf        Geany colour scheme
     gtksourceview-<slug>.xml GNOME Text Editor style scheme (id rain-<slug>)
+    xed-<slug>.xml           the same for Xed (GtkSourceView 4: no <metadata>)
     userChrome.css           Firefox toolbar/tabs/menus
     userContent.css          Firefox new-tab page
     brave.json               Brave seed colour
@@ -322,9 +323,10 @@ line_changed={x(s['changed'])}
 
 
 # ---------- GNOME Text Editor ----------
-def gtksourceview(c, spec):
+def gtksourceview(c, spec, metadata=True):
     """GtkSourceView 5 style scheme (GNOME Text Editor), shaped like the shipped Adwaita-dark.xml.
-    `variant` marks it dark; the accent metadata steers Text Editor's window recolouring."""
+    `variant` marks it dark; the accent metadata steers Text Editor's window recolouring. Without `metadata` it is
+    a GtkSourceView 4 scheme (Xed), which rejects the whole file over an unknown <metadata> node."""
     r, s, t = c.role, c.syntax, c.term
     bg, fg = t["background"], t["foreground"]
     line = r["floating_bg"] if r["floating_bg"] != bg else r["secondary_bg"]
@@ -397,10 +399,9 @@ def gtksourceview(c, spec):
            f'<style-scheme id={q("rain-" + spec["slug"])} name={q("Rain " + spec["name"])} version="1.0">',
            f"  <author>{escape(', '.join(spec['authors']))}</author>",
            f"  <description>{escape(spec['name'])} colours, generated from rain-themes theme.spec.json."
-           "</description>",
-           "  <metadata>"]
-    out += [f"    <property name={q(k)}>{v}</property>" for k, v in meta]
-    out.append("  </metadata>")
+           "</description>"]
+    if metadata:
+        out += ["  <metadata>"] + [f"    <property name={q(k)}>{v}</property>" for k, v in meta] + ["  </metadata>"]
     out += [f"  <style name={q(n):<30}" + " ".join(f"{k}={q(v)}" for k, v in a.items()) + "/>" for n, a in rows]
     out.append("</style-scheme>")
     return "\n".join(out) + "\n"
@@ -933,6 +934,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / "ghostty-theme").write_text(ghostty(c, spec))
     (out / f"geany-{slug}.conf").write_text(geany(c, spec))
     (out / f"gtksourceview-{slug}.xml").write_text(gtksourceview(c, spec))
+    (out / f"xed-{slug}.xml").write_text(gtksourceview(c, spec, metadata=False))
     chrome, content = firefox(c, spec["name"])
     (out / "userChrome.css").write_text(chrome)
     (out / "userContent.css").write_text(content)

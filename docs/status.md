@@ -68,6 +68,10 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 ## Done
 
+- **Icons, Flatpak, Xed and LibreWolf** targets (2026-10-29): the icon theme
+  follows the accent within its family (Yaru or Mint-Y), Flatpak apps get read
+  access to the Rain GTK theme, Xed gets a GtkSourceView 4 scheme
+  (`xed-<slug>.xml`), and LibreWolf gets the Firefox userChrome files.
 - **Claude Code** target (2026-10-29): every palette exports
   `claude-code-theme.json`, a Claude Code custom theme; `rain apply --only
   claude-code` installs it as `~/.claude/themes/rain-themes.json` and selects it,
