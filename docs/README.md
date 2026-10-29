@@ -15,7 +15,7 @@ single source of truth. `tools/build_theme.py` turns it into a Rain/Bunny theme
 for Discord on Android. `tools/desktop_export.py` turns the same spec into
 configs for the Linux Mint desktop: Cinnamon/GTK (a recoloured
 [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) build), GNOME
-Terminal (and Claude Code through it), Geany, Firefox, Brave, Vesktop, plus
+Terminal, kitty, Ghostty, Claude Code, GNOME Text Editor, Geany, Firefox, Brave, Vesktop, plus
 wallpapers. The same exports cover the phone: `sync-theme.json` (Sync for
 Reddit), `<slug>.app-theme.json` (Android apps such as redeye), a Termius built-in per palette, and a
 Niagara swatch. `tools/rain apply` applies the desktop with one command and can

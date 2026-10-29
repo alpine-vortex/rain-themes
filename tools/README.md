@@ -113,7 +113,7 @@ The same palette, applied to the desktop and the apps around it.
 
 ```sh
 python3 tools/desktop_export.py <theme-dir> ...   # writes <theme-dir>/desktop/
-tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,gnome-text-editor,geany,firefox,brave,vesktop] [--dry-run]
+tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,claude-code,kitty,ghostty,gnome-text-editor,geany,firefox,brave,vesktop] [--dry-run]
 tools/apply_theme.py --restore                    # back to the settings in the snapshot
 ```
 
@@ -140,7 +140,8 @@ colour even where upstream uses a light one with dark selected text.
 |---|---|---|
 | Cinnamon, GTK 2/3/4, window borders (Nemo, Geany chrome) | `colloid-palette.scss`, `colloid.json` | Rebuilds [Colloid](https://github.com/vinceliuice/Colloid-gtk-theme) (GPL-3, pinned commit, cloned to `~/.cache/rain-themes`) as `~/.themes/Rain-<Name>-Dark`, sets the three Cinnamon theme keys, links a compiled libadwaita stylesheet into `~/.config/gtk-4.0` (what Colloid's `-l` would install). |
 | Wallpaper | `wallpaper-desktop.png` | Copied to `~/.local/share/backgrounds/rain-themes/`, set via gsettings. |
-| GNOME Terminal (and Claude Code via `/theme` → ANSI) | `gnome-terminal.json` | Profile "Rain <Name>" written with dconf (stable uuid5 id) and made default. |
+| GNOME Terminal (and Claude Code's ANSI-only themes) | `gnome-terminal.json` | Profile "Rain <Name>" written with dconf (stable uuid5 id) and made default. |
+| Claude Code | `claude-code-theme.json` | Custom theme (`base` dark + colour `overrides`) written as `~/.claude/themes/rain-themes.json`; `"theme": "custom:rain-themes"` set in `~/.claude/settings.json`. Skipped without `~/.claude`. |
 | kitty | `kitty-theme.conf` | Written as `~/.config/kitty/current-theme.conf` (the file `kitten themes` writes); `include current-theme.conf` appended to `kitty.conf` in a `BEGIN/END_KITTY_THEME` block only if it isn't there. Running kitty reloads (SIGUSR1). Skipped without `~/.config/kitty`. |
 | Ghostty | `ghostty-theme` | Written as `~/.config/ghostty/themes/rain-themes`; the last `theme =` line in `config.ghostty` (or the older `config`) becomes `theme = rain-themes`, or one is appended. Running Ghostty reloads (SIGUSR2). |
 | GNOME Text Editor | `gtksourceview-<slug>.xml` | GtkSourceView 5 scheme (id `rain-<slug>`) into `~/.local/share/gtksourceview-5/styles/`, selected with gsettings `org.gnome.TextEditor style-scheme`. Text Editor must be closed (it loads schemes only at startup); skipped if its schema isn't installed. |
@@ -153,7 +154,7 @@ colour even where upstream uses a light one with dark selected text.
 | Android system colours (phone) | `brave.json`'s seed, via `rain phone <slug>` | adb (Wireless debugging): writes the accent as the Material You seed into `secure theme_customization_overlay_packages` (`--style`, default TONAL_SPOT), copies wallpaper/Sync/redeye files to `/sdcard/Download/rain-themes/<slug>/`. `rain phone --restore` puts the original back. Snapshots and `phone-state.json` are per device (`ro.serialno`). |
 | HeliBoard (phone) | `<slug>.heliboard.json`, `<slug>-light.heliboard.json` (+ `.heliboard-simple.json`) | Manual: HeliBoard → Appearance → Colors → Load (file or clipboard). The main files use its "all colors" format, setting all 44 `ColorType` slots (`HELIBOARD_ALL` in `desktop_export.py`; the name is stored as a base36 key with value 0). All-colors mode paints key backgrounds whatever the border setting, so keys use the keyboard background (the borderless look); the `-simple` files follow the border setting. The `-simple` files use the 10-colour format. Both match real HeliBoard exports; ints are signed ARGB. The light file exists only for palettes with a `light` block. |
 | Sync for Reddit (phone) | `sync-theme.json` | Manual: copy the JSON and paste it into Sync's Monet theme import (clipboard only; confirmed working 2026-09-29). Seed = accent; dark primary/secondary/link text overridden. Sync derives backgrounds from the seed, so they aren't the palette's exact background. |
-| Dark Reader, Niagara, Claude Code | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
+| Dark Reader, Niagara | `README.md` | Manual; the values are in the file. `wallpaper-phone.png` steers Android's Material You. |
 
 The first apply on an unthemed desktop saves the current state to
 `~/.local/state/rain-themes/snapshot.json` (gsettings, terminal profile list,

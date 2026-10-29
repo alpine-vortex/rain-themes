@@ -62,7 +62,10 @@ the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
 
 ## Claude Code
-Once: `/theme` → the *ANSI colours only* dark option. It then follows the terminal palette.
+`rain apply` installs `claude-code-theme.json` as the custom theme "Rain Rosé Pine"
+(`~/.claude/themes/rain-themes.json`, `"theme": "custom:rain-themes"` in `~/.claude/settings.json`).
+Elsewhere: copy it to `~/.claude/themes/` and pick it in `/theme`, or pick the *ANSI colours
+only* dark option there to follow the terminal palette instead.
 
 ## Colours
 | Role | Hex |
