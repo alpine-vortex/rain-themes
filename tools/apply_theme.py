@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Apply a theme's desktop exports to this machine (Linux Mint / Cinnamon).
 
-    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,geany,firefox,brave,vesktop] [--dry-run]
+    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,kitty,ghostty,geany,firefox,brave,vesktop] [--dry-run]
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
@@ -42,9 +42,16 @@ BRAVE_PREFS = HOME / ".config/BraveSoftware/Brave-Origin/Default/Preferences"
 VESKTOP = next((d for d in (HOME / ".config/vesktop", HOME / ".var/app/dev.vencord.Vesktop/config/vesktop")
                 if d.exists()), HOME / ".config/vesktop")
 TERM_BASE = "/org/gnome/terminal/legacy/profiles:/"
+KITTY = HOME / ".config/kitty"
+# kitty.conf needs this to load current-theme.conf; same block `kitten themes` writes, so it replaces ours
+KITTY_BLOCK = "# BEGIN_KITTY_THEME\n# rain-themes\ninclude current-theme.conf\n# END_KITTY_THEME\n"
+KITTY_INCLUDE = re.compile(r"^\s*include\s+current-theme\.conf\s*$", re.M)
+GHOSTTY = HOME / ".config/ghostty"
+GHOSTTY_LINE = "theme = rain-themes"
+GHOSTTY_THEME = re.compile(r"^[ \t]*theme[ \t]*=.*$", re.M)
 GSETTINGS = [("org.cinnamon.theme", "name"), ("org.cinnamon.desktop.interface", "gtk-theme"),
              ("org.cinnamon.desktop.wm.preferences", "theme"), ("org.cinnamon.desktop.background", "picture-uri")]
-TARGETS = ["gtk", "wallpaper", "terminal", "geany", "firefox", "brave", "vesktop"]
+TARGETS = ["gtk", "wallpaper", "terminal", "kitty", "ghostty", "geany", "firefox", "brave", "vesktop"]
 USERJS_LINE = 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // rain-themes'
 DRY = False
 
@@ -209,12 +216,33 @@ def rain_gtk4(p):
     return p.is_symlink() and os.readlink(p).startswith(str(THEMES_DIR / "Rain-"))
 
 
-def rain_css(p):
-    """A userChrome/userContent.css that is byte-for-byte one of our exports."""
+def rain_css(p, export=None):
+    """A file (userChrome/userContent.css, kitty's current-theme.conf) that is byte-for-byte one of our
+    exports, named `export` in desktop/ (default: p's own name)."""
     if not p.is_file() or p.is_symlink():
         return False
     t = p.read_bytes()
-    return any(t == e.read_bytes() for e in ROOT.glob(f"*/desktop/{p.name}"))
+    return any(t == e.read_bytes() for e in ROOT.glob(f"*/desktop/{export or p.name}"))
+
+
+def rain_kitty(p):
+    return rain_css(p, "kitty-theme.conf")
+
+
+def ghostty_installed():
+    return GHOSTTY.exists() or shutil.which("ghostty") is not None
+
+
+def ghostty_conf():
+    """The config file Ghostty reads: config.ghostty, else the older `config`, else (new) config.ghostty."""
+    return next((p for p in (GHOSTTY / "config.ghostty", GHOSTTY / "config") if p.exists()),
+                GHOSTTY / "config.ghostty")
+
+
+def ghostty_theme_line(conf):
+    """The effective (last) `theme = ...` line, or None."""
+    m = GHOSTTY_THEME.findall(conf.read_text()) if conf.is_file() else []
+    return m[-1] if m else None
 
 
 def rain_geany(scheme):
@@ -278,6 +306,20 @@ def snapshot_apps(snap):
             if key not in snap["files"] and not rain_css(ff / f):
                 backup_file(ff / f, key, snap)
                 added.append(f"Firefox {f}")
+    if KITTY.exists():
+        if "kitty-current-theme.conf" not in snap["files"] and not rain_kitty(KITTY / "current-theme.conf"):
+            backup_file(KITTY / "current-theme.conf", "kitty-current-theme.conf", snap)
+            added.append("kitty")
+        if "kitty-kitty.conf" not in snap["files"]:  # restore only strips our include block, if we added it
+            snap["files"]["kitty-kitty.conf"] = {"path": str(KITTY / "kitty.conf")}
+            if "kitty" not in added:
+                added.append("kitty")
+    if "ghostty_theme" not in snap and ghostty_installed():
+        conf = ghostty_conf()
+        line = ghostty_theme_line(conf)
+        if line != GHOSTTY_LINE:
+            snap["ghostty_theme"] = {"path": str(conf), "line": line}
+            added.append("Ghostty")
     if "brave_theme" not in snap and BRAVE_PREFS.exists():
         th = json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")
         if not rain_brave(th):
@@ -346,7 +388,17 @@ def restore_file(key, f):
                 p.unlink()
         act(f"remove the rain-themes line from {p}", strip)
         return
-    ours = rain_gtk4(p) if key.startswith("gtk4-") else rain_css(p)
+    if key == "kitty-kitty.conf":
+        if p.is_file() and KITTY_BLOCK in p.read_text():
+            def unblock():
+                t = p.read_text().replace(KITTY_BLOCK, "", 1)
+                if t.strip():
+                    atomic_write(p, t)
+                else:
+                    p.unlink()
+            act(f"remove the rain-themes include from {p}", unblock)
+        return
+    ours = rain_gtk4(p) if key.startswith("gtk4-") else rain_kitty(p) if key.startswith("kitty-") else rain_css(p)
     if not ours:
         if p.exists() or p.is_symlink():
             left_alone(str(p))
@@ -398,6 +450,9 @@ def restore():
     restore_terminal(snap)
     for key, f in snap["files"].items():
         restore_file(key, f)
+    if "kitty-current-theme.conf" in snap["files"]:
+        reload_kitty()
+    restore_ghostty(snap)
     restore_geany(snap)
     restore_brave(snap)
     if "vesktop_enabled" in snap:
@@ -414,6 +469,31 @@ def restore():
     else:
         retire_snapshot()
     log("restored. (Rain profiles/themes stay installed but unused; Firefox keeps the userChrome pref on.)")
+
+
+def restore_ghostty(snap):
+    g = snap.get("ghostty_theme")
+    if not g:
+        return
+    conf = Path(g["path"])
+    if ghostty_theme_line(conf) != GHOSTTY_LINE:
+        if conf.exists():
+            left_alone(f"ghostty theme in {conf}")
+        return
+
+    def put():
+        t = conf.read_text()
+        lines = [m.start() for m in GHOSTTY_THEME.finditer(t)]
+        i = lines[-1]
+        end = t.find("\n", i)
+        end = len(t) if end < 0 else end + 1
+        t = t[:i] + (g["line"] + "\n" if g["line"] else "") + t[end:]
+        if t.strip():
+            atomic_write(conf, t)
+        else:
+            conf.unlink()
+    act(f"ghostty: {g['line'] or 'no theme'} in {conf}", put)
+    reload_ghostty()
 
 
 def restore_geany(snap):
@@ -520,6 +600,56 @@ def apply_terminal(slug, exp):
     act(f"terminal profile '{prof['visible-name']}' ({pid}) as default", go)
 
 
+def reload_kitty():
+    if running("kitty"):
+        act("kitty: reload config in running windows (SIGUSR1)",
+            lambda: run("pkill", "-USR1", "-x", "kitty", check=False))
+
+
+def apply_kitty(slug, exp):
+    if not KITTY.exists():
+        log(f"skip kitty: no {KITTY} (run kitty once, then re-run with --only kitty)")
+        return
+    conf = KITTY / "kitty.conf"
+
+    def go():
+        write(KITTY / "current-theme.conf", (exp / "kitty-theme.conf").read_text())
+        t = conf.read_text() if conf.exists() else ""
+        if not KITTY_INCLUDE.search(t):
+            atomic_write(conf, t + ("" if t.endswith("\n") or not t else "\n") + KITTY_BLOCK)
+    act(f"kitty colours -> {KITTY}/current-theme.conf", go)
+    reload_kitty()
+
+
+def reload_ghostty():
+    if running("ghostty"):
+        act("ghostty: reload config in running windows (SIGUSR2)",
+            lambda: run("pkill", "-USR2", "-x", "ghostty", check=False))
+
+
+def apply_ghostty(slug, exp):
+    if not ghostty_installed():
+        log("skip Ghostty: not installed")
+        return
+    conf = ghostty_conf()
+    dst = GHOSTTY / "themes/rain-themes"
+
+    def go():
+        write(dst, (exp / "ghostty-theme").read_text())
+        t = conf.read_text() if conf.exists() else ""
+        lines = list(GHOSTTY_THEME.finditer(t))
+        if lines and lines[-1].group(0) == GHOSTTY_LINE:
+            return
+        if lines:  # replace the effective (last) theme line in place
+            m = lines[-1]
+            t = t[:m.start()] + GHOSTTY_LINE + t[m.end():]
+        else:
+            t += ("" if t.endswith("\n") or not t else "\n") + GHOSTTY_LINE + "\n"
+        write(conf, t)
+    act(f"ghostty theme -> {dst}, `{GHOSTTY_LINE}` in {conf}", go)
+    reload_ghostty()
+
+
 def apply_geany(slug, exp):
     if running("geany"):
         log("Geany is running: queued, it will be applied by `rain pending` (runs at login)")
@@ -597,8 +727,9 @@ def apply_vesktop(slug, exp):
     act(f"vesktop theme -> {dst} (enabled)", go)
 
 
-FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "geany": apply_geany,
-       "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop}
+FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "kitty": apply_kitty,
+       "ghostty": apply_ghostty, "geany": apply_geany, "firefox": apply_firefox, "brave": apply_brave,
+       "vesktop": apply_vesktop}
 
 
 def exportable():

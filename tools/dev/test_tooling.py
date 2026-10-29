@@ -378,6 +378,7 @@ G = {"org.cinnamon.theme name": "'Mint-Y-Dark'", "org.cinnamon.desktop.interface
      "org.cinnamon.desktop.background picture-uri": "'file:///orig.png'"}
 D = {B + ":orig/visible-name": "'Default'"}
 RUNNING = set()
+KILLS = []
 
 
 def run(*cmd, check=True):
@@ -397,6 +398,8 @@ def run(*cmd, check=True):
         elif op == "list":
             return "\n".join(sorted({k[len(cmd[2]):].split("/")[0] + ("/" if "/" in k[len(cmd[2]):] else "")
                                      for k in D if k.startswith(cmd[2])}))
+    elif cmd[0] == "pkill":
+        KILLS.append(cmd)
     else:
         raise AssertionError(cmd)
     return ""
@@ -415,6 +418,9 @@ FF = H / ".mozilla/firefox/p.default"
 UJ = FF / "user.js"
 GTK4 = H / ".config/gtk-4.0"
 VS = H / ".config/vesktop/settings/settings.json"
+KT = H / ".config/kitty/current-theme.conf"
+KC = H / ".config/kitty/kitty.conf"
+GC = H / ".config/ghostty/config.ghostty"
 BRAVE = A.BRAVE_PREFS
 ORIG_BRAVE = {"user_color2": -14244198, "color_scheme2": 1}
 
@@ -436,6 +442,11 @@ def make_home(h, gtk4_assets=True):
     (h / ".config/vesktop/settings").mkdir(parents=True)
     (h / ".config/vesktop/themes").mkdir()
     (h / ".config/vesktop/settings/settings.json").write_text('{"enabledThemes": []}')
+    (h / ".config/kitty").mkdir(parents=True)
+    (h / ".config/kitty/kitty.conf").write_text("font_size 11\ninclude current-theme.conf\n")
+    (h / ".config/kitty/current-theme.conf").write_text("## name: Gruvbox Dark\nbackground #282828\n")
+    (h / ".config/ghostty").mkdir(parents=True)
+    (h / ".config/ghostty/config.ghostty").write_text("font-size = 11\ntheme = Gruvbox Dark\nwindow-decoration = auto\n")
     if gtk4_assets:
         (h / ".config/gtk-4.0/assets").mkdir(parents=True)
         (h / ".config/gtk-4.0/assets/a.png").write_text("orig")
@@ -446,7 +457,7 @@ class DesktopTests(unittest.TestCase):
         self.s = Path(tempfile.mkdtemp(prefix="rain-test-desk-"))
         self.h = self.s / "h"
         self.h.mkdir()
-        self.bin = bins(self.s / "bin", {n: LOUD for n in ("gsettings", "dconf", "pgrep", "adb")})
+        self.bin = bins(self.s / "bin", {n: LOUD for n in ("gsettings", "dconf", "pgrep", "pkill", "adb")})
 
     def tearDown(self):
         shutil.rmtree(self.s, ignore_errors=True)
@@ -531,6 +542,93 @@ class DesktopTests(unittest.TestCase):
             A.restore()
             assert rd(VS)["enabledThemes"] == [], rd(VS)
         """)
+
+    def test_16b_kitty_theme_backfilled_and_restored(self):
+        self.child("""
+            A.apply("librekai", ["gtk"])
+            snap = rd(A.SNAPSHOT)  # a snapshot from before kitty was installed
+            snap["files"] = {k: v for k, v in snap["files"].items() if not k.startswith("kitty-")}
+            A.write(A.SNAPSHOT, json.dumps(snap))
+            orig, conf = KT.read_text(), KC.read_text()
+            RUNNING.add("kitty")
+            A.apply("librekai", ["kitty"])
+            assert KT.read_text() == (A.ROOT / "librekai/desktop/kitty-theme.conf").read_text()
+            assert KC.read_text() == conf  # already includes current-theme.conf
+            assert KILLS == [("pkill", "-USR1", "-x", "kitty")], KILLS
+            A.apply("dracula", ["kitty"])  # switching palettes keeps the original backup
+            A.restore()
+            assert KT.read_text() == orig and KC.read_text() == conf
+            assert len(KILLS) == 3, KILLS
+        """)
+
+    def test_16c_kitty_include_added_and_stripped(self):
+        self.child("""
+            KC.write_text("font_size 11\\n")
+            KT.unlink()
+            A.apply("librekai", ["kitty"])
+            assert KC.read_text() == "font_size 11\\n" + A.KITTY_BLOCK and KT.exists()
+            KC.write_text(KC.read_text() + "font_family Mono\\n")
+            A.restore()
+            assert KC.read_text() == "font_size 11\\nfont_family Mono\\n", KC.read_text()
+            assert not KT.exists()
+        """)
+        self.child("""
+            A.apply("librekai", ["kitty"])
+            KT.write_text("## picked with kitten themes\\n")
+            A.restore()
+            assert KT.read_text() == "## picked with kitten themes\\n"
+        """)
+        import shutil
+        shutil.rmtree(self.h)
+        self.h.mkdir()
+        make_home(self.h)
+        shutil.rmtree(self.h / ".config/kitty")
+        out = self.child("""
+            A.apply("librekai", ["kitty"])
+            assert not KT.parent.exists()
+        """)
+        self.assertIn("skip kitty", out)
+
+    def test_16d_ghostty_theme_line_swapped_and_restored(self):
+        self.child("""
+            orig = GC.read_text()
+            RUNNING.add("ghostty")
+            A.apply("librekai", ["ghostty"])
+            assert GC.read_text() == orig.replace("theme = Gruvbox Dark", A.GHOSTTY_LINE), GC.read_text()
+            th = GC.parent / "themes/rain-themes"
+            assert th.read_text() == (A.ROOT / "librekai/desktop/ghostty-theme").read_text()
+            assert KILLS == [("pkill", "-USR2", "-x", "ghostty")], KILLS
+            A.apply("dracula", ["ghostty"])
+            assert GC.read_text().count("theme =") == 1
+            GC.write_text(GC.read_text() + "font-family = Mono\\n")
+            A.restore()
+            assert GC.read_text() == orig + "font-family = Mono\\n", GC.read_text()
+        """)
+        self.child("""
+            A.apply("librekai", ["ghostty"])
+            GC.write_text(GC.read_text().replace(A.GHOSTTY_LINE, "theme = Nord"))
+            A.restore()
+            assert "theme = Nord" in GC.read_text()
+        """)
+        import shutil
+        shutil.rmtree(self.h)
+        self.h.mkdir()
+        make_home(self.h)
+        (self.h / ".config/ghostty/config.ghostty").unlink()
+        self.child("""
+            A.apply("librekai", ["ghostty"])
+            assert GC.read_text() == A.GHOSTTY_LINE + "\\n"
+            A.restore()
+            assert not GC.exists()
+        """)
+        shutil.rmtree(self.h / ".config/ghostty")
+        shutil.rmtree(self.h / ".local/state")
+        out = self.child("""
+            A.shutil.which = lambda name: None  # the test PATH still has the real ghostty
+            A.apply("librekai", ["ghostty"])
+            assert not GC.parent.exists()
+        """)
+        self.assertIn("skip Ghostty", out)
 
     def test_17_gsettings_and_dconf_user_changes_survive(self):
         self.child("""

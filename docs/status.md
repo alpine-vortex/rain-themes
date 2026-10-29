@@ -58,8 +58,8 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   the public `valenced-rain` plugin repo: 21 palettes in two groups (plain, with
   wallpaper), and the official light flavour in Light mode for 15 of them. See `tools/README.md` ("Valenced").
 - Checked: the registration code runs against a fake themes API (42 themes, 130 tokens
-  per mode, all valid hex; dark colours equal the Rain JSON). Not yet checked: the
-  template's Bun/Gradle build and a device install.
+  per mode, all valid hex; dark colours equal the Rain JSON). The repo's CI build
+  published 1.0.0, and it was installed and confirmed working on a device (2026-10-27).
 
 ## Live state
 
@@ -68,6 +68,9 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 ## Done
 
+- **kitty and Ghostty** targets (2026-10-28): every palette exports
+  `kitty-theme.conf` and `ghostty-theme`; `rain apply` installs them, reloads
+  running terminals, and `rain restore` puts the previous theme back.
 - Spec blocks `ansi` / `terminal` / `syntax` added for **Librekai** (from VS
   Code's built-in Monokai) and **Catppuccin Mocha** (from catppuccin/kitty and
   the Catppuccin style guide). Rebuilding all 21 Rain themes after the change
