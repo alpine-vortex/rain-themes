@@ -105,6 +105,17 @@ neutral grey SVGs, and the titlebar colours come from the GTK theme via
   updates the same profile instead of adding duplicates.
 - Claude Code needs no export. Its ANSI-only theme uses the terminal palette.
 
+## kitty and Ghostty
+
+- Both take the same `ansi` / `terminal` colours as GNOME Terminal. kitty's
+  file also sets tab and border colours from the roles (active tab = accent).
+- kitty: apply writes `~/.config/kitty/current-theme.conf`, the file
+  `kitten themes` manages, so a later `kitten themes` pick simply replaces it
+  (and restore then leaves it alone). Reload is `SIGUSR1`.
+- Ghostty (1.3): the config is `config.ghostty` (older installs: `config`),
+  user themes live in `themes/`, and a theme file can't set `theme` itself, so
+  apply has to edit the config's `theme` line. Reload is `SIGUSR2`.
+
 ## Geany
 
 A standard `.conf` scheme generated from the shape of the shipped
@@ -233,6 +244,8 @@ of replaced files under `files/`. It records:
 - the 3 Cinnamon theme settings and the wallpaper
 - the terminal `list` and `default` keys (empty = unset)
 - `~/.config/gtk-4.0/{gtk.css,gtk-dark.css,assets}`
+- kitty's `current-theme.conf` (and whether `kitty.conf` needed Rain's include)
+- Ghostty's effective (last) `theme =` line and which config file holds it
 - Firefox `user.js` and the `chrome/` files
 - Geany's `color_scheme`
 - Brave's `browser.theme`
@@ -245,7 +258,8 @@ Restore touches a value or path only if it still holds what Rain wrote, and
 logs "left alone" otherwise: gsettings theme keys starting `'Rain-`, a
 wallpaper under `~/.local/share/backgrounds/rain-themes/`, a terminal default
 that is a Rain profile uuid, gtk-4.0 links into `~/.themes/Rain-*`, Firefox css
-equal to an export, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
+equal to an export, a kitty `current-theme.conf` equal to a `kitty-theme.conf`
+export, a Ghostty `theme = rain-themes` line, a Geany `geany-<slug>.conf`, a Brave seed of some palette.
 The terminal list loses only the Rain uuids (reset if it was unset and one
 profile is left), Vesktop only the Rain themes, and `user.js` only Rain's line
 (deleted if that leaves it empty); a backup never overwrites `user.js`.

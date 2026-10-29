@@ -68,6 +68,9 @@ What's applied on the owner's machines is kept out of the repo, in the local
 
 ## Done
 
+- **kitty and Ghostty** targets (2026-10-28): every palette exports
+  `kitty-theme.conf` and `ghostty-theme`; `rain apply` installs them, reloads
+  running terminals, and `rain restore` puts the previous theme back.
 - Spec blocks `ansi` / `terminal` / `syntax` added for **Librekai** (from VS
   Code's built-in Monokai) and **Catppuccin Mocha** (from catppuccin/kitty and
   the Catppuccin style guide). Rebuilding all 21 Rain themes after the change

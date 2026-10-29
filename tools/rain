@@ -17,7 +17,7 @@
     rain install [--force]         menu entry, login autostart for `pending`, git hooks that check
                                    commits, merge commits and pushes to main (main checkout only)
 
-Targets for --only: gtk, wallpaper, terminal, geany, firefox, brave, vesktop.
+Targets for --only: gtk, wallpaper, terminal, kitty, ghostty, geany, firefox, brave, vesktop.
 """
 import argparse
 import contextlib
