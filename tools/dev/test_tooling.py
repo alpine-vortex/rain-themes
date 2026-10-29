@@ -377,7 +377,8 @@ B = A.TERM_BASE
 G = {"org.cinnamon.theme name": "'Mint-Y-Dark'", "org.cinnamon.desktop.interface gtk-theme": "'Mint-Y'",
      "org.cinnamon.desktop.wm.preferences theme": "'Mint-Y'",
      "org.cinnamon.desktop.background picture-uri": "'file:///orig.png'",
-     "org.gnome.TextEditor style-scheme": "'cobalt'"}
+     "org.gnome.TextEditor style-scheme": "'cobalt'", "org.x.editor.preferences.editor scheme": "'macchiato'",
+     "org.cinnamon.desktop.interface icon-theme": "'Yaru-blue-dark'"}
 D = {B + ":orig/visible-name": "'Default'"}
 RUNNING = set()
 KILLS = []
@@ -425,6 +426,9 @@ KC = H / ".config/kitty/kitty.conf"
 GC = H / ".config/ghostty/config.ghostty"
 TE = "org.gnome.TextEditor style-scheme"
 CS = H / ".claude/settings.json"
+XK, IK = "org.x.editor.preferences.editor scheme", "org.cinnamon.desktop.interface icon-theme"
+LW = A.LIBREWOLF / "lw.default"
+A.ICON_DIRS = [H / ".icons"]
 BRAVE = A.BRAVE_PREFS
 ORIG_BRAVE = {"user_color2": -14244198, "color_scheme2": 1}
 
@@ -450,6 +454,12 @@ def make_home(h, gtk4_assets=True):
     (h / ".config/kitty/kitty.conf").write_text("font_size 11\ninclude current-theme.conf\n")
     (h / ".config/kitty/current-theme.conf").write_text("## name: Gruvbox Dark\nbackground #282828\n")
     (h / ".claude").mkdir()
+    for v in ("Yaru-blue-dark", "Yaru-red-dark", "Yaru-purple-dark", "Yaru-dark", "Mint-Y", "Mint-Y-Pink"):
+        (h / ".icons" / v).mkdir(parents=True)
+        (h / ".icons" / v / "index.theme").write_text("[Icon Theme]\n")
+    lw = h / ".var/app/io.gitlab.librewolf-community/.librewolf"
+    (lw / "lw.default").mkdir(parents=True)
+    (lw / "installs.ini").write_text("[X]\nDefault=lw.default\n")
     (h / ".claude/settings.json").write_text('{\n  "model": "opus",\n  "theme": "light-ansi",\n  "x": "é"\n}\n')
     (h / ".config/ghostty").mkdir(parents=True)
     (h / ".config/ghostty/config.ghostty").write_text("font-size = 11\ntheme = Gruvbox Dark\nwindow-decoration = auto\n")
@@ -670,6 +680,88 @@ class DesktopTests(unittest.TestCase):
             assert not CS.parent.exists()
         """)
         self.assertIn("skip Claude Code", out)
+
+    def test_16g_xed_scheme_installed_and_restored(self):
+        self.child("""
+            A.apply("librekai", ["xed"])
+            x = A.XED_STYLES / "xed-librekai.xml"
+            assert G[XK] == "'rain-librekai'" and "<metadata>" not in x.read_text(), G[XK]
+            A.apply("dracula", ["xed"])
+            A.restore()
+            assert G[XK] == "'macchiato'", G[XK]
+        """)
+        self.child("""
+            RUNNING.add("xed")
+            A.apply("librekai", ["xed"])
+            assert G[XK] == "'macchiato'" and A.load_state()["pending"] == {"xed": "librekai"}
+            RUNNING.clear()
+            A.run_pending()
+            assert G[XK] == "'rain-librekai'" and A.load_state()["pending"] == {}
+            G[XK] = "'kate'"
+            A.restore()
+            assert G[XK] == "'kate'"
+        """)
+
+    def test_16h_icon_variant_follows_the_accent(self):
+        self.child("""
+            assert A.icon_variant("#F93B7F", A.ICON_FAMILIES["Yaru"]) == "Yaru-red"
+            assert A.icon_variant("#FE8019", A.ICON_FAMILIES["Yaru"]) == "Yaru"
+            assert A.icon_variant("#8BA4B0", A.ICON_FAMILIES["Mint-Y"]) == "Mint-Y-Grey"  # greyish accent
+            A.apply("librekai", ["icons"])
+            assert G[IK] == "'Yaru-red-dark'", G[IK]  # keeps the family and -dark
+            A.apply("dracula", ["icons"])
+            assert G[IK] == "'Yaru-purple-dark'", G[IK]
+            assert rd(A.SNAPSHOT)["icon_theme"] == {"value": "'Yaru-blue-dark'", "rain": "Yaru-purple-dark"}
+            A.restore()
+            assert G[IK] == "'Yaru-blue-dark'"
+        """)
+        self.child("""
+            A.apply("librekai", ["icons"])
+            G[IK] = "'Papirus-Dark'"  # picked by hand after the apply
+            A.restore()
+            assert G[IK] == "'Papirus-Dark'"
+            G[IK] = "'Mint-Y'"
+            A.apply("librekai", ["icons"])
+            assert G[IK] == "'Mint-Y-Pink'", G[IK]  # only installed variants are candidates
+        """)
+        out = self.child("""
+            G[IK] = "'Papirus-Dark'"
+            A.apply("librekai", ["icons"])
+            assert G[IK] == "'Papirus-Dark'"
+        """)
+        self.assertIn("skip icons", out)
+
+    def test_16i_flatpak_overrides_added_and_removed(self):
+        self.child("""
+            F = A.FLATPAK_GLOBAL
+            F.parent.mkdir(parents=True)
+            F.write_text("[Context]\\nfilesystems=home;~/.themes:ro;\\n\\n[Environment]\\nX=1\\n")
+            orig = F.read_text()
+            A.apply("librekai", ["flatpak"])
+            assert A.flatpak_filesystems() == ["home", "~/.themes:ro", "xdg-config/gtk-4.0:ro"], F.read_text()
+            A.apply("dracula", ["flatpak"])
+            assert F.read_text().count("gtk-4.0") == 1
+            A.restore()
+            assert F.read_text() == orig, F.read_text()  # ~/.themes was there before: kept
+        """)
+        self.child("""
+            F = A.FLATPAK_GLOBAL
+            F.unlink()
+            A.apply("librekai", ["flatpak"])
+            assert A.flatpak_filesystems() == A.FLATPAK_FS
+            A.restore()
+            assert not F.exists()
+        """)
+
+    def test_16j_librewolf_profile_themed_and_restored(self):
+        self.child("""
+            A.apply("librekai", ["librewolf"])
+            assert (LW / "chrome/userChrome.css").read_text() == (A.ROOT / "librekai/desktop/userChrome.css").read_text()
+            assert A.USERJS_LINE in (LW / "user.js").read_text()
+            assert not (FF / "chrome").exists()  # Firefox untouched
+            A.restore()
+            assert not (LW / "user.js").exists() and not (LW / "chrome/userChrome.css").exists()
+        """)
 
     def test_16e_text_editor_scheme_installed_and_restored(self):
         self.child("""

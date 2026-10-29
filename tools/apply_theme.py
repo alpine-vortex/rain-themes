@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Apply a theme's desktop exports to this machine (Linux Mint / Cinnamon).
 
-    tools/apply_theme.py <slug> [--only gtk,wallpaper,terminal,claude-code,kitty,ghostty,gnome-text-editor,
-                                        geany,firefox,brave,vesktop] [--dry-run]
+    tools/apply_theme.py <slug> [--only gtk,icons,flatpak,wallpaper,terminal,claude-code,kitty,ghostty,
+                                        gnome-text-editor,xed,geany,firefox,librewolf,brave,vesktop] [--dry-run]
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
@@ -19,6 +19,7 @@ import argparse
 import configparser
 import contextlib
 import json
+import math
 import os
 import re
 import shutil
@@ -53,13 +54,33 @@ GHOSTTY_THEME = re.compile(r"^[ \t]*theme[ \t]*=.*$", re.M)
 # GNOME Text Editor 46 reads ~/.local/share/gtksourceview-5/styles only at startup
 CLAUDE = Path(os.environ.get("CLAUDE_CONFIG_DIR") or HOME / ".claude")
 CLAUDE_THEME = "custom:rain-themes"  # ~/.claude/themes/rain-themes.json; switching palettes rewrites it
+XED_STYLES = HOME / ".local/share/xed/styles"
+XED_KEY = ("org.x.editor.preferences.editor", "scheme")
+LIBREWOLF = HOME / ".var/app/io.gitlab.librewolf-community/.librewolf"  # the Flatpak; same layout as Firefox
+BROWSERS = {"firefox": ("Firefox", HOME / ".mozilla/firefox"), "librewolf": ("LibreWolf", LIBREWOLF)}
+# Flatpak apps can't see ~/.themes; these user-wide overrides let GTK3/4 apps load the Rain theme Cinnamon names
+FLATPAK_GLOBAL = HOME / ".local/share/flatpak/overrides/global"
+FLATPAK_FS = ["~/.themes:ro", "xdg-config/gtk-4.0:ro"]
+ICON_KEY = ("org.cinnamon.desktop.interface", "icon-theme")
+ICON_DIRS = [HOME / ".icons", HOME / ".local/share/icons", Path("/usr/share/icons")]
+# Icon themes with colour variants: variant -> its folder colour. Yaru: Ubuntu's accent colours (the folder icons'
+# hues match). Mint-Y: the most saturated 5% of each places/64/folder.png. `-dark` Yaru variants share the colour.
+ICON_FAMILIES = {
+    "Yaru": {"Yaru": "#E95420", "Yaru-bark": "#787859", "Yaru-blue": "#0073E5", "Yaru-magenta": "#B34CB3",
+             "Yaru-olive": "#4B8501", "Yaru-prussiangreen": "#308280", "Yaru-purple": "#7764D8",
+             "Yaru-red": "#DA3450", "Yaru-sage": "#657B69", "Yaru-viridian": "#03875B"},
+    "Mint-Y": {"Mint-Y": "#1F953F", "Mint-Y-Aqua": "#147EB8", "Mint-Y-Blue": "#5294E2", "Mint-Y-Cyan": "#0096AA",
+               "Mint-Y-Grey": "#747474", "Mint-Y-Navy": "#004988", "Mint-Y-Orange": "#F2632A",
+               "Mint-Y-Pink": "#CF2F67", "Mint-Y-Purple": "#7240C3", "Mint-Y-Red": "#CA0F14",
+               "Mint-Y-Sand": "#E0A84F", "Mint-Y-Teal": "#45AAB6"},
+}
 GTE_STYLES = HOME / ".local/share/gtksourceview-5/styles"
 GTE_KEY = ("org.gnome.TextEditor", "style-scheme")
 GTE_PROC = "gnome-text-edit"  # pgrep -x matches the 15-char comm, not "gnome-text-editor"
 GSETTINGS = [("org.cinnamon.theme", "name"), ("org.cinnamon.desktop.interface", "gtk-theme"),
              ("org.cinnamon.desktop.wm.preferences", "theme"), ("org.cinnamon.desktop.background", "picture-uri")]
-TARGETS = ["gtk", "wallpaper", "terminal", "claude-code", "kitty", "ghostty", "gnome-text-editor", "geany", "firefox",
-           "brave", "vesktop"]
+TARGETS = ["gtk", "icons", "flatpak", "wallpaper", "terminal", "claude-code", "kitty", "ghostty", "gnome-text-editor",
+           "xed", "geany", "firefox", "librewolf", "brave", "vesktop"]
 USERJS_LINE = 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // rain-themes'
 DRY = False
 
@@ -200,16 +221,86 @@ def clear_pending(target):
         save_state(st)
 
 
-def firefox_profile():
-    ini = HOME / ".mozilla/firefox/installs.ini"
+def firefox_profile(root=HOME / ".mozilla/firefox"):
+    ini = root / "installs.ini"
     if not ini.exists():
         return None
     cp = configparser.ConfigParser()
     cp.read(ini)
     for s in cp.sections():
         if cp[s].get("Default"):
-            return HOME / ".mozilla/firefox" / cp[s]["Default"]
+            return root / cp[s]["Default"]
     return None
+
+
+def oklab(h):
+    """#RRGGBB -> OKLab (L, a, b)."""
+    lin = [(c / 12.92) if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+           for c in (int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))]
+    r, g, b = lin
+    lm = [(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b) ** (1 / 3),
+          (0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b) ** (1 / 3),
+          (0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b) ** (1 / 3)]
+    l_, m, s = lm
+    return (0.2104542553 * l_ + 0.7936177850 * m - 0.0040720468 * s,
+            1.9779984951 * l_ - 2.4285922050 * m + 0.4505937099 * s,
+            0.0259040371 * l_ + 0.7827717662 * m - 0.8086757660 * s)
+
+
+def icon_installed(name):
+    return any((d / name / "index.theme").is_file() for d in ICON_DIRS)
+
+
+def icon_family(name):
+    """(variants, dark) for an icon theme rain can recolour, else None. Yaru keeps its `-dark` suffix."""
+    dark = name.startswith("Yaru") and name.endswith("-dark")
+    base = name[:-5] if dark else name
+    for fam in ICON_FAMILIES.values():
+        if base in fam:
+            return {v: c for v, c in fam.items() if icon_installed(v + ("-dark" if dark else ""))}, dark
+    return None
+
+
+def icon_variant(accent, variants):
+    """The variant whose folder colour is nearest the accent: by hue, or the greyest one for a grey accent."""
+    _, a, b = oklab(accent)
+    ch = math.hypot(a, b)
+
+    def dist(v):
+        _, a2, b2 = oklab(variants[v])
+        ch2 = math.hypot(a2, b2)
+        if ch < 0.04:
+            return ch2
+        dh = abs(math.atan2(b, a) - math.atan2(b2, a2))
+        return min(dh, 2 * math.pi - dh) + 0.5 * abs(ch - ch2) + (10 if ch2 < 0.04 else 0)
+    return min(variants, key=dist)
+
+
+def flatpak_filesystems():
+    """The `filesystems=` entries of the user-wide Flatpak override, in order."""
+    t = FLATPAK_GLOBAL.read_text() if FLATPAK_GLOBAL.is_file() else ""
+    m = re.search(r"^\[Context\]\n(?:(?!\[).*\n)*?filesystems=(.*)$", t, re.M)
+    return [e for e in m.group(1).split(";") if e] if m else []
+
+
+def set_flatpak_filesystems(entries):
+    """Rewrite only the [Context] filesystems= line (adding the group or line if missing; dropped when empty)."""
+    t = FLATPAK_GLOBAL.read_text() if FLATPAK_GLOBAL.is_file() else ""
+    line = "filesystems=" + "".join(e + ";" for e in entries) + "\n" if entries else ""
+    m = re.search(r"^\[Context\]\n(?:(?!\[).*\n)*?(filesystems=.*(?:\n|$))", t, re.M)
+    if m:
+        t = t[:m.start(1)] + line + t[m.end(1):]
+    elif entries:
+        g = re.search(r"^\[Context\]\n", t, re.M)
+        t = (t[:g.end()] + line + t[g.end():]) if g else \
+            t + ("\n" if t and not t.endswith("\n") else "") + "[Context]\n" + line
+    if not entries:  # a [Context] group left empty
+        t = re.sub(r"^\[Context\]\n(?=\[|\Z)", "", t, flags=re.M)
+    if re.fullmatch(r"\s*(\[Context\]\s*)?", t):
+        if FLATPAK_GLOBAL.exists():
+            FLATPAK_GLOBAL.unlink()
+    else:
+        write(FLATPAK_GLOBAL, t)
 
 
 # ---------- what rain wrote: restore (and snapshot back-fill) only touch these ----------
@@ -333,13 +424,28 @@ def snapshot_apps(snap):
         if not rain_geany(m.group(1) if m else ""):
             snap["geany_color_scheme"] = m.group(1) if m else ""
             added.append("Geany")
-    ff = firefox_profile()
-    if ff:
+    for app, (label, root) in BROWSERS.items():
+        ff = firefox_profile(root)
+        if not ff:
+            continue
         for f in ("user.js", "chrome/userChrome.css", "chrome/userContent.css"):
-            key = "firefox-" + f.replace("/", "-")
+            key = f"{app}-" + f.replace("/", "-")
             if key not in snap["files"] and not rain_css(ff / f):
                 backup_file(ff / f, key, snap)
-                added.append(f"Firefox {f}")
+                added.append(f"{label} {f}")
+    if "xed_scheme" not in snap:
+        val = run("gsettings", "get", *XED_KEY, check=False)
+        if val and not rain_gte(val):
+            snap["xed_scheme"] = val
+            added.append("Xed")
+    if "icon_theme" not in snap:
+        val = run("gsettings", "get", *ICON_KEY, check=False)
+        if val:  # "rain" is what apply last set; restore only undoes that
+            snap["icon_theme"] = {"value": val, "rain": None}
+            added.append("icons")
+    if "flatpak_fs" not in snap and shutil.which("flatpak"):
+        snap["flatpak_fs"] = [e for e in FLATPAK_FS if e in flatpak_filesystems()]  # already there: keep on restore
+        added.append("Flatpak")
     if KITTY.exists():
         if "kitty-current-theme.conf" not in snap["files"] and not rain_kitty(KITTY / "current-theme.conf"):
             backup_file(KITTY / "current-theme.conf", "kitty-current-theme.conf", snap)
@@ -418,7 +524,7 @@ def left_alone(what):
 
 def restore_file(key, f):
     p = Path(f["path"])
-    if key == "firefox-user.js":
+    if key in ("firefox-user.js", "librewolf-user.js"):
         if not p.is_file():
             return
 
@@ -497,6 +603,9 @@ def restore():
     restore_ghostty(snap)
     restore_gte(snap)
     restore_claude(snap)
+    restore_xed(snap)
+    restore_icons(snap)
+    restore_flatpak(snap)
     restore_geany(snap)
     restore_brave(snap)
     if "vesktop_enabled" in snap:
@@ -548,6 +657,36 @@ def restore_claude(snap):
         act(f"claude code theme = {val or 'unset'}", set_claude_theme, val)
     else:
         left_alone(f"claude code theme in {CLAUDE / 'settings.json'}")
+
+
+def restore_xed(snap):
+    val = snap.get("xed_scheme")
+    if not val:
+        return
+    if rain_gte(run("gsettings", "get", *XED_KEY, check=False)):
+        act(f"gsettings {' '.join(XED_KEY)} = {val}", run, "gsettings", "set", *XED_KEY, val)
+    else:
+        left_alone(f"gsettings {' '.join(XED_KEY)}")
+
+
+def restore_icons(snap):
+    ic = snap.get("icon_theme")
+    if not ic or not ic["rain"]:
+        return
+    if run("gsettings", "get", *ICON_KEY, check=False) == f"'{ic['rain']}'":
+        act(f"gsettings {' '.join(ICON_KEY)} = {ic['value']}", run, "gsettings", "set", *ICON_KEY, ic["value"])
+    else:
+        left_alone(f"gsettings {' '.join(ICON_KEY)}")
+
+
+def restore_flatpak(snap):
+    if "flatpak_fs" not in snap:
+        return
+    cur = flatpak_filesystems()
+    keep = [e for e in cur if e not in FLATPAK_FS or e in snap["flatpak_fs"]]
+    if keep != cur:
+        act(f"flatpak: drop {', '.join(e for e in cur if e not in keep)} from {FLATPAK_GLOBAL}",
+            set_flatpak_filesystems, keep)
 
 
 def restore_gte(snap):
@@ -740,6 +879,51 @@ def apply_gte(slug, exp):
     clear_pending("gnome-text-editor")
 
 
+def apply_xed(slug, exp):
+    if not run("gsettings", "get", *XED_KEY, check=False):
+        log("skip Xed: not installed")
+        return
+    if running("xed"):  # like Text Editor, it reads new scheme files only at startup
+        log("Xed is running: queued, it will be applied by `rain pending` (runs at login)")
+        mark_pending("xed", slug)
+        return
+    src = exp / f"xed-{slug}.xml"
+    act(f"xed scheme -> {XED_STYLES / src.name}", write, XED_STYLES / src.name, src.read_text())
+    act(f"gsettings {' '.join(XED_KEY)} rain-{slug}", run, "gsettings", "set", *XED_KEY, f"rain-{slug}")
+    clear_pending("xed")
+
+
+def apply_icons(slug, exp):
+    cur = run("gsettings", "get", *ICON_KEY, check=False).strip("'")
+    fam = icon_family(cur)
+    if not fam or not fam[0]:
+        log(f"skip icons: '{cur}' has no colour variants rain knows ({', '.join(ICON_FAMILIES)})")
+        return
+    variants, dark = fam
+    name = icon_variant(json.loads((exp / "colloid.json").read_text())["accent"], variants) + ("-dark" if dark else "")
+
+    def go():
+        run("gsettings", "set", *ICON_KEY, name)
+        if SNAPSHOT.exists():  # remember it, so restore only undoes rain's own choice
+            snap = json.loads(SNAPSHOT.read_text())
+            if "icon_theme" in snap:
+                snap["icon_theme"]["rain"] = name
+                write(SNAPSHOT, json.dumps(snap, indent=2))
+    act(f"icon theme {name} (nearest to the accent)", go)
+
+
+def apply_flatpak(slug, exp):
+    if not shutil.which("flatpak"):
+        log("skip Flatpak: not installed")
+        return
+    cur = flatpak_filesystems()
+    missing = [e for e in FLATPAK_FS if e not in cur]
+    if missing:
+        act(f"flatpak: allow {', '.join(missing)} for all apps in {FLATPAK_GLOBAL}", set_flatpak_filesystems,
+            cur + missing)
+    log("note: Flatpak apps pick up theme changes when restarted")
+
+
 def apply_geany(slug, exp):
     if running("geany"):
         log("Geany is running: queued, it will be applied by `rain pending` (runs at login)")
@@ -752,13 +936,14 @@ def apply_geany(slug, exp):
     clear_pending("geany")
 
 
-def apply_firefox(slug, exp):
-    ff = firefox_profile()
+def apply_firefox(slug, exp, app="firefox"):
+    label, root = BROWSERS[app]
+    ff = firefox_profile(root)
     if not ff:
-        log("skip Firefox: no profile found")
+        log(f"skip {label}: no profile found")
         return
-    if running("firefox"):
-        log("note: Firefox is running; restart it to load the new userChrome.css")
+    if running(app):
+        log(f"note: {label} is running; restart it to load the new userChrome.css")
 
     def go():
         (ff / "chrome").mkdir(exist_ok=True)
@@ -768,7 +953,11 @@ def apply_firefox(slug, exp):
         t = uj.read_text() if uj.exists() else ""
         if USERJS_LINE not in t:
             atomic_write(uj, t + ("" if t.endswith("\n") or not t else "\n") + USERJS_LINE + "\n")
-    act(f"firefox userChrome/userContent + user.js pref in {ff}", go)
+    act(f"{app} userChrome/userContent + user.js pref in {ff}", go)
+
+
+def apply_librewolf(slug, exp):
+    apply_firefox(slug, exp, "librewolf")
 
 
 def apply_brave(slug, exp):
@@ -817,9 +1006,10 @@ def apply_vesktop(slug, exp):
     act(f"vesktop theme -> {dst} (enabled)", go)
 
 
-FNS = {"gtk": apply_gtk, "wallpaper": apply_wallpaper, "terminal": apply_terminal, "claude-code": apply_claude,
-       "kitty": apply_kitty, "ghostty": apply_ghostty, "gnome-text-editor": apply_gte, "geany": apply_geany,
-       "firefox": apply_firefox, "brave": apply_brave, "vesktop": apply_vesktop}
+FNS = {"gtk": apply_gtk, "icons": apply_icons, "flatpak": apply_flatpak, "wallpaper": apply_wallpaper,
+       "terminal": apply_terminal, "claude-code": apply_claude, "kitty": apply_kitty, "ghostty": apply_ghostty,
+       "gnome-text-editor": apply_gte, "xed": apply_xed, "geany": apply_geany, "firefox": apply_firefox,
+       "librewolf": apply_librewolf, "brave": apply_brave, "vesktop": apply_vesktop}
 
 
 def exportable():
