@@ -212,7 +212,7 @@ class App(Gtk.Window):
         d = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.QUESTION,
                               buttons=Gtk.ButtonsType.OK_CANCEL,
                               text="Restore the original desktop?")
-        d.format_secondary_text("Themes, wallpaper, terminal profile, kitty, Ghostty, Firefox, Geany, Brave and Vesktop go back "
+        d.format_secondary_text("Themes, wallpaper, terminal profile, kitty, Ghostty, Text Editor, Firefox, Geany, Brave and Vesktop go back "
                                 "to how they were before Rain themed them. Anything you changed "
                                 "since is left alone.")
         if d.run() == Gtk.ResponseType.OK:

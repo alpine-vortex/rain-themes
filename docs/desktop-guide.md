@@ -62,7 +62,7 @@ after a change to the hooks, re-run it from the main checkout. Undo: delete
 printed, normally `.git/hooks/pre-commit`, `pre-merge-commit` and `pre-push`) and
 `~/.local/share/icons/hicolor/*/apps/rain-themes.png`.
 
-Targets: `gtk`, `wallpaper`, `terminal`, `kitty`, `ghostty`, `geany`, `firefox`, `brave`, `vesktop`.
+Targets: `gtk`, `wallpaper`, `terminal`, `kitty`, `ghostty`, `gnome-text-editor`, `geany`, `firefox`, `brave`, `vesktop`.
 
 Switching palettes is just another apply. The snapshot is taken by the first
 apply on an unthemed desktop and kept until a restore, so `--restore` goes back
@@ -79,6 +79,7 @@ own state) and says so.
 | `terminal` | Adds a GNOME Terminal profile "Rain <Name>" and makes it the default. Your existing profile stays. | New tabs/windows; switch open ones via the profile menu |
 | `kitty` | Writes the colours to `~/.config/kitty/current-theme.conf`, the file `kitten themes` uses, and adds `include current-theme.conf` to `kitty.conf` if it's missing. Skipped if kitty has no `~/.config/kitty` yet. | Immediately (running kitty is told to reload) |
 | `ghostty` | Installs the theme as `~/.config/ghostty/themes/rain-themes` and sets `theme = rain-themes` in `config.ghostty`, replacing your `theme` line (kept in the snapshot). | Immediately (running Ghostty is told to reload) |
+| `gnome-text-editor` | Installs the style scheme "Rain <Name>" into `~/.local/share/gtksourceview-5/styles/` and selects it. Skipped if Text Editor isn't installed; queued (like Geany) while it's open, since it only loads new schemes at startup. | Next Text Editor start |
 | `geany` | Installs the colour scheme and selects it. | Next Geany start |
 | `firefox` | Writes `chrome/userChrome.css` + `userContent.css` into the default profile and enables them in `user.js`. | Next Firefox start |
 | `brave` | Sets Brave's "Customize Brave → colour" seed to the palette accent, dark mode. | Next Brave start |
@@ -112,21 +113,22 @@ tools/rain restore
 
 This restores the three Cinnamon theme settings, the wallpaper, the terminal
 default, `~/.config/gtk-4.0`, kitty's `current-theme.conf`, Ghostty's `theme`
-line, the Firefox files, Geany's scheme and Brave's
+line, Text Editor's scheme, the Firefox files, Geany's scheme and Brave's
 colour, from `~/.local/state/rain-themes/snapshot.json`. It only touches what
 still holds Rain's value: anything you changed since the apply is left alone and
 logged. The Rain terminal profiles are dropped from the profile list (others you
 added stay), Vesktop keeps its non-Rain themes enabled, and `user.js` only loses
 Rain's line (so does `kitty.conf`, if Rain added the include). Picking a theme
-with `kitten themes` or editing Ghostty's `theme` line after an apply counts as a
-change and is left alone. Geany and Brave are queued if open, like on apply. Once everything
+with `kitten themes`, editing Ghostty's `theme` line or picking another Text
+Editor scheme after an apply counts as a change and is left alone. Geany and Brave are queued if open, like on apply. Once everything
 is restored the snapshot is retired (renamed `snapshot.<time>.json`, with its
 `files.<time>` copies) and the next apply takes a fresh one. If you apply a
 palette before a queued restore finishes, the snapshot is kept for the next
 restore.
 
 Things deliberately left behind: the `~/.themes/Rain-*` folders, the Rain
-terminal profiles, Ghostty's `themes/rain-themes` file and the Firefox pref `toolkit.legacyUserProfileCustomizations.stylesheets`.
+terminal profiles, Ghostty's `themes/rain-themes` file, the Text Editor schemes in
+`~/.local/share/gtksourceview-5/styles/` and the Firefox pref `toolkit.legacyUserProfileCustomizations.stylesheets`.
 They do nothing unless selected.
 
 Manual undo if the script isn't available: System Settings → Themes → set

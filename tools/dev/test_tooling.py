@@ -375,7 +375,8 @@ H = Path.home()
 B = A.TERM_BASE
 G = {"org.cinnamon.theme name": "'Mint-Y-Dark'", "org.cinnamon.desktop.interface gtk-theme": "'Mint-Y'",
      "org.cinnamon.desktop.wm.preferences theme": "'Mint-Y'",
-     "org.cinnamon.desktop.background picture-uri": "'file:///orig.png'"}
+     "org.cinnamon.desktop.background picture-uri": "'file:///orig.png'",
+     "org.gnome.TextEditor style-scheme": "'cobalt'"}
 D = {B + ":orig/visible-name": "'Default'"}
 RUNNING = set()
 KILLS = []
@@ -386,7 +387,7 @@ def run(*cmd, check=True):
     if cmd[0] == "gsettings":
         k = f"{cmd[2]} {cmd[3]}"
         if op == "get":
-            return G[k]
+            return G.get(k, "")  # an unknown schema prints nothing (stderr only); callers use check=False
         G[k] = cmd[4] if cmd[4].startswith(("'", "[")) else f"'{cmd[4]}'"  # get prints GVariant text
     elif cmd[0] == "dconf":
         if op == "read":
@@ -421,6 +422,7 @@ VS = H / ".config/vesktop/settings/settings.json"
 KT = H / ".config/kitty/current-theme.conf"
 KC = H / ".config/kitty/kitty.conf"
 GC = H / ".config/ghostty/config.ghostty"
+TE = "org.gnome.TextEditor style-scheme"
 BRAVE = A.BRAVE_PREFS
 ORIG_BRAVE = {"user_color2": -14244198, "color_scheme2": 1}
 
@@ -629,6 +631,42 @@ class DesktopTests(unittest.TestCase):
             assert not GC.parent.exists()
         """)
         self.assertIn("skip Ghostty", out)
+
+    def test_16e_text_editor_scheme_installed_and_restored(self):
+        self.child("""
+            A.apply("librekai", ["gnome-text-editor"])
+            assert G[TE] == "'rain-librekai'", G[TE]
+            x = A.GTE_STYLES / "gtksourceview-librekai.xml"
+            assert x.read_text() == (A.ROOT / "librekai/desktop/gtksourceview-librekai.xml").read_text()
+            A.apply("dracula", ["gnome-text-editor"])  # switching palettes keeps the original
+            assert G[TE] == "'rain-dracula'" and rd(A.SNAPSHOT)["gte_style_scheme"] == "'cobalt'"
+            A.restore()
+            assert G[TE] == "'cobalt'", G[TE]
+        """)
+        self.child("""
+            A.apply("librekai", ["gnome-text-editor"])
+            G[TE] = "'kate'"  # picked in Text Editor's preferences after the apply
+            A.restore()
+            assert G[TE] == "'kate'"
+        """)
+        self.child("""
+            RUNNING.add(A.GTE_PROC)
+            A.apply("librekai", ["gnome-text-editor"])
+            assert G[TE] == "'cobalt'"
+            assert A.load_state()["pending"] == {"gnome-text-editor": "librekai"}
+            RUNNING.clear()
+            A.run_pending()
+            assert G[TE] == "'rain-librekai'" and A.load_state()["pending"] == {}
+            RUNNING.add(A.GTE_PROC)
+            A.restore()  # a running Text Editor already has cobalt loaded: no need to queue
+            assert G[TE] == "'cobalt'"
+        """)
+        out = self.child("""
+            del G[TE]
+            A.apply("librekai", ["gnome-text-editor"])
+            assert TE not in G
+        """)
+        self.assertIn("skip GNOME Text Editor", out)
 
     def test_17_gsettings_and_dconf_user_changes_survive(self):
         self.child("""

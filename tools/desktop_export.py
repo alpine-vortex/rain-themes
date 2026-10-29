@@ -13,6 +13,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     kitty-theme.conf         kitty colours (installed as ~/.config/kitty/current-theme.conf)
     ghostty-theme            Ghostty theme (installed as ~/.config/ghostty/themes/rain-themes)
     geany-<slug>.conf        Geany colour scheme
+    gtksourceview-<slug>.xml GNOME Text Editor style scheme (id rain-<slug>)
     userChrome.css           Firefox toolbar/tabs/menus
     userContent.css          Firefox new-tab page
     brave.json               Brave seed colour
@@ -30,6 +31,7 @@ import colorsys
 import json
 import sys
 from pathlib import Path
+from xml.sax.saxutils import escape, quoteattr
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_theme import GROUPS, RAW, HEX, Resolver, SpecError, contrast, mix, over, rgb  # noqa: E402
@@ -284,6 +286,91 @@ line_removed={x(s['removed'])}
 line_changed={x(s['changed'])}
 """
     return lines
+
+
+# ---------- GNOME Text Editor ----------
+def gtksourceview(c, spec):
+    """GtkSourceView 5 style scheme (GNOME Text Editor), shaped like the shipped Adwaita-dark.xml.
+    `variant` marks it dark; the accent metadata steers Text Editor's window recolouring."""
+    r, s, t = c.role, c.syntax, c.term
+    bg, fg = t["background"], t["foreground"]
+    line = r["floating_bg"] if r["floating_bg"] != bg else r["secondary_bg"]
+    q = quoteattr
+    rows = [
+        ("text", dict(background=bg, foreground=fg)),
+        ("selection", dict(background=t["selection"], foreground=fg)),
+        ("cursor", dict(foreground=t["cursor"])),
+        ("current-line", dict(background=line)),
+        ("background-pattern", dict(background=line)),
+        ("line-numbers", dict(background=r["secondary_bg"], foreground=r["text_muted"])),
+        ("current-line-number", dict(background=line, foreground=r["text_secondary"])),
+        ("right-margin", dict(background=r["text_muted"], foreground=r["text_muted"])),
+        ("map-overlay", dict(background=r["text_muted"])),
+        ("draw-spaces", dict(foreground=r["nested_floating_bg"])),
+        ("bracket-match", dict(foreground=r["brand"], bold="true")),
+        ("bracket-mismatch", dict(foreground=s["error"], bold="true")),
+        ("search-match", dict(background=r["brand"], foreground=bg)),
+        ("def:comment", dict(foreground=s["comment"])),
+        ("def:shebang", dict(foreground=s["comment"], bold="true")),
+        ("def:doc-comment-element", dict(foreground=s["comment"], bold="true")),
+        ("def:constant", dict(foreground=s["constant"])),
+        ("def:boolean", dict(foreground=s["constant"])),
+        ("def:special-char", dict(foreground=s["constant"])),
+        ("def:number", dict(foreground=s["number"])),
+        ("def:decimal", dict(foreground=s["number"])),
+        ("def:floating-point", dict(foreground=s["number"])),
+        ("def:base-n-integer", dict(foreground=s["number"])),
+        ("def:string", dict(foreground=s["string"])),
+        ("def:keyword", dict(foreground=s["keyword"])),
+        ("def:statement", dict(foreground=s["keyword"])),
+        ("def:builtin", dict(foreground=s["builtin"])),
+        ("def:type", dict(foreground=s["type"])),
+        ("def:function", dict(foreground=s["function"])),
+        ("def:operator", dict(foreground=s["operator"])),
+        ("def:preprocessor", dict(foreground=s["preprocessor"])),
+        ("def:error", dict(underline="error", **{"underline-color": s["error"]})),
+        ("def:warning", dict(underline="error", **{"underline-color": r["warning"]})),
+        ("def:note", dict(foreground=bg, background=r["warning"], bold="true")),
+        ("def:net-address", dict(foreground=r["link"], underline="low")),
+        ("def:link-text", dict(foreground=r["link"])),
+        ("def:link-destination", dict(foreground=r["link"], italic="true", underline="low")),
+        ("def:heading", dict(foreground=r["brand"], bold="true")),
+        ("def:list-marker", dict(foreground=r["brand"], bold="true")),
+        ("def:inline-code", dict(foreground=s["string"])),
+        ("def:preformatted-section", dict(foreground=s["string"])),
+        ("def:emphasis", dict(italic="true")),
+        ("def:strong-emphasis", dict(bold="true")),
+        ("def:underlined", dict(underline="single")),
+        ("def:deletion", dict(strikethrough="true")),
+        ("c:storage-class", dict(foreground=s["storage"])),
+        ("c:type-keyword", dict(foreground=s["type"])),
+        ("python:class-name", dict(foreground=s["class"])),
+        ("python:builtin-function", dict(foreground=s["builtin"])),
+        ("diff:added-line", dict(foreground=s["added"])),
+        ("diff:removed-line", dict(foreground=s["removed"])),
+        ("diff:changed-line", dict(foreground=s["changed"])),
+        ("diff:location", dict(foreground=s["preprocessor"])),
+        ("diff:diff-file", dict(foreground=s["keyword"], bold="true")),
+        ("xml:element-name", dict(foreground=s["tag"])),
+        ("xml:attribute-name", dict(foreground=s["attribute"])),
+        ("xml:attribute-value", dict(foreground=s["string"])),
+        ("xml:namespace", dict(foreground=s["preprocessor"])),
+        ("xml:processing-instruction", dict(foreground=s["preprocessor"], bold="true")),
+    ]
+    meta = [("variant", "dark"), ("accent_color", r["brand"]), ("accent_bg_color", r["brand"]),
+            ("accent_fg_color", r["text_on_brand"])]
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           "<!-- generated by rain-themes tools/desktop_export.py -->",
+           f'<style-scheme id={q("rain-" + spec["slug"])} name={q("Rain " + spec["name"])} version="1.0">',
+           f"  <author>{escape(', '.join(spec['authors']))}</author>",
+           f"  <description>{escape(spec['name'])} colours, generated from rain-themes theme.spec.json."
+           "</description>",
+           "  <metadata>"]
+    out += [f"    <property name={q(k)}>{v}</property>" for k, v in meta]
+    out.append("  </metadata>")
+    out += [f"  <style name={q(n):<30}" + " ".join(f"{k}={q(v)}" for k, v in a.items()) + "/>" for n, a in rows]
+    out.append("</style-scheme>")
+    return "\n".join(out) + "\n"
 
 
 # ---------- Firefox ----------
@@ -808,6 +895,7 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / "kitty-theme.conf").write_text(kitty(c, spec))
     (out / "ghostty-theme").write_text(ghostty(c, spec))
     (out / f"geany-{slug}.conf").write_text(geany(c, spec))
+    (out / f"gtksourceview-{slug}.xml").write_text(gtksourceview(c, spec))
     chrome, content = firefox(c, spec["name"])
     (out / "userChrome.css").write_text(chrome)
     (out / "userContent.css").write_text(content)
