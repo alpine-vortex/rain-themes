@@ -20,6 +20,8 @@ been checked live.
   historical revisions used at original extraction. Verified 2026-10-29:
   21 palettes, 64 pinned source records, 1,180 palette hex values, 1,301
   source-field checks, and one derived value. See [palette provenance](palette-provenance.md).
+- The generated gallery now offers a collapsed, lazy-loaded desktop wallpaper
+  thumbnail for each of the 21 themes in both `GALLERY.md` and `index.html`.
 
 ## Phone
 
@@ -249,18 +251,20 @@ Keyword, function and type colours were not on screen. The rest are covered by
 
 ## Next steps
 
-1. Resume live checks when desktop control is available: review Brave's visual
-   color accuracy, exercise the GUI Apply/Restore controls safely, and observe
-   `rain pending` at a real login. Nemo and terminal review are deferred.
-2. Review additional Vesktop dialogs and screen states if needed; the base
+1. Review Brave's visual color accuracy only when the owner is not using the
+   computer and gives explicit permission. Nemo and terminal review are deferred.
+2. When desktop interaction resumes, exercise the GUI Apply/Restore controls
+   safely and observe `rain pending` at a real login.
+3. Review additional Vesktop dialogs and screen states if needed; the base
    theme variables and representative live surfaces are verified above.
-3. Keep the provenance snapshot current when upstream sources change; review
+4. Keep the provenance snapshot current when upstream sources change; review
    any value mismatch before updating a spec. See [palette provenance](palette-provenance.md).
-4. Decide whether Brave should offer a GTK-following mode and verify the
+5. Decide whether Brave should offer a GTK-following mode and verify the
    required preference before adding it.
-5. Commit `.nlt` exports for the palettes actually used on the phone.
-6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; add
-   a Stylus user style for chatgpt.com only if Dark Reader isn't precise enough.
+6. Export `.nlt` files manually from Niagara for palettes used on the phone,
+   then commit them with the matching palette.
+7. Optional: add a Stylus user style for chatgpt.com only if Dark Reader isn't
+   precise enough.
 
 ## Open questions
 

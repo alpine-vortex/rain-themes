@@ -1,6 +1,6 @@
 # Theme gallery
 
-Previews of every theme (channel list + chat view). Install: copy the URL, then add it by URL in Rain → Themes.
+Previews of every theme (channel list + chat view), with optional desktop wallpaper views. Install: copy the URL, then add it by URL in Rain → Themes.
 
 Regenerate with `python3 tools/gallery.py`.
 
@@ -33,6 +33,12 @@ Regenerate with `python3 tools/gallery.py`.
 
 ![Catppuccin Frappé preview](catppuccin-frappe/catppuccin-frappe-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="catppuccin-frappe/desktop/wallpaper-desktop.png"><img src="catppuccin-frappe/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Catppuccin Frappé desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-frappe/catppuccin-frappe.json
 ```
@@ -44,6 +50,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-frap
 *Macchiato · accent: mauve*
 
 ![Catppuccin Macchiato preview](catppuccin-macchiato/catppuccin-macchiato-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="catppuccin-macchiato/desktop/wallpaper-desktop.png"><img src="catppuccin-macchiato/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Catppuccin Macchiato desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-macchiato/catppuccin-macchiato.json
@@ -57,6 +69,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-macc
 
 ![Catppuccin Mocha preview](catppuccin-mocha/catppuccin-mocha-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="catppuccin-mocha/desktop/wallpaper-desktop.png"><img src="catppuccin-mocha/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Catppuccin Mocha desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-mocha/catppuccin-mocha.json
 ```
@@ -68,6 +86,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/catppuccin-moch
 *Dracula Classic (dark) · accent: purple*
 
 ![Dracula preview](dracula/dracula-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="dracula/desktop/wallpaper-desktop.png"><img src="dracula/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Dracula desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/dracula/dracula.json
@@ -81,6 +105,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/dracula/dracula
 
 ![Everforest Dark preview](everforest-dark/everforest-dark-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="everforest-dark/desktop/wallpaper-desktop.png"><img src="everforest-dark/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Everforest Dark desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/everforest-dark/everforest-dark.json
 ```
@@ -92,6 +122,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/everforest-dark
 *Dark · medium contrast (default) · accent: bright orange*
 
 ![Gruvbox preview](gruvbox/gruvbox-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="gruvbox/desktop/wallpaper-desktop.png"><img src="gruvbox/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Gruvbox desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox/gruvbox.json
@@ -105,6 +141,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox/gruvbox
 
 ![Gruvbox Material Dark preview](gruvbox-material-dark/gruvbox-material-dark-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="gruvbox-material-dark/desktop/wallpaper-desktop.png"><img src="gruvbox-material-dark/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Gruvbox Material Dark desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox-material-dark/gruvbox-material-dark.json
 ```
@@ -116,6 +158,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/gruvbox-materia
 *Dragon (dark, muted) · accent: dragonBlue2*
 
 ![Kanagawa Dragon preview](kanagawa-dragon/kanagawa-dragon-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="kanagawa-dragon/desktop/wallpaper-desktop.png"><img src="kanagawa-dragon/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Kanagawa Dragon desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon/kanagawa-dragon.json
@@ -129,6 +177,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-dragon
 
 ![Kanagawa Wave preview](kanagawa-wave/kanagawa-wave-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="kanagawa-wave/desktop/wallpaper-desktop.png"><img src="kanagawa-wave/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Kanagawa Wave desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/kanagawa-wave.json
 ```
@@ -140,6 +194,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/kanagawa-wave/k
 *Classic Monokai · accent: pink*
 
 ![Librekai preview](librekai/librekai-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="librekai/desktop/wallpaper-desktop.png"><img src="librekai/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Librekai desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai/librekai.json
@@ -153,6 +213,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai/librek
 
 ![Librekai Dimmed preview](librekai-dimmed/librekai-dimmed-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="librekai-dimmed/desktop/wallpaper-desktop.png"><img src="librekai-dimmed/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Librekai Dimmed desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-dimmed/librekai-dimmed.json
 ```
@@ -164,6 +230,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-dimmed
 *Refined Monokai · accent: aqua*
 
 ![Librekai Refined preview](librekai-refined/librekai-refined-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="librekai-refined/desktop/wallpaper-desktop.png"><img src="librekai-refined/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Librekai Refined desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-refined/librekai-refined.json
@@ -177,6 +249,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/librekai-refine
 
 ![Nord Frost preview](nord-frost/nord-frost-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="nord-frost/desktop/wallpaper-desktop.png"><img src="nord-frost/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Nord Frost desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/nord-frost.json
 ```
@@ -188,6 +266,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-frost/nord
 *Polar Night · quiet nord9 accent*
 
 ![Nord Polar Night preview](nord-polar-night/nord-polar-night-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="nord-polar-night/desktop/wallpaper-desktop.png"><img src="nord-polar-night/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Nord Polar Night desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-polar-night/nord-polar-night.json
@@ -201,6 +285,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/nord-polar-nigh
 
 ![Rosé Pine preview](rose-pine/rose-pine-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="rose-pine/desktop/wallpaper-desktop.png"><img src="rose-pine/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Rosé Pine desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine/rose-pine.json
 ```
@@ -212,6 +302,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine/rose-
 *Moon · accent: iris*
 
 ![Rosé Pine Moon preview](rose-pine-moon/rose-pine-moon-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="rose-pine-moon/desktop/wallpaper-desktop.png"><img src="rose-pine-moon/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Rosé Pine Moon desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine-moon/rose-pine-moon.json
@@ -225,6 +321,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/rose-pine-moon/
 
 ![Solarized Osaka preview](solarized-osaka/solarized-osaka-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="solarized-osaka/desktop/wallpaper-desktop.png"><img src="solarized-osaka/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Solarized Osaka desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/solarized-osaka/solarized-osaka.json
 ```
@@ -236,6 +338,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/solarized-osaka
 *Default (gamma 1.0) · accent: blue*
 
 ![Tokyo Dark preview](tokyodark/tokyodark-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="tokyodark/desktop/wallpaper-desktop.png"><img src="tokyodark/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Tokyo Dark desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyodark/tokyodark.json
@@ -249,6 +357,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyodark/tokyo
 
 ![Tokyo Night Moon preview](tokyonight-moon/tokyonight-moon-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="tokyonight-moon/desktop/wallpaper-desktop.png"><img src="tokyonight-moon/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Tokyo Night Moon desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon/tokyonight-moon.json
 ```
@@ -261,6 +375,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-moon
 
 ![Tokyo Night Night preview](tokyonight-night/tokyonight-night-preview.png)
 
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="tokyonight-night/desktop/wallpaper-desktop.png"><img src="tokyonight-night/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Tokyo Night Night desktop wallpaper"></a></p>
+</details>
+
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-night/tokyonight-night.json
 ```
@@ -272,6 +392,12 @@ https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-nigh
 *Storm style · accent: blue*
 
 ![Tokyo Night Storm preview](tokyonight-storm/tokyonight-storm-preview.png)
+
+<details>
+<summary>Desktop wallpaper</summary>
+
+<p><a href="tokyonight-storm/desktop/wallpaper-desktop.png"><img src="tokyonight-storm/desktop/wallpaper-desktop.png" width="480" loading="lazy" alt="Tokyo Night Storm desktop wallpaper"></a></p>
+</details>
 
 ```
 https://raw.githubusercontent.com/alpine-vortex/rain-themes/main/tokyonight-storm/tokyonight-storm.json

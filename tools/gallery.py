@@ -8,6 +8,7 @@ Chromium (Playwright) and saves the two phone screens as <slug>/<slug>-preview.p
 Then writes, at the repo root:
     GALLERY.md   renders on GitHub (images + install URLs)
     index.html   same gallery as a standalone page (open locally or via GitHub Pages)
+                 both include optional desktop wallpaper thumbnails
 and refreshes the theme table in README.md between the <!-- themes --> markers.
 """
 import html
@@ -30,6 +31,8 @@ def themes():
         out.append({
             "slug": slug, "name": spec["name"], "variant": spec.get("variant", ""),
             "dir": spec_path.parent.name,
+            "desktop_wallpaper": (f"{spec_path.parent.name}/desktop/wallpaper-desktop.png"
+                                  if (spec_path.parent / "desktop/wallpaper-desktop.png").is_file() else None),
             "swatches": [sc[k][0][:7] for k in ("BACKGROUND_PRIMARY", "BACKGROUND_SECONDARY", "TEXT_NORMAL",
                                                 "BG_BRAND", "TEXT_LINK", "STATUS_DANGER", "STATUS_ONLINE", "STATUS_IDLE")],
         })
@@ -63,13 +66,19 @@ def screenshot(ts):
 
 def write_md(ts):
     lines = ["# Theme gallery", "",
-             "Previews of every theme (channel list + chat view). Install: copy the URL, then add it by URL in Rain → Themes.",
+             "Previews of every theme (channel list + chat view), with optional desktop wallpaper views. Install: copy the URL, then add it by URL in Rain → Themes.",
              "", "Regenerate with `python3 tools/gallery.py`.", ""]
     lines += [f"- [{t['name']}](#{t['slug']})" for t in ts]
     for t in ts:
         lines += ["", f'<a id="{t["slug"]}"></a>', f"## {t['name']}", "", f"*{t['variant']}*", "",
-                  f"![{t['name']} preview]({t['dir']}/{t['slug']}-preview.png)", "",
-                  f"```\n{RAW}/{t['dir']}/{t['slug']}.json\n```",
+                  f"![{t['name']} preview]({t['dir']}/{t['slug']}-preview.png)", ""]
+        if t["desktop_wallpaper"]:
+            wallpaper = t["desktop_wallpaper"]
+            alt = html.escape(f"{t['name']} desktop wallpaper", quote=True)
+            lines += ["<details>", "<summary>Desktop wallpaper</summary>", "",
+                      f'<p><a href="{wallpaper}"><img src="{wallpaper}" width="480" loading="lazy" alt="{alt}"></a></p>',
+                      "</details>", ""]
+        lines += [f"```\n{RAW}/{t['dir']}/{t['slug']}.json\n```",
                   f"[Notes]({t['dir']}/{t['slug']}-notes.md) · [Spec]({t['dir']}/theme.spec.json)"]
     (ROOT / "GALLERY.md").write_text("\n".join(lines) + "\n")
 
@@ -79,10 +88,15 @@ def write_html(ts):
     for t in ts:
         sw = "".join(f'<i style="background:{c}" title="{c}"></i>' for c in t["swatches"])
         url = f"{RAW}/{t['dir']}/{t['slug']}.json"
+        desktop = (f'''<details class="desktop-wallpaper">
+    <summary>Desktop wallpaper</summary>
+    <a href="{t['desktop_wallpaper']}"><img src="{t['desktop_wallpaper']}" alt="{html.escape(t['name'])} desktop wallpaper" loading="lazy"></a>
+  </details>''' if t["desktop_wallpaper"] else "")
         cards.append(f"""  <article class="card" id="{t['slug']}">
     <header><h2>{html.escape(t['name'])}</h2><span class="sw">{sw}</span></header>
     <p class="variant">{html.escape(t['variant'])}</p>
     <a href="{t['dir']}/{t['slug']}-preview.html"><img src="{t['dir']}/{t['slug']}-preview.png" alt="{html.escape(t['name'])} preview" loading="lazy"></a>
+    {desktop}
     <div class="install"><code>{url}</code><button type="button" data-url="{url}">Copy</button></div>
   </article>""")
     page = f"""<!doctype html>
@@ -110,6 +124,9 @@ nav a:hover {{ border-color: var(--accent); }}
 .sw {{ display: flex; gap: 3px; flex: none; }}
 .sw i {{ width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--line); }}
 .card img {{ width: 100%; height: auto; display: block; border-radius: 8px; }}
+.desktop-wallpaper {{ margin-top: 12px; }}
+.desktop-wallpaper summary {{ color: var(--accent); cursor: pointer; font-size: 13px; }}
+.desktop-wallpaper img {{ margin-top: 8px; }}
 .install {{ display: flex; gap: 8px; align-items: center; margin-top: 12px; }}
 .install code {{ flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted); }}
 .install button {{ flex: none; background: none; color: var(--accent); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 13px; }}
@@ -118,7 +135,7 @@ nav a:hover {{ border-color: var(--accent); }}
 <body>
 <main>
 <h1>Rain Theme Gallery</h1>
-<p class="lead">{len(ts)} themes for Rain (Bunny spec 2). Tap a preview for the full mockup and colour legend; copy the URL and add it in Rain → Themes.</p>
+<p class="lead">{len(ts)} themes for Rain (Bunny spec 2). Tap a preview for the full mockup and colour legend; expand Desktop wallpaper to compare its background; copy the URL and add it in Rain → Themes.</p>
 <nav>{''.join(f'<a href="#{t["slug"]}">{html.escape(t["name"])}</a>' for t in ts)}</nav>
 <div class="grid">
 {chr(10).join(cards)}
