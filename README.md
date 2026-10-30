@@ -15,9 +15,11 @@ spec into matching themes for:
 - **The Android phone**: system colours (Material You), Sync for Reddit,
   Termius, redeye and Niagara Launcher.
 
-All 21 palettes have every target. Colours come from each palette's official
-upstream files (terminal and editor themes, style guides), never invented;
-each spec records its sources.
+All 21 palettes have generated exports for the targets listed below. Runtime
+availability depends on the apps installed on the machine; see the desktop
+guide and status page for scope and verification limits. Specs record source
+URLs and adaptation notes, but those URLs are not all pinned to immutable
+upstream revisions.
 
 See the **[gallery](GALLERY.md)** for previews of every Discord theme side by side.
 

@@ -10,7 +10,7 @@
     <property name="accent_fg_color">#1E1E1E</property>
   </metadata>
   <style name="text"                        background="#1E1E1E" foreground="#C5C8C6"/>
-  <style name="selection"                   background="#434448" foreground="#C5C8C6"/>
+  <style name="selection"                   background="#434548" foreground="#C5C8C6"/>
   <style name="cursor"                      foreground="#C07020"/>
   <style name="current-line"                background="#404040"/>
   <style name="background-pattern"          background="#404040"/>

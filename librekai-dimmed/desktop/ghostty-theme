@@ -22,6 +22,6 @@ background = #1E1E1E
 foreground = #C5C8C6
 cursor-color = #C07020
 cursor-text = #1E1E1E
-selection-background = #434448
+selection-background = #434548
 selection-foreground = #C5C8C6
 split-divider-color = #9A9B99

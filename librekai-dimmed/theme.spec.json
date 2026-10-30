@@ -200,7 +200,7 @@
     "background": "background",
     "foreground": "foreground",
     "cursor": "cursor_amber",
-    "selection": "#434448"
+    "selection": "#434548"
   },
   "syntax": {
     "comment": "comment",

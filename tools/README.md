@@ -17,6 +17,13 @@ tools/rain gui                        # the "Rain Themes" window
 tools/rain install [--force]          # menu entry + login autostart + git commit/merge/push-to-main hooks (main checkout only)
 ```
 
+Firefox and LibreWolf use the install-default profile unless another existing
+profile directory is selected with `--firefox-profile PATH` or
+`--librewolf-profile PATH`. Brave uses its configured `Default` profile unless
+you select another existing `Preferences` file with `--brave-preferences PATH`.
+Firefox and LibreWolf directories must contain `prefs.js`. Restore before
+retargeting a browser while a desktop snapshot is active.
+
 | Script | Role |
 |---|---|
 | `build_theme.py` | spec → Rain JSON, preview, notes |
@@ -58,9 +65,10 @@ FAIL/WARN lines and adjust roles.
 - No `background`: surfaces must be opaque 6-digit hex. With `background`:
   surfaces must be 8-digit (translucent). Text/icon colours are always 6-digit.
 - Preview contains no colour outside its `:root` block and no undefined `var()`.
-- Contrast table (WCAG): body text on each surface, text on composited
-  mention/selected, links, button text on brand. Translucent surfaces are judged
-  over a worst-case white image pixel. FAILs are reported, not fatal.
+- Contrast table (WCAG): body/strong/secondary/muted text on selected surfaces,
+  links, composited mention/selection, focus indicators, interactive icons, and
+  status text. Translucent surfaces are judged over a worst-case white image
+  pixel. FAILs are reported, not fatal; upstream colors are not silently changed.
 - Warns when brand and a status colour are within 20° of hue.
 
 ## Spec format

@@ -5,7 +5,8 @@
     rain build [slug ...]          Rain JSON + preview + notes + desktop exports (all by default)
     rain build --gallery           ...and refresh GALLERY.md / index.html / README table (Playwright)
     rain check                     rebuild into a temp dir; fail if any committed output is stale
-    rain apply <slug> [--only t,t] [--dry-run]
+    rain apply <slug> [--only t,t] [--firefox-profile DIR] [--librewolf-profile DIR]
+                     [--brave-preferences FILE] [--dry-run]
     rain restore [--dry-run]
     rain pending [--dry-run]       finish apps skipped while running (also runs at login)
     rain phone <slug> [--style S] [--no-files] [--dry-run]   Android system colours + files over adb
@@ -117,7 +118,9 @@ def cmd_check(a):
 
 def cmd_apply(a):
     import apply_theme
-    apply_theme.apply(a.slug, a.only.split(",") if a.only else None, a.dry_run)
+    apply_theme.apply(a.slug, a.only.split(",") if a.only else None, a.dry_run,
+                      {"firefox": a.firefox_profile, "librewolf": a.librewolf_profile,
+                       "brave": a.brave_preferences})
 
 
 def cmd_restore(a):
@@ -288,6 +291,9 @@ def main():
     p.add_argument("slug")
     p.add_argument("--only")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--firefox-profile", help="explicit Firefox profile directory (default: install default)")
+    p.add_argument("--librewolf-profile", help="explicit LibreWolf profile directory (default: install default)")
+    p.add_argument("--brave-preferences", help="explicit Brave profile Preferences file")
     p.set_defaults(fn=cmd_apply)
     for name, fn in (("restore", cmd_restore), ("pending", cmd_pending)):
         p = sub.add_parser(name)
