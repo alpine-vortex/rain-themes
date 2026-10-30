@@ -101,10 +101,14 @@ links fail with "Failed to fetch theme".
 ## Desktop (Linux Mint / Cinnamon)
 
 **App:** run `tools/rain install` once, then open **Rain Themes** from the menu
-(it can be pinned to the panel). Each palette card has a wallpaper thumbnail,
-swatches, and **Apply**, **Preview** (screenshots in throwaway windows, which
-change nothing) and **Phone** buttons. **Restore original** undoes the desktop; the
-*Phone (adb)* row has the Material You style picker and **Restore phone**.
+(it can be pinned to the panel). Search the palette list, then select a palette
+to see its wallpaper, colour swatches and whether it is applied. **Apply to
+desktop** applies it; **Preview** opens screenshots in temporary windows and
+changes nothing. Phone controls are grouped in the **Phone** section. **Activity**
+shows command output, **Finish pending** appears when an app change is waiting,
+and desktop restore is under the header menu. The layout stacks the list above
+the preview in a narrow window. Use **Ctrl+F** to search and **Escape** to clear
+the search.
 
 **Terminal:**
 
