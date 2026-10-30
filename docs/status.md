@@ -1,11 +1,27 @@
 # Status
 
-Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
+Last updated 2026-10-29. Historical verification notes keep the date on which
+they were observed; generated coverage does not imply that every target has
+been checked live.
 
 - Everything is on `main`: desktop exports, docs, Firefox Color links,
   `tools/rain`, the pending queue and the GUI (`unified-cli` merged the same day).
 - The 19-palette desktop work (`desktop-all-palettes`) was merged to `main` on
   2026-09-28.
+
+## Palette source evidence
+
+- Specs contain palette, ANSI/syntax, and light-flavour source URLs and notes.
+- A provenance audit snapshot now pins source files to immutable upstream
+  commits, records retrieval hashes, and checks all dark/light palette hexes
+  plus ANSI, terminal, and syntax assignment values against those sources.
+  Librekai Dimmed selection was corrected to the verified alpha composite
+  (`#434548`). The snapshot records current verification references, not the
+  historical revisions used at original extraction. Verified 2026-10-29:
+  21 palettes, 64 pinned source records, 1,180 palette hex values, 1,301
+  source-field checks, and one derived value. See [palette provenance](palette-provenance.md).
+- The generated gallery now offers a collapsed, lazy-loaded desktop wallpaper
+  thumbnail for each of the 21 themes in both `GALLERY.md` and `index.html`.
 
 ## Phone
 
@@ -15,7 +31,9 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   - `<slug>.app-theme.json` (app-theme v1, renamed from redeye-theme 2026-09-29; raw URLs live on `main`)
   - `<slug>.heliboard.json` (+ `-light`): HeliBoard "all colors" (all 44 slots).
     `.heliboard-simple.json` is the 10-colour version. Both are matched to real exports;
-    importing one on the phone isn't confirmed yet.
+    `librekai.heliboard.json` was imported through HeliBoard's own Load file flow on
+    2026-10-29; HeliBoard showed the imported User-Defined set associated with
+    `librekai` in its color list.
   - Gotcha (fixed 2026-09-29): files pushed with adb stay `is_pending=1` in MediaStore, so
     file pickers (HeliBoard's Load) show the folder as empty until they're scanned.
     `rain phone` now scans every pushed file. It also picks the phone when an emulator is
@@ -28,6 +46,25 @@ Last updated 2026-09-28 (second session: desktop support for all 21 palettes).
   `rain phone --restore` puts back the original setting, saved on the first run
   per device (by `ro.serialno`) in `~/.local/state/rain-themes/phone-snapshot.<serial>.json`. Checked end to end on
   2026-09-29: the system colours applied and the Sync import (paste JSON) worked.
+- **Live phone apply/restore (2026-10-29):** on a Pixel 10 Pro XL over ADB,
+  applied Gruvbox (seed `#FE8019`), confirmed Rain's export files landed in its
+  previously absent Download folder, restored the exact pre-test
+  wallpaper-driven setting (`home_wallpaper`, `SPRITZ`), then returned system
+  colours to the prior Librekai seed (`#F93B7F`). The test export folder was
+  removed from storage; existing Librekai downloads and the original per-device
+  snapshot remain. Media-scan broadcasts were sent.
+- **Visual retry (2026-10-29):** the phone's Wallpaper & style screen showed
+  the restored pink Librekai palette in its lock-screen and home-screen
+  previews. The desktop was also captured unlocked with Gruvbox active; its
+  Cinnamon panel and window chrome looked consistent. No palette was changed
+  during either visual check. Android's system JSON picker showed the existing
+  Librekai app-theme, HeliBoard, and Sync files. HeliBoard is installed. Its
+  Appearance > Colors > Load > Load file flow opened Android's document picker;
+  selecting `librekai.heliboard.json` loaded its User-Defined set. A reversible
+  selection check applied it, then restored the original day color (Ocean) and
+  night color (librekai).
+  DocumentsUI retained an empty Gruvbox folder entry after the test files and
+  directory were removed from storage.
 - GUI: every card has a **Phone** button, and there's a *Phone (adb)* row with a style picker and
   *Restore phone*. The "phone" badge comes from `phone-state.json` (any device). The Phone button
   hasn't been clicked yet.
@@ -115,6 +152,9 @@ What's applied on the owner's machines is kept out of the repo, in the local
   (themes, wallpaper, terminal profile, Brave seed, Firefox/Geany state);
   `--restore` returns each part that still holds Rain's value to it, then
   retires the snapshot.
+- Validation on 2026-10-29: `tools/rain check` passed for all 21 palettes;
+  `python3 tools/dev/test_tooling.py` passed all 51 tests; the provenance
+  verifier passed all pinned-source and derived-value checks.
 - The pre-commit hook checks the staged tree and is shared by all worktrees;
   the same hook checks merge commits, and a pre-push hook checks commits
   pushed to `main`. `rain install` refuses in a linked worktree. Acceptance tests for the hook,
@@ -128,7 +168,7 @@ What's applied on the owner's machines is kept out of the repo, in the local
   container: add the repo, install, activate, change the palette. See
   `tools/README.md` ("degoog").
 
-## Verified (by screenshot, without touching the live desktop)
+## Earlier screenshot verification
 
 | Target | Librekai | Mocha |
 |---|---|---|
@@ -147,23 +187,47 @@ Keyword, function and type colours were not on screen. The rest are covered by
 
 ## Not yet verified
 
-- **Live look.** A palette was applied for real on 2026-09-28, all targets.
-  Only the Firefox toolbar has been reviewed so far (fixed: icons were green
-  from the Firefox Color extension's default theme).
-  The panel, Nemo, terminal and Vesktop still need a look.
-- **Brave**: that the seed edit survives a relaunch, and how close the
-  generated colours look.
-- **Vesktop**: installed and themed on 2026-09-28 (native path
-  `~/.config/vesktop`, `enabledThemes` written). Still to confirm that the CSS
-  selectors win everywhere (DevTools).
-- **`rain restore` for real**: only dry-run so far.
-- **Login autostart** (`rain pending`): installed, not yet seen running at a real login.
-- **GUI Apply/Restore buttons**: the window was screenshotted; the buttons run
-  the same `rain` commands that were tested, but haven't been clicked yet.
+- **Live look.** Firefox toolbar was reviewed previously (fixed: icons were
+  green from the Firefox Color extension's default theme). The retry screenshot
+  showed the Gruvbox Cinnamon panel and window chrome. Nemo and terminal review
+  are deferred; Vesktop's live Gruvbox variables are verified below.
+- **Brave**: the theme seed, scheme, and Rain theme ID survived a real relaunch
+  on 2026-10-29. Visual colour accuracy still needs an unlocked-screen review.
+- **Vesktop**: installed and themed at `~/.config/vesktop`. On 2026-10-29,
+  Vesktop 1.6.8 launched with `gruvbox.theme.css` enabled. Local DevTools
+  inspection confirmed the live renderer's Gruvbox background, foreground,
+  brand, and link variables (`#282828`, `#EBDBB2`, `#FE8019`, `#83A598`), plus
+  the expected dark theme root, Gruvbox chat-surface backgrounds, and button
+  text color. This confirms the theme loaded on representative live surfaces;
+  dialogs and every screen state were not reviewed.
+- **Live apply/restore round-trip (2026-10-29):** desktop Gruvbox apply and
+  restore passed with a fresh snapshot; all three Brave fields were captured
+  and restored, then the seed/scheme/theme ID survived a real Brave relaunch.
+  The legacy pre-test snapshot also restored; its missing Brave extension
+  theme ID was left unchanged as designed. The GNOME Text Editor target was
+  excluded from final reapply to preserve its pre-existing user-selected
+  scheme. On a Pixel 10 Pro XL, the Gruvbox seed and exports applied, restore
+  matched the original wallpaper-driven setting, and the phone returned to its
+  previous Librekai seed. The temporary export folder was removed. The unlocked
+  visual retry confirmed the desktop shell/window chrome and phone wallpaper
+  previews; HeliBoard's file-picker import was also completed through its UI.
+- **Login autostart** (`rain pending`): installed; invoking its exact command
+  returned `nothing pending`. A real login has not been observed.
+- **GUI Apply/Restore buttons**: the live window opened centered, and palette
+  actions expose distinct screen-reader names. Apply and Restore controls were
+  not clicked; their underlying CLI round-trip is verified above.
 - **Material You / Niagara**: whether the phone wallpaper yields the accent as a
   "Wallpaper and System" swatch.
 
 ## Known issues / rough edges
+
+- The expanded contrast report currently flags **88 palette/pair combinations
+  across all 21 palettes**. Most are muted text on input/background surfaces;
+  several are danger/positive/warning text and low-contrast interactive icons.
+  These are reported rather than changed because the values are upstream or
+  intentional mappings. Review them before presenting the palettes as meeting
+  WCAG AA for every role; `rain check` verifies generated-file consistency, not
+  contrast compliance.
 
 - Some upstream syntax colours are low-contrast on their own background, and
   were kept as upstream has them:
@@ -180,24 +244,49 @@ Keyword, function and type colours were not on screen. The rest are covered by
 - In Librekai, `secondary_bg` and `tertiary_bg` are the same colour, so the
   panel and titlebars don't differ. That's a spec choice, fixable in the spec.
 - `apply_theme.py` assumes Brave Origin's `Default` profile and Firefox's
-  install default; other profiles are ignored.
+  install default; Firefox and LibreWolf can select another existing profile
+  explicitly with `--firefox-profile` / `--librewolf-profile`; Brave accepts
+  `--brave-preferences PATH`. Retargeting a browser during an active restore
+  snapshot is refused so the original profile files remain recoverable.
 
-## Next steps
+## To-do checks
 
-1. Review the live apply (panel, Nemo, terminal, Vesktop, Brave) with the owner
-   and fix what looks off.
-2. ~~The other 19 palettes~~: done on 2026-09-28. Next is Firefox previews
-   (`tools/rain preview <slug>`) for the palettes the owner actually picks.
-3. Brave GTK mode: find its pref key (toggle in the UI, diff `Preferences`) and
-   offer it as an option.
-4. Vesktop: check in DevTools that the theme's variables win; fix selectors if needed.
-5. Commit `.nlt` exports for the palettes actually used on the phone.
-6. Optional: show desktop exports (wallpaper thumbnails) in `GALLERY.md`; an
-   optional Stylus user style for chatgpt.com if Dark Reader isn't precise
-   enough.
+### Live desktop checks
+
+- [ ] Exercise the GUI Apply and Restore controls safely.
+- [ ] Observe `rain pending` during a real login; the installed command only
+  returned `nothing pending` when invoked manually.
+- [ ] Review additional Vesktop dialogs and screen states; representative
+  Gruvbox surfaces and variables are verified.
+- [ ] Review Brave's visual color accuracy **only when the owner is not using
+  the computer and has explicitly authorized the review**.
+- [ ] Review Nemo and terminal after the owner un-defers those targets.
+- [ ] Decide whether Brave should offer a GTK-following mode; verify its
+  preference only after the same explicit authorization.
+
+### Phone checks
+
+- [ ] Check whether Niagara offers the wallpaper-derived accent as a
+  *Wallpaper and System* swatch.
+- [ ] Export `.nlt` files manually from Niagara for phone palettes in use, then
+  commit each export with its matching palette. The binary format is not
+  generated by Rain.
+
+### Palette quality and maintenance
+
+- [ ] Review the 88 reported low-contrast palette/pair combinations and record
+  which are intentional versus candidates for palette changes.
+- [ ] Refresh the provenance snapshot when upstream sources change, reviewing
+  every mismatch before updating a spec. See [palette provenance](palette-provenance.md).
+
+### Optional
+
+- [ ] Add a Stylus style for chatgpt.com only if Dark Reader proves insufficient.
 
 ## Open questions
 
 - Should the phone wallpaper stay "big accent blob" (good for Material You) or
   be subtler? It's a trade-off between looks and the extracted colour.
-- Light variants: everything is dark-only today.
+- Light variants: 15 palettes export their official light flavour for selected
+  integrations. The Rain theme and desktop application remain dark-first; the
+  remaining six palettes have no official light flavour upstream.

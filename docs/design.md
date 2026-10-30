@@ -242,8 +242,10 @@ rewrites on exit. Hence the running check.
   `user_color2` is a signed 32-bit ARGB int (`argb_int()`).
   `color_scheme2: 2` = dark.
 - None of these are MAC-protected in `Secure Preferences` (its `protection.macs`
-  was checked and doesn't list them), so a plain edit survives. Not yet
-  confirmed by relaunching Brave.
+  was checked and doesn't list them), so a plain edit survives. A real Brave
+  Origin relaunch on 2026-10-29 preserved the theme seed, scheme, and Rain theme
+  ID. Visual colour accuracy remains unreviewed; do that only when the owner is
+  not using the computer and has explicitly authorized it.
 - A seed colour gives an approximation (Chromium generates a Material palette
   from it). The alternative is Brave's GTK mode, which follows Colloid. Its
   pref key hasn't been verified, so it isn't scripted; the way to find it is to
@@ -258,9 +260,11 @@ rewrites on exit. Hence the running check.
   classes, so the block targets those selectors too, with `!important`.
 - Paths: `~/.config/vesktop/` (native) or
   `~/.var/app/dev.vencord.Vesktop/config/vesktop/` (Flatpak).
-  `settings/settings.json` → `enabledThemes`. **Unverified**: Vesktop wasn't
-  installed when this was written. Confirm the variable names in DevTools and
-  the settings path on first use.
+  `settings/settings.json` → `enabledThemes`. Verified on Vesktop 1.6.8 on
+  2026-10-29: the native settings file enabled `gruvbox.theme.css`; DevTools
+  showed the expected Gruvbox variables on the live `.theme-dark` renderer,
+  including chat backgrounds and button text. Other dialogs and screen states
+  remain unreviewed.
 
 ## Wallpapers and the phone
 

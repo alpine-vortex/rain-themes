@@ -231,22 +231,30 @@ def build(spec_path, out_dir=None):
         status = ("PASS" if r >= need else "FAIL") if need else "info"
         rows.append((name, fg, bgc, r, need, status))
 
-    for s in ("main_bg", "secondary_bg", "floating_bg", "input_bg"):
+    for s in ("main_bg", "secondary_bg", "tertiary_bg", "floating_bg", "input_bg"):
         chk(f"text_normal on {s}", C["text_normal"], surf[s], 4.5)
     chk("text_normal on nested_floating_bg", C["text_normal"], surf["nested_floating_bg"], 4.5)
+    chk("text_strong on tertiary_bg", C["text_strong"], surf["tertiary_bg"], 4.5)
     chk("text_secondary on secondary_bg", C["text_secondary"], surf["secondary_bg"], 4.5)
+    chk("text_secondary on floating_bg", C["text_secondary"], surf["floating_bg"], 4.5)
+    chk("text_muted on main_bg", C["text_muted"], surf["main_bg"], 4.5)
+    chk("text_muted on input_bg", C["text_muted"], surf["input_bg"], 4.5)
     chk("text_strong on selected (composited on secondary)", C["text_strong"], over(C["selected"], surf["secondary_bg"]), 4.5)
     chk("text_normal on mention (composited on main)", C["text_normal"], over(C["mention"], surf["main_bg"]), 4.5)
+    chk("text_normal on mention_hover (composited on main)", C["text_normal"],
+        over(C["mention_hover"], surf["main_bg"]), 4.5)
     chk("link on main_bg", C["link"], surf["main_bg"], 4.5)
+    chk("link on secondary_bg", C["link"], surf["secondary_bg"], 4.5)
     chk("text_on_brand on brand", C["text_on_brand"], C["brand"], 4.5)
     chk("text_on_brand on brand_bright", C["text_on_brand"], C["brand_bright"], 4.5)
     chk("brand_bright (TEXT_BRAND) on main_bg", C["brand_bright"], surf["main_bg"], 4.5)
+    for s in ("main_bg", "secondary_bg", "tertiary_bg"):
+        chk(f"brand focus indicator against {s}", C["brand"], surf[s], 3.0)
+    for s in ("main_bg", "secondary_bg"):
+        chk(f"interactive_muted icon against {s}", C["interactive_muted"], surf[s], 3.0)
     for r in ("danger", "positive", "warning"):
-        chk(f"{r} on main_bg", C[r], surf["main_bg"], 3.0)
-    chk("danger on secondary_bg", C["danger"], surf["secondary_bg"], 3.0)
-    chk("text_muted on main_bg", C["text_muted"], surf["main_bg"], None)
-    chk("text_muted (placeholder) on input_bg", C["text_muted"], surf["input_bg"], None)
-    chk("interactive_muted on secondary_bg", C["interactive_muted"], surf["secondary_bg"], None)
+        chk(f"{r} text on main_bg", C[r], surf["main_bg"], 4.5)
+        chk(f"{r} text on secondary_bg", C[r], surf["secondary_bg"], 4.5)
 
     on_danger_opts = {"TEXT_STRONG": C["text_strong"], "REDESIGN_BUTTON_PRIMARY_TEXT": C["text_on_brand"]}
     on_danger = max(on_danger_opts, key=lambda k: contrast(on_danger_opts[k], C["danger"]))

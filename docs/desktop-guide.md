@@ -4,9 +4,10 @@ How to put one palette on the whole Linux Mint (Cinnamon) desktop and the apps
 around it, and how to get back. Written for Linux Mint with Cinnamon (GNOME
 Terminal, Firefox, Brave Origin, Geany); paths assume that setup.
 
-Palettes with desktop exports so far: **Librekai**, **Catppuccin Mocha**
-(folders with a `desktop/` directory). Others need their spec extended first.
-See [status.md](status.md).
+All **21 palettes** currently have generated desktop exports. Which targets can
+be applied depends on the apps and profiles installed on this machine; the
+`rain apply` output reports targets it skips. See [status.md](status.md) for
+which behaviors have been checked live and which remain unverified.
 
 ## Quick start
 
@@ -36,6 +37,19 @@ Apply only some parts:
 
 ```sh
 tools/rain apply catppuccin-mocha --only gtk,terminal
+```
+
+Firefox and LibreWolf use their install-default profile unless you pass
+`--firefox-profile PATH` or `--librewolf-profile PATH` to `rain apply`. The
+profile directory must contain `prefs.js`. Brave uses its configured `Default`
+profile unless you pass `--brave-preferences PATH` with another existing profile's
+`Preferences` file. Restore before changing the selected profile while a
+desktop snapshot is active.
+
+```sh
+tools/rain apply librekai --only firefox --firefox-profile "$HOME/.mozilla/firefox/other.default"
+tools/rain apply librekai --only librewolf --librewolf-profile "$HOME/.var/app/io.gitlab.librewolf-community/.librewolf/other.default"
+tools/rain apply librekai --only brave --brave-preferences "$HOME/.config/BraveSoftware/Brave-Browser/User Data/Profile 1/Preferences"
 ```
 
 `tools/rain install` sets up the menu entry, the login autostart, the app icon

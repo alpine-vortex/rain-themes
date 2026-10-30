@@ -3,6 +3,7 @@
 
     tools/apply_theme.py <slug> [--only gtk,icons,flatpak,wallpaper,terminal,claude-code,kitty,ghostty,
                                         gnome-text-editor,xed,geany,firefox,librewolf,brave,vesktop] [--dry-run]
+    tools/apply_theme.py <slug> [--firefox-profile DIR] [--librewolf-profile DIR] [--brave-preferences FILE]
     tools/apply_theme.py --restore [--dry-run]
     tools/apply_theme.py --build-gtk <slug> --dest DIR     # build the Colloid theme only
 
@@ -40,7 +41,8 @@ COLLOID_COMMIT = "fe11342f37f124f1b29d44cf33e9a06053f4bba2"
 THEMES_DIR = HOME / ".themes"
 GTK4 = HOME / ".config/gtk-4.0"
 GEANY_CONF = HOME / ".config/geany/geany.conf"
-BRAVE_PREFS = HOME / ".config/BraveSoftware/Brave-Origin/Default/Preferences"
+DEFAULT_BRAVE_PREFS = HOME / ".config/BraveSoftware/Brave-Origin/Default/Preferences"
+BRAVE_PREFS = DEFAULT_BRAVE_PREFS
 VESKTOP = next((d for d in (HOME / ".config/vesktop", HOME / ".var/app/dev.vencord.Vesktop/config/vesktop")
                 if d.exists()), HOME / ".config/vesktop")
 TERM_BASE = "/org/gnome/terminal/legacy/profiles:/"
@@ -58,6 +60,7 @@ XED_STYLES = HOME / ".local/share/xed/styles"
 XED_KEY = ("org.x.editor.preferences.editor", "scheme")
 LIBREWOLF = HOME / ".var/app/io.gitlab.librewolf-community/.librewolf"  # the Flatpak; same layout as Firefox
 BROWSERS = {"firefox": ("Firefox", HOME / ".mozilla/firefox"), "librewolf": ("LibreWolf", LIBREWOLF)}
+PROFILE_OVERRIDES = {}
 # Flatpak apps can't see ~/.themes; these user-wide overrides let GTK3/4 apps load the Rain theme Cinnamon names
 FLATPAK_GLOBAL = HOME / ".local/share/flatpak/overrides/global"
 FLATPAK_FS = ["~/.themes:ro", "xdg-config/gtk-4.0:ro"]
@@ -222,6 +225,9 @@ def clear_pending(target):
 
 
 def firefox_profile(root=HOME / ".mozilla/firefox"):
+    app = next((name for name, (_, profile_root) in BROWSERS.items() if profile_root == root), None)
+    if app in PROFILE_OVERRIDES:
+        return PROFILE_OVERRIDES[app]
     ini = root / "installs.ini"
     if not ini.exists():
         return None
@@ -231,6 +237,53 @@ def firefox_profile(root=HOME / ".mozilla/firefox"):
         if cp[s].get("Default"):
             return root / cp[s]["Default"]
     return None
+
+
+def browser_profiles(values=None):
+    """Validate explicit browser profiles; defaults remain the existing install-default paths."""
+    values = values or {}
+    result = {}
+    for app in ("firefox", "librewolf"):
+        raw = values.get(app)
+        if raw is None:
+            continue
+        path = Path(raw).expanduser().resolve()
+        if not path.is_dir() or not (path / "prefs.js").is_file():
+            sys.exit(f"{app}: expected an existing profile directory containing prefs.js: {path}")
+        result[app] = path
+    raw = values.get("brave")
+    if raw is not None:
+        path = Path(raw).expanduser().resolve()
+        if not path.is_file() or path.name != "Preferences":
+            sys.exit(f"brave: profile must be an existing Preferences file: {path}")
+        result["brave"] = path
+    return result
+
+
+def check_snapshot_profiles(snap, targets):
+    """A single restore snapshot may own one profile per browser; refuse silent retargeting."""
+    if not snap:
+        return
+    for app, target in (("firefox", "firefox"), ("librewolf", "librewolf")):
+        if target not in targets:
+            continue
+        root = BROWSERS[app][1]
+        selected = firefox_profile(root)
+        if selected is None:
+            continue
+        for key, record in snap.get("files", {}).items():
+            if not key.startswith(app + "-"):
+                continue
+            path = Path(record["path"])
+            owned_profile = path.parent.parent if "/chrome/" in str(path) else path.parent
+            if owned_profile.resolve() != selected.resolve():
+                sys.exit(f"{app}: snapshot already owns profile {owned_profile}; restore before applying to "
+                         f"another profile ({selected})")
+    if "brave" in targets and (snap.get("brave_fields") is not None or snap.get("brave_theme") is not None):
+        owned = Path(snap.get("brave_path", DEFAULT_BRAVE_PREFS)).resolve()
+        if owned != BRAVE_PREFS.resolve():
+            sys.exit(f"brave: snapshot already owns profile {owned}; restore before applying to another "
+                     f"profile ({BRAVE_PREFS})")
 
 
 def oklab(h):
@@ -379,6 +432,55 @@ def rain_brave(theme):
     return (theme or {}).get("user_color2") in seeds
 
 
+BRAVE_OWNED_FIELDS = {
+    "browser.theme.user_color2": "user_color2",
+    "browser.theme.color_scheme2": "color_scheme2",
+    "extensions.theme.id": "extension_theme_id",
+}
+BRAVE_APPLIED = {
+    "browser.theme.color_scheme2": 2,
+    "extensions.theme.id": "user_color_theme_id",
+}
+
+
+def brave_get(prefs, dotted):
+    value = prefs
+    for part in dotted.split("."):
+        if not isinstance(value, dict) or part not in value:
+            return False, None
+        value = value[part]
+    return True, value
+
+
+def brave_set(prefs, dotted, present, value):
+    parts = dotted.split(".")
+    parent = prefs
+    for part in parts[:-1]:
+        child = parent.get(part)
+        if not isinstance(child, dict):
+            child = {}
+            parent[part] = child
+        parent = child
+    if present:
+        parent[parts[-1]] = value
+    else:
+        parent.pop(parts[-1], None)
+
+
+def snapshot_brave_fields(prefs):
+    fields = {}
+    for path in BRAVE_OWNED_FIELDS:
+        present, value = brave_get(prefs, path)
+        fields[path] = {"present": present, "value": value}
+    return fields
+
+
+def brave_field_is_rain(path, present, value):
+    if path.endswith("user_color2"):
+        return present and rain_brave({"user_color2": value})
+    return present and value == BRAVE_APPLIED[path]
+
+
 def rain_vesktop(name):
     f = VESKTOP / "themes" / name
     return name in {f"{s}.theme.css" for s in exportable()} or (
@@ -468,10 +570,11 @@ def snapshot_apps(snap):
         if val and not rain_gte(val):
             snap["gte_style_scheme"] = val
             added.append("Text Editor")
-    if "brave_theme" not in snap and BRAVE_PREFS.exists():
-        th = json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")
-        if not rain_brave(th):
-            snap["brave_theme"] = th
+    if "brave_fields" not in snap and "brave_theme" not in snap and BRAVE_PREFS.exists():
+        prefs = json.loads(BRAVE_PREFS.read_text())
+        if not rain_brave(prefs.get("browser", {}).get("theme")):
+            snap["brave_fields"] = snapshot_brave_fields(prefs)
+            snap["brave_path"] = str(BRAVE_PREFS)
             added.append("Brave")
     vs = VESKTOP / "settings/settings.json"
     if "vesktop_enabled" not in snap and vs.exists():
@@ -586,9 +689,12 @@ def restore_terminal(snap):
 
 
 def restore():
+    global BRAVE_PREFS
     if not SNAPSHOT.exists():
         sys.exit("no snapshot; nothing to restore")
     snap = json.loads(SNAPSHOT.read_text())
+    if snap.get("brave_path"):
+        BRAVE_PREFS = Path(snap["brave_path"])
     for sk, val in snap["gsettings"].items():
         schema, key = sk.split()
         if rain_gsetting(schema, key, run("gsettings", "get", schema, key)):
@@ -715,14 +821,29 @@ def restore_geany(snap):
 
 
 def restore_brave(snap):
-    if snap.get("brave_theme") is None:
+    global BRAVE_PREFS
+    BRAVE_PREFS = Path(snap.get("brave_path", DEFAULT_BRAVE_PREFS))
+    if snap.get("brave_fields") is None and snap.get("brave_theme") is None:
         return
     if running("brave"):
         log("Brave is running: queued, it will be restored by `rain pending` (runs at login)")
         mark_pending("brave", "restore")
         return
-    if BRAVE_PREFS.exists() and rain_brave(json.loads(BRAVE_PREFS.read_text()).get("browser", {}).get("theme")):
-        act("brave theme restore", set_brave_theme, snap["brave_theme"])
+    if BRAVE_PREFS.exists():
+        if snap.get("brave_fields") is not None:
+            act("brave theme restore", restore_brave_fields, snap["brave_fields"])
+        else:
+            # Older snapshots captured browser.theme as a whole. Restore only the fields Rain
+            # owned; the previous extension theme id was not recorded and must not be guessed.
+            legacy = snap.get("brave_theme") or {}
+            legacy_fields = {
+                "browser.theme.user_color2": {"present": "user_color2" in legacy,
+                                               "value": legacy.get("user_color2")},
+                "browser.theme.color_scheme2": {"present": "color_scheme2" in legacy,
+                                                "value": legacy.get("color_scheme2")},
+            }
+            act("Brave legacy theme fields restore", restore_brave_fields, legacy_fields)
+            log("Brave: old snapshot does not contain the original extension theme id; left it unchanged")
     else:
         left_alone("brave theme")
     clear_pending("brave")
@@ -738,6 +859,20 @@ def set_brave_theme(theme):
     p = json.loads(BRAVE_PREFS.read_text())
     p.setdefault("browser", {})["theme"] = theme
     atomic_write(BRAVE_PREFS, json.dumps(p, separators=(",", ":")))
+
+
+def restore_brave_fields(fields):
+    prefs = json.loads(BRAVE_PREFS.read_text())
+    changed = []
+    for path, original in fields.items():
+        present, value = brave_get(prefs, path)
+        if brave_field_is_rain(path, present, value):
+            brave_set(prefs, path, original["present"], original.get("value"))
+            changed.append(path)
+        else:
+            left_alone(f"Brave preference {path}")
+    if changed:
+        atomic_write(BRAVE_PREFS, json.dumps(prefs, separators=(",", ":")))
 
 
 def set_vesktop_enabled(names):
@@ -966,7 +1101,8 @@ def apply_brave(slug, exp):
         return
     if running("brave"):
         log("Brave is running: queued, it will be applied by `rain pending` (runs at login)")
-        mark_pending("brave", slug)
+        pending = {"slug": slug, "preferences": str(BRAVE_PREFS)} if BRAVE_PREFS != DEFAULT_BRAVE_PREFS else slug
+        mark_pending("brave", pending)
         return
     seed = json.loads((exp / "brave.json").read_text())
 
@@ -1017,9 +1153,11 @@ def exportable():
     return sorted(p.parent.parent.name for p in ROOT.glob("*/desktop/colloid.json"))
 
 
-def apply(slug, only=None, dry=False):
-    global DRY
+def apply(slug, only=None, dry=False, profiles=None):
+    global DRY, PROFILE_OVERRIDES, BRAVE_PREFS
     DRY = dry
+    PROFILE_OVERRIDES = browser_profiles(profiles)
+    BRAVE_PREFS = PROFILE_OVERRIDES.get("brave", DEFAULT_BRAVE_PREFS)
     exp = ROOT / slug / "desktop"
     if not exp.exists():
         sys.exit(f"{slug}: no desktop exports (add ansi/terminal/syntax to its spec, then `rain build`)")
@@ -1027,6 +1165,12 @@ def apply(slug, only=None, dry=False):
     bad = set(only) - set(TARGETS)
     if bad:
         sys.exit(f"unknown targets {sorted(bad)}; valid: {','.join(TARGETS)}")
+    unused_profiles = {app for app in PROFILE_OVERRIDES if app not in only}
+    if unused_profiles:
+        names = {"firefox": "--firefox-profile", "librewolf": "--librewolf-profile", "brave": "--brave-preferences"}
+        sys.exit(f"profile option {', '.join(names[a] for a in sorted(unused_profiles))} requires its target "
+                 f"in --only")
+    check_snapshot_profiles(json.loads(SNAPSHOT.read_text()) if SNAPSHOT.exists() else None, only)
     take_snapshot()
     for t in TARGETS:
         if t in only:
@@ -1042,7 +1186,7 @@ def apply(slug, only=None, dry=False):
 
 def run_pending(dry=False):
     """Finish targets that were skipped because their app was running."""
-    global DRY
+    global DRY, BRAVE_PREFS
     DRY = dry
     pending = dict(load_state().get("pending", {}))
     if not pending:
@@ -1057,6 +1201,9 @@ def run_pending(dry=False):
         elif what == "restore":
             {"geany": restore_geany, "brave": restore_brave}[target](snap)
             restored = True
+        elif target == "brave" and isinstance(what, dict):
+            BRAVE_PREFS = Path(what["preferences"])
+            FNS[target](what["slug"], ROOT / what["slug"] / "desktop")
         elif (ROOT / what / "desktop").exists():
             FNS[target](what, ROOT / what / "desktop")
         else:
@@ -1073,6 +1220,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("slug", nargs="?")
     ap.add_argument("--only", help="comma list of " + ",".join(TARGETS))
+    ap.add_argument("--firefox-profile", help="explicit Firefox profile directory (default: install default)")
+    ap.add_argument("--librewolf-profile", help="explicit LibreWolf profile directory (default: install default)")
+    ap.add_argument("--brave-preferences", help="explicit Brave profile Preferences file")
     ap.add_argument("--restore", action="store_true")
     ap.add_argument("--pending", action="store_true", help="finish targets queued while their app was running")
     ap.add_argument("--dry-run", action="store_true")
@@ -1088,7 +1238,9 @@ def main():
     elif a.pending:
         run_pending(a.dry_run)
     elif a.slug:
-        apply(a.slug, a.only.split(",") if a.only else None, a.dry_run)
+        apply(a.slug, a.only.split(",") if a.only else None, a.dry_run,
+              {"firefox": a.firefox_profile, "librewolf": a.librewolf_profile,
+               "brave": a.brave_preferences})
     else:
         ap.error("slug, --restore or --pending required")
 

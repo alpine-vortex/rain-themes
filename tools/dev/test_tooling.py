@@ -24,6 +24,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOLS = ROOT / "tools"
+# Scratch clones must stay inside this checkout unless the caller selects another safe path.
+os.environ.setdefault("TMPDIR", str(ROOT / ".test-scratch"))
+Path(os.environ["TMPDIR"]).mkdir(parents=True, exist_ok=True)
 KEEP = ("librekai", "dracula", "gruvbox")  # palettes left in the scratch clone (keeps `rain check` fast)
 LOUD = "#!/bin/sh\necho \"$(basename \"$0\") $*\" >> \"$HOME/fake-calls.log\"\nexit 99\n"
 FAKE_ADB = r'''#!/usr/bin/env python3
@@ -86,7 +89,12 @@ class GitHookTests(unittest.TestCase):
         cls.git(tpl, "commit", "-qm", "prune palettes")
         cls.old = cls.git(tpl, "rev-parse", "HEAD").strip()  # the base branch's tools
         shutil.copytree(TOOLS, tpl / "tools", dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__"))
-        cls.git(tpl, "add", "-A", "tools")
+        build_env = dict(cls.git_env, PATH=os.environ["PATH"])
+        built = subprocess.run([str(tpl / "tools/rain"), "build"], cwd=tpl, env=build_env,
+                               capture_output=True, text=True)
+        if built.returncode:
+            raise AssertionError(f"scratch fixture build failed: {built.stdout}{built.stderr}")
+        cls.git(tpl, "add", "-A")
         cls.git(tpl, "commit", "-qm", "this tree's tools", "--allow-empty")
         cls.template = tpl
 
@@ -431,6 +439,7 @@ LW = A.LIBREWOLF / "lw.default"
 A.ICON_DIRS = [H / ".icons"]
 BRAVE = A.BRAVE_PREFS
 ORIG_BRAVE = {"user_color2": -14244198, "color_scheme2": 1}
+ORIG_BRAVE_EXTENSION_ID = "original-theme"
 
 
 def rd(p):
@@ -445,7 +454,8 @@ def make_home(h, gtk4_assets=True):
     (h / ".config/geany/geany.conf").write_text("[geany]\ncolor_scheme=mine.conf\n")
     brave = h / ".config/BraveSoftware/Brave-Origin/Default/Preferences"
     brave.parent.mkdir(parents=True)
-    brave.write_text(json.dumps({"browser": {"theme": {"user_color2": -14244198, "color_scheme2": 1}}}))
+    brave.write_text(json.dumps({"browser": {"theme": {"user_color2": -14244198, "color_scheme2": 1}},
+                                "extensions": {"theme": {"id": "original-theme"}}}))
     brave.chmod(0o600)
     (h / ".config/vesktop/settings").mkdir(parents=True)
     (h / ".config/vesktop/themes").mkdir()
@@ -828,6 +838,7 @@ class DesktopTests(unittest.TestCase):
             assert A.load_state()["pending"] == {"geany": "restore"}, A.load_state()
             assert "color_scheme=geany-librekai.conf" in A.GEANY_CONF.read_text()
             assert rd(BRAVE)["browser"]["theme"] == ORIG_BRAVE
+            assert rd(BRAVE)["extensions"]["theme"]["id"] == ORIG_BRAVE_EXTENSION_ID
             assert (GTK4 / "assets/a.png").read_text() == "orig"
             RUNNING.clear()
             A.run_pending()
@@ -850,6 +861,7 @@ class DesktopTests(unittest.TestCase):
             RUNNING.clear()
             A.run_pending()
             assert rd(BRAVE)["browser"]["theme"] == ORIG_BRAVE  # the queued restore ran
+            assert rd(BRAVE)["extensions"]["theme"]["id"] == ORIG_BRAVE_EXTENSION_ID
             assert A.SNAPSHOT.exists() and not list(A.STATE.glob("snapshot.*.json"))
             A.restore()  # still recoverable
             assert G["org.cinnamon.desktop.interface gtk-theme"] == "'Mint-Y'"
@@ -910,12 +922,138 @@ class DesktopTests(unittest.TestCase):
         self.child("""
             A.apply("librekai", ["gtk"])
             snap = rd(A.SNAPSHOT)
-            del snap["brave_theme"], snap["geany_color_scheme"]
+            del snap["brave_fields"], snap["geany_color_scheme"]
             A.write(A.SNAPSHOT, json.dumps(snap))
             A.apply_brave("librekai", A.ROOT / "librekai/desktop")
             A.apply("librekai", ["gtk"])
             snap = rd(A.SNAPSHOT)
-            assert "brave_theme" not in snap and snap["geany_color_scheme"] == "mine.conf", snap
+            assert "brave_fields" not in snap and snap["geany_color_scheme"] == "mine.conf", snap
+        """)
+
+    def test_19c_brave_restores_only_unchanged_owned_fields(self):
+        self.child("""
+            A.apply("librekai", ["brave"])
+            prefs = rd(BRAVE)
+            prefs["browser"]["theme"]["color_scheme2"] = 7
+            prefs["browser"]["theme"]["user_customized"] = True
+            A.write(BRAVE, json.dumps(prefs))
+            A.restore()
+            prefs = rd(BRAVE)
+            assert prefs["browser"]["theme"]["user_color2"] == ORIG_BRAVE["user_color2"], prefs
+            assert prefs["browser"]["theme"]["color_scheme2"] == 7, prefs
+            assert prefs["browser"]["theme"]["user_customized"] is True, prefs
+            assert prefs["extensions"]["theme"]["id"] == ORIG_BRAVE_EXTENSION_ID, prefs
+        """)
+
+    def test_19d_brave_restore_handles_originally_absent_fields(self):
+        self.child("""
+            prefs = rd(BRAVE)
+            prefs["browser"]["theme"].pop("color_scheme2")
+            prefs["extensions"]["theme"].pop("id")
+            A.write(BRAVE, json.dumps(prefs))
+            A.apply("librekai", ["brave"])
+            A.restore()
+            prefs = rd(BRAVE)
+            assert "color_scheme2" not in prefs["browser"]["theme"], prefs
+            assert "id" not in prefs["extensions"]["theme"], prefs
+        """)
+
+    def test_19e_brave_legacy_snapshot_does_not_guess_extension_id(self):
+        self.child("""
+            A.apply("librekai", ["brave"])
+            snap = rd(A.SNAPSHOT)
+            snap["brave_theme"] = ORIG_BRAVE
+            del snap["brave_fields"]
+            A.write(A.SNAPSHOT, json.dumps(snap))
+            A.restore()
+            prefs = rd(BRAVE)
+            assert prefs["browser"]["theme"] == ORIG_BRAVE, prefs
+            assert prefs["extensions"]["theme"]["id"] == "user_color_theme_id", prefs
+        """)
+
+    def test_19f_firefox_explicit_profile_applies_and_restores(self):
+        self.child("""
+            other = H / ".mozilla/firefox/p.other"
+            other.mkdir()
+            (other / "prefs.js").write_text("// profile marker\\n")
+            (other / "user.js").write_text('user_pref("other", true);\\n')
+            A.apply("librekai", ["firefox"], profiles={"firefox": str(other)})
+            assert A.USERJS_LINE in (other / "user.js").read_text()
+            assert (other / "chrome/userChrome.css").exists()
+            assert not (FF / "chrome/userChrome.css").exists()
+            A.restore()
+            assert (other / "user.js").read_text() == 'user_pref("other", true);\\n'
+            assert not (other / "chrome/userChrome.css").exists()
+        """)
+
+    def test_19g_refuses_to_retarget_browser_profile_under_active_snapshot(self):
+        self.child("""
+            A.apply("librekai", ["firefox"])
+            other = H / ".mozilla/firefox/p.other"
+            other.mkdir()
+            (other / "prefs.js").write_text("// profile marker\\n")
+            try:
+                A.apply("dracula", ["firefox"], profiles={"firefox": str(other)})
+                raise AssertionError("expected profile retarget to be refused")
+            except SystemExit as e:
+                assert "restore before applying to another profile" in str(e), e
+            assert not (other / "chrome/userChrome.css").exists()
+        """)
+
+    def test_19h_brave_explicit_profile_applies_and_restores(self):
+        self.child("""
+            other = H / ".config/BraveSoftware/Brave-Origin/Other/Preferences"
+            other.parent.mkdir(parents=True)
+            original = {"browser": {"theme": {"user_color2": 17, "color_scheme2": 0}},
+                        "extensions": {"theme": {"id": "other-theme"}}}
+            A.write(other, json.dumps(original))
+            A.apply("librekai", ["brave"], profiles={"brave": str(other)})
+            assert rd(other)["browser"]["theme"]["user_color2"] != 17
+            assert rd(BRAVE)["browser"]["theme"] == ORIG_BRAVE
+            A.restore()
+            assert rd(other) == original, rd(other)
+        """)
+
+    def test_19i_brave_pending_apply_remembers_explicit_profile(self):
+        self.child("""
+            other = H / ".config/BraveSoftware/Brave-Origin/Other/Preferences"
+            other.parent.mkdir(parents=True)
+            A.write(other, json.dumps({"browser": {"theme": {"user_color2": 17}}}))
+            RUNNING.add("brave")
+            A.apply("librekai", ["brave"], profiles={"brave": str(other)})
+            assert A.load_state()["pending"]["brave"]["preferences"] == str(other)
+            RUNNING.clear()
+            A.run_pending()
+            assert rd(other)["browser"]["theme"]["user_color2"] != 17
+            A.restore()
+            assert rd(other)["browser"]["theme"] == {"user_color2": 17}, rd(other)
+        """)
+
+    def test_19j_refuses_to_retarget_brave_profile_under_active_snapshot(self):
+        self.child("""
+            A.apply("librekai", ["brave"])
+            other = H / ".config/BraveSoftware/Brave-Origin/Other/Preferences"
+            other.parent.mkdir(parents=True)
+            A.write(other, json.dumps({"browser": {"theme": {"user_color2": 17}}}))
+            try:
+                A.apply("dracula", ["brave"], profiles={"brave": str(other)})
+                raise AssertionError("expected profile retarget to be refused")
+            except SystemExit as e:
+                assert "restore before applying to another profile" in str(e), e
+            assert rd(other)["browser"]["theme"]["user_color2"] == 17
+        """)
+
+    def test_19k_profile_option_requires_target_selection(self):
+        self.child("""
+            other = H / ".mozilla/firefox/p.other"
+            other.mkdir()
+            (other / "prefs.js").write_text("// profile marker\\n")
+            try:
+                A.apply("librekai", ["gtk"], profiles={"firefox": str(other)})
+                raise AssertionError("expected unused profile selection to be refused")
+            except SystemExit as e:
+                assert "requires its target in --only" in str(e), e
+            assert not A.SNAPSHOT.exists()
         """)
 
     def test_21_atomic_writes(self):

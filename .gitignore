@@ -1,5 +1,7 @@
 __pycache__/
 *.pyc
+.test-scratch/
+.codex-scratch/
 
 # Local agent notes (not shared; docs/ is the committed documentation)
 CLAUDE.md

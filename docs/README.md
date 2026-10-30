@@ -7,6 +7,7 @@
 | [app-theme.md](app-theme.md) | **The app-theme format** (v1) for Android apps, which this repo owns (redeye's parser follows it). |
 | [status.md](status.md) | **Where things stand.** What's verified, what isn't, known issues, next steps, open questions. |
 | [../tools/README.md](../tools/README.md) | Reference for the spec format and every script's inputs/outputs. |
+| [palette-provenance.md](palette-provenance.md) | What the palette source references establish, what they do not, and the evidence needed to verify values reproducibly. |
 
 ## The project in one paragraph
 

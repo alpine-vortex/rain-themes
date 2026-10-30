@@ -62,23 +62,34 @@
 |---|---|---|---|---|---|
 | text_normal on main_bg | `#D4BE98` | `#282828` | 8.16 | 4.5 | PASS |
 | text_normal on secondary_bg | `#D4BE98` | `#32302F` | 7.26 | 4.5 | PASS |
+| text_normal on tertiary_bg | `#D4BE98` | `#1B1B1B` | 9.53 | 4.5 | PASS |
 | text_normal on floating_bg | `#D4BE98` | `#45403D` | 5.66 | 4.5 | PASS |
 | text_normal on input_bg | `#D4BE98` | `#3A3735` | 6.54 | 4.5 | PASS |
 | text_normal on nested_floating_bg | `#D4BE98` | `#504945` | 4.88 | 4.5 | PASS |
+| text_strong on tertiary_bg | `#DDC7A1` | `#1B1B1B` | 10.46 | 4.5 | PASS |
 | text_secondary on secondary_bg | `#A89984` | `#32302F` | 4.72 | 4.5 | PASS |
+| text_secondary on floating_bg | `#A89984` | `#45403D` | 3.68 | 4.5 | FAIL |
+| text_muted on main_bg | `#928374` | `#282828` | 4.02 | 4.5 | FAIL |
+| text_muted on input_bg | `#928374` | `#3A3735` | 3.22 | 4.5 | FAIL |
 | text_strong on selected (composited on secondary) | `#DDC7A1` | `#504A44` | 5.31 | 4.5 | PASS |
 | text_normal on mention (composited on main) | `#D4BE98` | `#423B2F` | 6.12 | 4.5 | PASS |
+| text_normal on mention_hover (composited on main) | `#D4BE98` | `#4B4131` | 5.53 | 4.5 | PASS |
 | link on main_bg | `#D3869B` | `#282828` | 5.37 | 4.5 | PASS |
+| link on secondary_bg | `#D3869B` | `#32302F` | 4.78 | 4.5 | PASS |
 | text_on_brand on brand | `#282828` | `#7DAEA3` | 5.94 | 4.5 | PASS |
 | text_on_brand on brand_bright | `#282828` | `#9FB7A2` | 6.86 | 4.5 | PASS |
 | brand_bright (TEXT_BRAND) on main_bg | `#9FB7A2` | `#282828` | 6.86 | 4.5 | PASS |
-| danger on main_bg | `#EA6962` | `#282828` | 4.70 | 3.0 | PASS |
-| positive on main_bg | `#A9B665` | `#282828` | 6.72 | 3.0 | PASS |
-| warning on main_bg | `#D8A657` | `#282828` | 6.68 | 3.0 | PASS |
-| danger on secondary_bg | `#EA6962` | `#32302F` | 4.19 | 3.0 | PASS |
-| text_muted on main_bg | `#928374` | `#282828` | 4.02 | — | info |
-| text_muted (placeholder) on input_bg | `#928374` | `#3A3735` | 3.22 | — | info |
-| interactive_muted on secondary_bg | `#7C6F64` | `#32302F` | 2.70 | — | info |
+| brand focus indicator against main_bg | `#7DAEA3` | `#282828` | 5.94 | 3.0 | PASS |
+| brand focus indicator against secondary_bg | `#7DAEA3` | `#32302F` | 5.29 | 3.0 | PASS |
+| brand focus indicator against tertiary_bg | `#7DAEA3` | `#1B1B1B` | 6.94 | 3.0 | PASS |
+| interactive_muted icon against main_bg | `#7C6F64` | `#282828` | 3.03 | 3.0 | PASS |
+| interactive_muted icon against secondary_bg | `#7C6F64` | `#32302F` | 2.70 | 3.0 | FAIL |
+| danger text on main_bg | `#EA6962` | `#282828` | 4.70 | 4.5 | PASS |
+| danger text on secondary_bg | `#EA6962` | `#32302F` | 4.19 | 4.5 | FAIL |
+| positive text on main_bg | `#A9B665` | `#282828` | 6.72 | 4.5 | PASS |
+| positive text on secondary_bg | `#A9B665` | `#32302F` | 5.98 | 4.5 | PASS |
+| warning text on main_bg | `#D8A657` | `#282828` | 6.68 | 4.5 | PASS |
+| warning text on secondary_bg | `#D8A657` | `#32302F` | 5.95 | 4.5 | PASS |
 | REDESIGN_BUTTON_PRIMARY_TEXT on danger (preview danger button) | `#282828` | `#EA6962` | 4.70 | — | info |
 
 ## Full source palette
