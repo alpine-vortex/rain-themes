@@ -12,10 +12,14 @@ which behaviors have been checked live and which remain unverified.
 ## Quick start
 
 **GUI:** open **Rain Themes** from the Cinnamon menu (or `tools/rain gui`).
-Each palette card has a wallpaper thumbnail, colour swatches, **Apply**,
-**Preview** and **Phone**. The header has **Restore original** and **Finish
-pending**, and the *Phone (adb)* row has the Material You style picker and
-**Restore phone**. The app has its own icon and can be pinned to the panel.
+Search the palette list and select a theme to see its wallpaper, colour swatches
+and current status. **Apply to desktop** applies it; **Preview** opens screenshots
+in temporary windows and changes nothing. Phone controls are grouped in the
+**Phone** section. **Activity** opens command output, **Finish pending** appears
+when an app change is waiting, and desktop restore is under the header menu. The
+layout stacks the palette list above the preview in a narrow window. Use
+**Ctrl+F** to search and **Escape** to clear the search. The app has its own icon
+and can be pinned to the panel.
 
 **Terminal:**
 

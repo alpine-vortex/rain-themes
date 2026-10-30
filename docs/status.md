@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-10-29. Historical verification notes keep the date on which
+Last updated 2026-10-30. Historical verification notes keep the date on which
 they were observed; generated coverage does not imply that every target has
 been checked live.
 
@@ -65,9 +65,12 @@ been checked live.
   night color (librekai).
   DocumentsUI retained an empty Gruvbox folder entry after the test files and
   directory were removed from storage.
-- GUI: every card has a **Phone** button, and there's a *Phone (adb)* row with a style picker and
-  *Restore phone*. The "phone" badge comes from `phone-state.json` (any device). The Phone button
-  hasn't been clicked yet.
+- GUI: the palette browser now uses search and a selected-theme detail view, with
+  phone actions grouped in a **Phone** section and command output under **Activity**.
+  It stacks the browser above the detail view below 760 px. The redesign has not
+  been visually checked in a live Cinnamon session. Phone status still comes
+  from `phone-state.json` (any device); the phone apply action has not been
+  exercised through the GUI.
 - Not yet: Redeye's importer isn't built yet (the
   redeye session is using the files as test data).
 
