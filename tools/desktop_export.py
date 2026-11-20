@@ -24,6 +24,7 @@ exported; others are skipped with a note. Writes <theme-dir>/desktop/:
     wallpaper-phone.png      1440x3200 (also steers Android Material You / Niagara)
     sync-theme.json          Sync for Reddit Monet theme (seed + dark text overrides)
     <slug>.heliboard.json    HeliBoard "all colors" theme (+ -light; .heliboard-simple.json = 10-colour mode)
+    <slug>.gboard.zip        Gboard theme package (+ -light), for Gboard Tweaks → Import theme
     <slug>.app-theme.json    Android app theme, format app-theme v1 (docs/app-theme.md; e.g. redeye)
     README.md                manual steps: Dark Reader, Niagara
 
@@ -825,6 +826,104 @@ night (and day) in the same screen.
 """
 
 
+# ---------- Gboard ----------
+# Zip theme package for Gboard 18.5+ (imported with Gboard Tweaks → Import theme, from the
+# gboard-voice patches). Layout proven on the phone 2026-11-20 (test D): metadata.json, the
+# shared rule sheet (tools/gboard_base.css, converted from Gboard's own colour rule sheets),
+# then a palette sheet of `@def name #RRGGBBAA;` values. Gboard applies sheets in order.
+GBOARD_BASE = Path(__file__).resolve().parent / "gboard_base.css"
+# Gboard colour variable -> app-theme role, after Gboard's sand sheet (the fullest built-in one).
+# Same roles as HELIBOARD_ALL: panel = keyboard body, raised = keys, selected = function keys
+# and pressed states.
+GBOARD_VARS = {
+    "default_keyboard_background_primary_color": "panel",
+    "default_keyboard_background_secondary_color": "panel",
+    "default_generic_accent_color": "accent",
+    "default_bordered_key_color": "raised",
+    "default_bordered_key_color_pressed": "selected",
+    "default_bordered_key_dark_color": "selected",
+    "default_transparent_key_color_pressed": "selected",
+    "default_borderless_space_bar_color": "raised",
+    "default_borderless_space_bar_color_pressed": "selected",
+    "color_generic_extension_background_activated": "selected",
+    "color_bottom_indicator_active": "accent",
+    "inline_space_animation_color": "text",
+    "default_popup_background_color": "raised",
+    "default_popup_label_color": "text",
+    "default_popup_label_color_pressed": "on_accent",
+    "default_popup_item_color_pressed": "accent",
+    "default_label_color": "text",
+    "color_label_secondary": "text_secondary",
+    "color_label_dynamic": "text_muted",
+    "color_state_label_candidate_selected": "text",
+    "color_state_label_candidate": "text_secondary",
+    "color_icon_more_candidates_background": "text_secondary",
+    "color_keyboard_separator": "line",
+    "color_candidate_separator": "line",
+    "color_candidate_panel_separator": "line",
+    "color_keyboard_editing_overlay": "background",
+    "color_keyboard_editing_button": "text",
+}
+
+
+def gboard_css(name, t, light):
+    """Palette sheet: every colour variable the base rules read, as #RRGGBBAA."""
+    f = _filled(t)
+    f.setdefault("line", f["raised"])
+    if f["raised"] == f["panel"]:
+        # bordered keys must stand out from the keyboard body (HeliBoard's borderless look doesn't)
+        f["raised"] = f["background"]
+    v = {k: f[role] for k, role in GBOARD_VARS.items()}
+    v["default_generic_accent_color_pressed"] = mix(f["accent"], f["panel"], 0.3)
+    v["default_bordered_key_dark_color_pressed"] = mix(f["selected"], f["text"], 0.15)
+    lines = [f"/* {name}: Rain palette for Gboard (tools/desktop_export.py) */"]
+    lines += [f"@def {k} {h.upper()}FF;" for k, h in v.items()]
+    lines.append("@def color_expression_footer_background @default_keyboard_background_primary_color;")
+    if light:
+        lines.append("@def auto_correction_candidate_background_alpha 0.15;")
+    lines.append(f".track.for-gesture {{ color: {f['accent'].upper()}FF; }}")
+    return "\n".join(lines) + "\n"
+
+
+def gboard_zip(slug, name, t, light):
+    """Gboard theme package bytes. Fixed timestamps and order, so rebuilds are byte-identical."""
+    import io
+    import zipfile
+    meta = {"format_version": 3, "id": f"rain.{slug}" + (".light" if light else ""), "name": name,
+            "is_light_theme": light, "prefer_key_border": True, "lock_key_border": False,
+            "style_sheets": ["base.css", "rain.css"]}
+    files = [("metadata.json", json.dumps(meta, indent=2) + "\n"),
+             ("base.css", GBOARD_BASE.read_text()),
+             ("rain.css", gboard_css(name, t, light))]
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for fn, text in files:
+            zi = zipfile.ZipInfo(fn, date_time=(1980, 1, 1, 0, 0, 0))
+            zi.compress_type = zipfile.ZIP_DEFLATED
+            zi.external_attr = 0o644 << 16
+            z.writestr(zi, text.encode())
+    return buf.getvalue()
+
+
+def gboard_themes(t, slug):
+    """{file suffix: zip bytes}: dark and (official) light."""
+    out = {".gboard.zip": gboard_zip(slug, t["name"], t, False)}
+    if "light" in t:
+        out["-light.gboard.zip"] = gboard_zip(slug, t["light"]["flavour"], t["light"], True)
+    return out
+
+
+def gboard_section(spec, has_light):
+    light = (f" (and `{spec['slug']}-light.gboard.zip`, {spec['light']['flavour']}, for day mode)"
+             if has_light else "")
+    return f"""## Gboard (phone)
+Needs Gboard patched with the gboard-voice Morphe patches. Gboard Tweaks →
+**Import theme**, pick `{spec['slug']}.gboard.zip`{light}, then choose it in
+Gboard → Theme → My themes.
+
+"""
+
+
 def app_section(spec):
     return f"""## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
@@ -884,7 +983,7 @@ backgrounds and cards from the seed, so they are tinted near-black rather than
 {json.dumps(sync_theme(c), indent=2)}
 ```
 
-{termius_section(spec)}{heliboard_section(spec, 'light' in spec)}{app_section(spec)}## Firefox Color (other machines)
+{termius_section(spec)}{heliboard_section(spec, 'light' in spec)}{gboard_section(spec, 'light' in spec)}{app_section(spec)}## Firefox Color (other machines)
 With `rain apply`, Firefox uses userChrome.css (exact colours). Elsewhere, install
 the Firefox Color extension and open the `url` in `firefox-color.json`.
 Firefox for Android doesn't support themes; use Dark Reader there (values above).
@@ -947,6 +1046,8 @@ def export(theme_dir, out=None, quiet=False, rain_dir=None):
     (out / f"{slug}.app-theme.json").write_text(json.dumps(at, indent=2) + "\n")
     for suffix, hb in heliboard_themes(at).items():
         (out / f"{slug}{suffix}").write_text(json.dumps(hb, ensure_ascii=False) + "\n")
+    for suffix, zb in gboard_themes(at, slug).items():
+        (out / f"{slug}{suffix}").write_bytes(zb)
     (out / "sync-theme.json").write_text(json.dumps(sync_theme(c), indent=2) + "\n")
     wallpaper(c, DESKTOP_SIZE, out / "wallpaper-desktop.png", 0.55)
     wallpaper(c, PHONE_SIZE, out / "wallpaper-phone.png", 0.75)

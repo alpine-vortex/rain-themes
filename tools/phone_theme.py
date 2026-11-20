@@ -42,7 +42,8 @@ STATE = STATE_DIR / "phone-state.json"  # {ro.serialno: {"current": slug, "style
 REMOTE = "/sdcard/Download/rain-themes"
 FILES = ["wallpaper-phone.png", "sync-theme.json", "{slug}.app-theme.json",
          "{slug}.heliboard.json", "{slug}-light.heliboard.json",
-         "{slug}.heliboard-simple.json", "{slug}-light.heliboard-simple.json"]  # missing files are skipped
+         "{slug}.heliboard-simple.json", "{slug}-light.heliboard-simple.json",
+         "{slug}.gboard.zip", "{slug}-light.gboard.zip"]  # missing files are skipped
 
 
 def adb(*args, dry=False, capture=True):
