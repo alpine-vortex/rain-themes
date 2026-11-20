@@ -77,6 +77,8 @@ def cmd_build(a):
         except (SpecError, KeyError) as e:
             print(f"{d.name}: ERROR {e}", file=sys.stderr)
             rc = 1
+    from desktop_export import GBOARD_BUNDLE, gboard_bundle
+    (ROOT / GBOARD_BUNDLE).write_bytes(gboard_bundle(ROOT.glob("*/desktop/*.gboard.zip")))
     if a.gallery:
         subprocess.run([sys.executable, str(TOOLS / "gallery.py")], check=True)
     sys.exit(rc)
@@ -106,6 +108,10 @@ def cmd_check(a):
                     # .nlt files are exported by hand from Niagara and committed on purpose
                     if p.name not in made and p.suffix != ".nlt":
                         extra.append(p.relative_to(ROOT))
+        from desktop_export import GBOARD_BUNDLE, gboard_bundle
+        bundle = ROOT / GBOARD_BUNDLE
+        if not bundle.exists() or bundle.read_bytes() != gboard_bundle(Path(tmp).glob("*/desktop/*.gboard.zip")):
+            stale.append(bundle.relative_to(ROOT))
     for p in stale:
         print(f"stale: {p}")
     for p in extra:
