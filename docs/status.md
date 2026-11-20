@@ -34,6 +34,10 @@ been checked live.
     `librekai.heliboard.json` was imported through HeliBoard's own Load file flow on
     2026-10-29; HeliBoard showed the imported User-Defined set associated with
     `librekai` in its color list.
+  - `<slug>.gboard.zip` (+ `-light`): Gboard zip theme package for the gboard-voice
+    "Import theme" button. Format settled on the phone 2026-11-20 (a hand-made zip with
+    the same base.css + colour sheet layout themed the whole keyboard); generated palette
+    zips not yet checked on the phone.
   - Gotcha (fixed 2026-09-29): files pushed with adb stay `is_pending=1` in MediaStore, so
     file pickers (HeliBoard's Load) show the folder as empty until they're scanned.
     `rain phone` now scans every pushed file. It also picks the phone when an emulator is

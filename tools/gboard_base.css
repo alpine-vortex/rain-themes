@@ -1,0 +1,70 @@
+/* Gboard base rules for Rain zip themes: tools/desktop_export.py gboard_zip(). */
+/* Converted from Gboard 18.5 colour-theme rule sheets to its CSS form; the palette sheet sets the colours. */
+/* from style_sheet_color_common.binarypb */
+.tooltip.outlined_button.clipboard { color: @default_label_color; }
+.tooltip.outlined_button.clipboard { edge_color: @default_label_color; }
+.keyboard-clipboard-tooltip, .keyboard-clipboard-tooltip.panel { background_color: @color_generic_extension_background_activated; }
+.softkey-highlight-fill { background_color: @color_softkey_highlight_fill; }
+.softkey-outline-stroke { color: @color_softkey_outline_stroke; }
+@def default_keytop_elevation 1;
+@def color_icon_more_candidates_background #FFFFFFCC;
+@def default_borderless_space_bar_color_pressed #FFFFFFCE;
+@def default_borderless_space_bar_color #FFFFFF73;
+@def default_popup_background_color @default_keyboard_background_secondary_color;
+@def color_keyboard_top_separator #00000000;
+@def color_candidate_separator #FFFFFF1A;
+@def color_candidate_panel_separator #FFFFFF1A;
+@def color_generic_extension_background_activated #0000004D;
+@def color_generic_extension_background #999999FF;
+@def color_keyboard_editing_edge_disabled #DB4437FF;
+@def color_notice_text @default_generic_accent_color_strong;
+@def color_notice_link_text @default_label_color_variant;
+@def drag_handler_access_point_item_background @default_bordered_key_color;
+@def access_point_customized_state_indicator_fill @default_bordered_key_dark_color;
+@def access-point-education-footer-background @default_keyboard_background_primary_color;
+@def color_softkey_highlight_fill @default_transparent_key_color_pressed;
+@def color_softkey_outline_stroke @default_bordered_key_dark_color_contrast;
+@def bg_al_rambler_key @gb_letter_key_color;
+/* from style_sheet_non_dynamic_color.binarypb */
+.widget-jarvis-item-bottom { color: #00000000; }
+/* from style_sheet_color_rules.binarypb */
+.keyboard-body-area, .widget-keyboard.keyboard-background { background_color: @default_keyboard_background_primary_color; }
+.keyboard-base-area, .keyboard-body-area.for-non-prime-body, .language-indicator { background_color: @default_keyboard_background_secondary_color; }
+.keyboard-header-area.for-expression-nav { background_color: @default_keyboard_background_secondary_color; }
+.expression-report-content-image-overlay { background_color: @color_expression_footer_background; }
+.language-indicator { color: @default_keyboard_background_secondary_color; }
+.keyboard-header-area, .candidates-area, .candidates-area.expanded, .popup.concept-candidate, .popup.concept-candidate-arrow { background_color: @default_keyboard_background_header_color; }
+.keyboard-header-area.panel { background_color: @default_keyboard_background_secondary_color; }
+.widget-keyboard.keyboard-body-area { background_color: #00000000; }
+.navbar.for-expression-footer { background_color: @color_expression_footer_background; }
+.label.in-left-panel { color: @default_borderless_key_dark_color_contrast; }
+.keytop.for-candidates-expansion-key { color: @color_icon_more_candidates_background; }
+.label.secondary { color: @color_label_secondary; }
+.label.dynamic { color: @color_label_dynamic; }
+.label.for-candidate-key:selected { color: @color_state_label_candidate_selected; }
+.label.for-candidate-key, .label.for-image-candidate-popup { color: @color_state_label_candidate; }
+.notice.for-notice-key { color: @color_notice_text; }
+.notice.for-notice-key { link_color: @color_notice_link_text; }
+.divider.vertical.for-side-panel { color: @color_keyboard_separator; }
+.divider.horizontal.top.for-keyboard-base-area { color: @color_keyboard_top_separator; }
+.divider.vertical.for-candidate-key, .divider.vertical.for-fast-access-bar { color: @color_candidate_separator; }
+.divider.vertical.for-image-candidate-popup { color: @color_candidate_separator; }
+.divider.vertical.for-candidate-side-panel { color: @color_candidate_panel_separator; }
+.divider.horizontal.for-fast-access-bar { background_color: @color_candidate_separator; }
+.background.for-extension:activated { background_color: @color_generic_extension_background_activated; }
+.background.for-extension { background_color: @color_generic_extension_background; }
+.icon.keyboard_editing_edge { color: @color_keyboard_editing_edge_disabled; }
+.icon.floating_keyboard_editing_edge { color: @color_keyboard_editing_edge_disabled; }
+.keyboard_editing_overlay { background_color: @color_keyboard_editing_overlay; }
+.background.text-editing-separator { background_color: @color_keyboard_separator; }
+.icon.for-category-key, .expression-category-item-tablet { color: @color_expression_category_inactive; }
+.scrollable-expression-tab:selected, .icon.for-category-key:selected, .expression-category-item-tablet:pressed, .expression-category-item-tablet:selected { color: @color_expression_content_accented; }
+.expression-highlight-underline:pressed, .expression-highlight-underline:selected { background_color: @color_expression_content_accented; }
+.icon.for-emojify-key { background_color: @default_bordered_key_color; }
+.icon.for-emojify-key:pressed { background_color: @default_bordered_key_color_pressed; }
+.icon.for-emojify-key { color: @default_label_color; }
+.background-icon.for-emojify-key.second-progress-circle { color: @default_bordered_key_color; }
+.background-icon.header-icon-item-ripple { ripple_color: @default_bordered_key_color_pressed; }
+.popup.for-emoji-kitchen-popup-v2 { background_color: @default_keyboard_background_primary_color; }
+.emoji-kitchen-browse-share-cancel-btn { edge_color: @color_candidate_separator; }
+@def default_popup_item_color_pressed @default_generic_accent_color_pressed;

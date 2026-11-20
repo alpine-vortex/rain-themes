@@ -51,6 +51,11 @@ These are "all colors" themes (every keyboard element set exactly); the
 `.heliboard-simple.json` files are the 10-colour version. Choose the theme for
 night (and day) in the same screen.
 
+## Gboard (phone)
+Needs Gboard patched with the gboard-voice Morphe patches. Gboard Tweaks →
+**Import theme**, pick `tokyonight-night.gboard.zip` (and `tokyonight-night-light.gboard.zip`, Tokyo Night Day, for day mode), then choose it in
+Gboard → Theme → My themes.
+
 ## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import
 `tokyonight-night.app-theme.json` by file, clipboard, or this URL:
