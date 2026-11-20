@@ -38,6 +38,8 @@ been checked live.
     "Import theme" button. Format settled on the phone 2026-11-20 (a hand-made zip with
     the same base.css + colour sheet layout themed the whole keyboard); generated
     `tokyonight-night` dark and light zips imported and looked right on the phone the same day.
+    `gboard-all.zip` (repo root) bundles all of them for gboard-voice 0.11.0's bulk import.
+    Phone-checked 2026-11-20: 34 added, 2 already installed.
   - Gotcha (fixed 2026-09-29): files pushed with adb stay `is_pending=1` in MediaStore, so
     file pickers (HeliBoard's Load) show the folder as empty until they're scanned.
     `rain phone` now scans every pushed file. It also picks the phone when an emulator is

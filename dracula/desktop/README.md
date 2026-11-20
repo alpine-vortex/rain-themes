@@ -54,7 +54,8 @@ night (and day) in the same screen.
 ## Gboard (phone)
 Needs Gboard patched with the gboard-voice Morphe patches. Gboard Tweaks →
 **Import theme**, pick `dracula.gboard.zip` (and `dracula-light.gboard.zip`, Alucard, for day mode), then choose it in
-Gboard → Theme → My themes.
+Gboard → Theme → My themes. `gboard-all.zip` in the repo root holds every
+palette's Gboard zips and imports them all at once.
 
 ## Android apps (app-theme)
 Apps that read the app-theme format (such as redeye) import

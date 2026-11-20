@@ -913,13 +913,32 @@ def gboard_themes(t, slug):
     return out
 
 
+GBOARD_BUNDLE = "gboard-all.zip"
+
+
+def gboard_bundle(zips):
+    """Bundle zip of theme zips (every palette, dark and light), which Gboard Tweaks →
+    Import theme installs in one go (gboard-voice 0.11.0+). Stored, not deflated: the
+    entries are zips already. Fixed timestamps and sorted order keep it byte-stable."""
+    import io
+    import zipfile
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_STORED) as z:
+        for p in sorted(zips, key=lambda p: p.name):
+            zi = zipfile.ZipInfo(p.name, date_time=(1980, 1, 1, 0, 0, 0))
+            zi.external_attr = 0o644 << 16
+            z.writestr(zi, p.read_bytes())
+    return buf.getvalue()
+
+
 def gboard_section(spec, has_light):
     light = (f" (and `{spec['slug']}-light.gboard.zip`, {spec['light']['flavour']}, for day mode)"
              if has_light else "")
     return f"""## Gboard (phone)
 Needs Gboard patched with the gboard-voice Morphe patches. Gboard Tweaks →
 **Import theme**, pick `{spec['slug']}.gboard.zip`{light}, then choose it in
-Gboard → Theme → My themes.
+Gboard → Theme → My themes. `{GBOARD_BUNDLE}` in the repo root holds every
+palette's Gboard zips and imports them all at once.
 
 """
 

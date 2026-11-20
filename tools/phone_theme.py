@@ -193,6 +193,11 @@ def apply(slug, style, files, dry):
                 # e.g. HeliBoard's Load showed an empty folder) until they're scanned
                 adb("shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE",
                     "-d", f"file://{dest}/{f}", dry=dry)
+        bundle = ROOT / "gboard-all.zip"
+        if bundle.exists():
+            adb("push", str(bundle), f"{REMOTE}/{bundle.name}", dry=dry)
+            adb("shell", "am", "broadcast", "-a", "android.intent.action.MEDIA_SCANNER_SCAN_FILE",
+                "-d", f"file://{REMOTE}/{bundle.name}", dry=dry)
         print(f"files in {dest}: set the wallpaper, import sync/redeye themes on the phone")
 
 

@@ -190,7 +190,8 @@ The GUI's **Phone** button does the same, using the style picked in its
   HeliBoard, go to Settings → Appearance → Colors → **Load**.
 - `<slug>.gboard.zip` (and `<slug>-light.gboard.zip`): needs Gboard patched with the
   gboard-voice patches. Gboard Tweaks → **Import theme**, then pick it under Gboard →
-  Theme → My themes.
+  Theme → My themes. `Download/rain-themes/gboard-all.zip` imports every palette at
+  once (gboard-voice 0.11.0+); importing it again updates instead of duplicating.
 - `<slug>.app-theme.json`: import it in an app that reads the app-theme format (such as redeye), or use the raw URL listed in the
   palette's `desktop/README.md`.
 
