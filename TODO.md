@@ -2,4 +2,6 @@
 
 ## Open
 
-- [ ] Merge the Gboard zip export (branch gboard-theme) [waiting] — after the owner's phone check of a generated dark and light zip
+## Done
+
+- [x] Gboard zip export per palette, phone-checked (Tokyo Night dark + light) (2026-11-20)
